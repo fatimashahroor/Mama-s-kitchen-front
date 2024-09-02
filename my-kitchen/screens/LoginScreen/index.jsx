@@ -1,10 +1,12 @@
-import { Text, View } from "react-native";
+import { Text, View, Image } from "react-native";
 
 function LoginScreen() {
     return (
-        <View>
-            <Text>LoginScreen</Text>
-        </View>
+            <View>
+                <Image source={require('../../assets/plates.jpg')} style={{width: '100%', height: '40%'}}
+
+                />
+            </View>
     );
 }
 
