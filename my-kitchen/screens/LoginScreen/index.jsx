@@ -1,11 +1,10 @@
 import { Text, View, Image } from "react-native";
+import styles from "./styles";
 
 function LoginScreen() {
     return (
             <View>
-                <Image source={require('../../assets/plates.jpg')} style={{width: '100%', height: '40%'}}
-
-                />
+                <Image source={require('../../assets/plates1.jpg')} style={styles.imageStyle}/>
             </View>
     );
 }
