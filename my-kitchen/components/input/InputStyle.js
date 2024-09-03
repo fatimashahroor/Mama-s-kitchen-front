@@ -13,7 +13,7 @@ export default StyleSheet.create({
         borderRadius: 30,
         fontSize: 18,
         fontFamily: 'Inter_400Regular',
-        marginTop: 10,
+        marginTop: 5,
         paddingLeft: 20        
       },
 })
