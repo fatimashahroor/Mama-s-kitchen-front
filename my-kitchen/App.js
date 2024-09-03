@@ -7,7 +7,7 @@ export default function App() {
   const Stack = createNativeStackNavigator();
   return (
     <SafeAreaProvider>
-        <SafeAreaView style={{ flex: 1, backgroundColor: "grey" }}>
+        <SafeAreaView style={{ flex: 1}}>
         <NavigationContainer>
           <Stack.Navigator
             initialRouteName="Login" screenOptions={{ headerShown: false }}>
