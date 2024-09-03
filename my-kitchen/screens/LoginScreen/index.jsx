@@ -32,7 +32,7 @@ function LoginScreen() {
                   </TouchableOpacity>
                   <View style={styles.flexRow}>
                     <Text style={[styles.customText1, styles.margin2, styles.accountText]}>Don't have an account? </Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                       <Text style={[styles.customText1, styles.signUp, styles.margin2]}>Sign Up</Text></TouchableOpacity>
                   </View>
                   <View style={styles.flexColumn}>
