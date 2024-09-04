@@ -6,6 +6,7 @@ import { useFonts, Pacifico_400Regular} from '@expo-google-fonts/pacifico';
 import InputText from "../../components/input/input";
 
 const BoardingScreen1 = () => {
+    const navigation = useNavigation();
     const [fontsLoaded] = useFonts({
         Pacifico_400Regular, Inter_400Regular});
       if (!fontsLoaded) {
@@ -19,7 +20,7 @@ const BoardingScreen1 = () => {
           </View>
           <Image source={require('../../assets/onBoarding2.jpg')} style={styles.imageStyle}></Image>
           <Text style={styles.customText}>Dive into the pleasure of home-made {'\n'} food with your favorite flavors!</Text>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
             <Text style={styles.buttonText}>Get Started</Text>
           </TouchableOpacity>
         </View>
