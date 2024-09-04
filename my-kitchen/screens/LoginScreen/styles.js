@@ -88,4 +88,14 @@ export default StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
     },
+    errorText: {
+        color: '#d18408',
+        textAlign: 'left',
+        marginLeft: 60,
+    },
+    eyeIcon: {
+        position: 'absolute',
+        right: 65,
+        top: 103,
+    },
 })
