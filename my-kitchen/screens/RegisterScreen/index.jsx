@@ -1,18 +1,64 @@
+import { useState } from "react";
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import styles from "./styles";
-import { useFonts, Inter_400Regular, Inter_700Bold, Inter_600SemiBold} from '@expo-google-fonts/inter';
+import { useFonts, Inter_400Regular,Inter_600SemiBold} from '@expo-google-fonts/inter';
 import InputText from "../../components/input/input";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { Ionicons } from '@expo/vector-icons';
+import { EXPO_PUBLIC_API_URL } from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function RegisterScreen() {
-    const navigation = useNavigation();  
-    const [fontsLoaded] = useFonts({
-        Inter_400Regular, Inter_700Bold, Inter_600SemiBold,
+  const navigation = useNavigation();  
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [inputs , setInputs] = useState({
+      full_name: '',
+      email: '',
+      password: ''
+  })
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(prevState => !prevState);
+  };
+  const [fontsLoaded] = useFonts({
+      Inter_400Regular, Inter_600SemiBold,
+    });
+    if (!fontsLoaded) {
+      return <Text>Loading Fonts...</Text>;
+    }
+    const handleChange = (id, value) => {
+      setInputs(previnputs => ({
+          ...previnputs,
+          [id]: value
+      }));
+  };
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(`${EXPO_PUBLIC_API_URL}`+'/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          full_name: inputs.full_name,
+          email: inputs.email,
+          password: inputs.password,
+        }),
       });
-      if (!fontsLoaded) {
-        return <View style={styles.container}><Text>Loading Fonts...</Text></View>;
+      const data = await response.json();
+      if (data) {
+        const { access_token, user } = data;
+        await AsyncStorage.setItem('token', access_token);
+        await AsyncStorage.setItem('user', JSON.stringify(user));
+        navigation.navigate('Boarding1');
+      } else {
+        setErrorMessage("An error occurred while logging in. Please try again.");
       }
+      } catch (error) {
+        setErrorMessage("Error registering. Please try again !");
+      }
+    }; 
     return (
             <View>
                 <View style={styles.container}> 
@@ -21,10 +67,17 @@ function RegisterScreen() {
                 </View>
                 <Text style={[styles.signUpText, styles.customText]}>Sign Up</Text>
                 <View style={styles.margin2}>
-                  <InputText placeholder="Full name" placeholderTextColor={'#989997'} secureTextEntry={false}/>
-                  <InputText placeholder="Email" placeholderTextColor={'#989997'} secureTextEntry={false}></InputText>
-                  <InputText placeholder="Password" placeholderTextColor={'#989997'} secureTextEntry={true}/>
-                  <TouchableOpacity  onPress={() => navigation.navigate('Login')} style={styles.button}>
+                  <InputText placeholder="Full name" placeholderTextColor={'#989997'} secureTextEntry={false} 
+                  onChangeText={value => handleChange('full_name', value)}/>
+                  <InputText placeholder="Email" placeholderTextColor={'#989997'} secureTextEntry={false}
+                  onChangeText={value => handleChange('email', value)}></InputText>
+                  <InputText placeholder="Password" placeholderTextColor={'#989997'} secureTextEntry={!passwordVisible}
+                  onChangeText={value => handleChange('password', value)}/>
+                  <TouchableOpacity onPress={togglePasswordVisibility} style={styles.eyeIcon}>
+                  <Ionicons name={passwordVisible ? "eye" : "eye-off"} size={24} color="gray" />
+                </TouchableOpacity>
+                  {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
+                  <TouchableOpacity  onPress={handleSubmit} style={styles.button}>
                     <Text style={styles.buttonText}>Sign up</Text>
                   </TouchableOpacity>
                   <View style={styles.flexRow}>
