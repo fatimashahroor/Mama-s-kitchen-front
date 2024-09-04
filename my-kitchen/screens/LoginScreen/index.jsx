@@ -24,7 +24,7 @@ function LoginScreen() {
                             secureTextEntry={false}/>
                   <InputText placeholder="Password" placeholderTextColor={'#989997'}
                             secureTextEntry={true}/>
-                  <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
+                  <TouchableOpacity onPress={() => navigation.navigate('Boarding1')}>
                     <Text style={[styles.customText1, styles.margin1, styles.forgotPass]}>Forgot Password?</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.button}>
