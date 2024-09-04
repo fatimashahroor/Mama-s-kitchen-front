@@ -17,8 +17,8 @@ const BoardingScreen1 = () => {
             <Text style={styles.appName}>Mama's</Text>
             <Text style={styles.appName}>  Kitchen</Text>
           </View>
-          <Image source={require('../../assets/onBoarding1.jpg')} style={styles.imageStyle}></Image>
-          <Text style={styles.customText}>Create the kitchen of your{'\n'} dreams and make it come to life!</Text>
+          <Image source={require('../../assets/onBoarding2.jpg')} style={styles.imageStyle}></Image>
+          <Text style={styles.customText}>Dive into the pleasure of home-made {'\n'} food with your favorite flavors!</Text>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Get Started</Text>
           </TouchableOpacity>
