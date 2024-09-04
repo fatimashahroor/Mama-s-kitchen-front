@@ -19,7 +19,7 @@ export default StyleSheet.create({
         flexDirection: 'column',
     },
     imageStyle: {
-        marginTop: 30,
+        marginTop: 45,
     },
     customText: {
         fontSize: 16,
@@ -31,7 +31,7 @@ export default StyleSheet.create({
     button: {
         backgroundColor: '#B20530',
         borderRadius: 30,
-        marginTop: 40,
+        marginTop: 50,
         width: 300,
         height: 50,
         alignItems: 'center',
@@ -40,5 +40,7 @@ export default StyleSheet.create({
     buttonText: {
         color: 'white',
         fontFamily: 'Inter_400Regular',
+        fontSize: 20,
+        textAlign: 'left',
     }
 })
