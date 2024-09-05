@@ -95,4 +95,10 @@ export default StyleSheet.create({
         color: 'white',
         textAlign: 'center',
     },
+    none: {
+        color: "#B20530",
+        fontFamily: 'Inter_400Regular',
+        fontSize: 18,
+        marginTop: 60,
+    },
 })
