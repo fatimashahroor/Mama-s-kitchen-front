@@ -22,6 +22,7 @@ export default StyleSheet.create({
     flexRow: {
         display: 'flex',
         flexDirection: 'row',
+        flexWrap: 'wrap',
     },
     flexStart: {
         justifyContent: 'flex-start',
@@ -45,9 +46,9 @@ export default StyleSheet.create({
     dish: {
         backgroundColor: "#FFD21C",
         borderRadius: 30,
-        marginLeft: 20,
-        marginTop: 35,
-        marginRight: 20,
+        marginLeft: 15,
+        marginTop: 25,
+        marginRight: 10,
         width: 150,
         height: 200,
     },
@@ -76,5 +77,22 @@ export default StyleSheet.create({
         marginLeft: 15,  
         fontFamily: 'Inter_400Regular',
         fontSize: 12,
+    },
+    scrollView: {
+        backgroundColor: "#B20530",
+        height: 50,
+        marginTop: 10,
+        marginLeft: 30,
+        borderRadius: 30,
+        marginRight: 30,
+    },
+    dayText: {
+        marginTop: 15,
+        marginLeft: 20,
+        marginRight: 20,
+        fontFamily: 'Inter_600SemiBold',
+        fontSize: 15,
+        color: 'white',
+        textAlign: 'center',
     },
 })
