@@ -5,6 +5,7 @@ import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import BoardingScreen1 from './screens/BoardingScreen1';
 import HomeScreen from './screens/HomeScreen';
+import ChefsScreen from './screens/ChefsScreen';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -18,6 +19,7 @@ export default function App() {
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="Boarding1" component={BoardingScreen1} />
             <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Chefs" component={ChefsScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
