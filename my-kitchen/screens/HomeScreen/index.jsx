@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import styles from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts, Inter_400Regular } from '@expo-google-fonts/inter';
@@ -11,12 +11,15 @@ import { EXPO_PUBLIC_API_URL } from '@env';
 const HomeScreen = () => {
     const [error, setError] = useState(null);
     const [dishes, setDishes] = useState([]);
+    const [selectedDay, setSelectedDay] = useState(null);
     const [fontsLoaded] = useFonts({
         Pacifico_400Regular, Inter_400Regular});
     const ImageDisplay = ($image_path) => {
         return  imageUrl = `${EXPO_PUBLIC_API_URL}/images/${$image_path}`;
     }
-        
+    const days = ["Daily", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const handleDayPress = (day) => {
+        setSelectedDay(day);    }
     const getDishes = async () => {
     try {
         const response = await fetch(`${EXPO_PUBLIC_API_URL}`+'/api/dish', {
@@ -55,18 +58,28 @@ const HomeScreen = () => {
                 <SearchInput placeholder={"Search for dishes"}/>
                 <FontAwesome5 name="utensils" size={26} color={'#FFCF0F'} style={styles.icon}/>
                 <Text style={styles.error}>{error}</Text>
+                <View style={styles.scrollView}>
+                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                        {days.map((day, index) => (
+                            <TouchableOpacity key={index} style={styles.dayContainer} onPress={() => handleDayPress(day)}>
+                                <Text style={styles.dayText}>{day}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                </View>
                 <View>
-                    <View style= {[styles.flexRow, styles.justify]}>{dishes.map((data) => (
-                            <View key={data.id} style={styles.dish}>
-                                <Image style={[styles.image]} 
-                                source={{uri: `${EXPO_PUBLIC_API_URL}`+`/images/${data.image_path}`}}/>
-                                <View style={[styles.flexRow, styles.space]}>
+                    <View style={[styles.flexRow, styles.justify]}>
+                    {dishes.filter(dish => dish.available_on === selectedDay).map((data) => (
+                        <View key={data.id} style={styles.dish}>
+                            <Image style={styles.image} 
+                                source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${data.image_path}` }}/>
+                            <View style={[styles.flexRow, styles.space]}>
                                 <Text style={styles.dishName}>{data.name} </Text>
-                                <Text style={styles.dishPrice}>{data.price+"$"}</Text>
-                                </View>
-                                <Text style={styles.user}>{data.user_full_name}</Text>
-                                <Ionicons style={styles.cart} name='cart' color={'black'} size={20}></Ionicons>
+                                <Text style={styles.dishPrice}>{data.price + "$"}</Text>
                             </View>
+                            <Text style={styles.user}>{data.user_full_name}</Text>
+                            <Ionicons style={styles.cart} name='cart' color={'black'} size={20}></Ionicons>
+                        </View> 
                         ))}
                     </View>
                 </View>
