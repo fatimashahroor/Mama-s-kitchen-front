@@ -1,5 +1,80 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-    container: {},
+    container: {
+        flex: 1,
+        backgroundColor: 'white',
+    },
+    logo: {
+        width: 50,
+        height: 52,
+        borderRadius: 300,
+        marginLeft: 25,
+        marginTop: 35,
+    },
+    appName : {
+        color: '#B20530',
+        fontFamily: 'Pacifico_400Regular',
+        fontSize: 20,
+        marginLeft: 12,
+        marginTop: 40,
+    },
+    flexRow: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    flexStart: {
+        justifyContent: 'flex-start',
+    },
+    icon: {
+        marginTop: -22,
+        marginLeft: 328,
+        border: '#B20530',
+    },
+    justify: {
+        justifyContent: 'center',
+    },
+    image: {
+        width: 120,
+        height: 100,
+        marginLeft: 15,
+        marginRight: 30,
+        marginTop: 15,
+        borderRadius: 15,
+    },
+    dish: {
+        backgroundColor: "#FFD21C",
+        borderRadius: 30,
+        marginLeft: 20,
+        marginTop: 35,
+        marginRight: 20,
+        width: 150,
+        height: 200,
+    },
+    dishName: {
+        marginTop: 10,
+        marginLeft: 15,
+        fontFamily: 'Inter_600SemiBold',
+        fontSize: 12,
+    },  
+    dishPrice: {
+        marginTop: 10,
+        marginRight: 15,
+        fontFamily: 'Inter_400Regular',
+        fontSize: 12,
+    },
+    space: {
+        justifyContent: 'space-between',
+    },
+    cart: {
+        alignSelf: 'flex-end',
+        marginTop: 3,
+        marginRight: 15,  
+    },
+    user: {
+        marginTop: 5,
+        marginLeft: 15,  
+        fontFamily: 'Inter_400Regular',
+        fontSize: 12,
+    },
 })
