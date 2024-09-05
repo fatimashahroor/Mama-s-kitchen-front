@@ -12,6 +12,7 @@ const HomeScreen = () => {
     const [error, setError] = useState(null);
     const [dishes, setDishes] = useState([]);
     const [selectedDay, setSelectedDay] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
     const [fontsLoaded] = useFonts({
         Pacifico_400Regular, Inter_400Regular});
     const ImageDisplay = ($image_path) => {
@@ -20,6 +21,9 @@ const HomeScreen = () => {
     const days = ["Daily", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     const handleDayPress = (day) => {
         setSelectedDay(day);    }
+    const filteredDishes = dishes
+    .filter(dish => dish.available_on === selectedDay)
+    .filter(dish => dish.name.toLowerCase().includes(searchQuery.toLowerCase()));
     const getDishes = async () => {
     try {
         const response = await fetch(`${EXPO_PUBLIC_API_URL}`+'/api/dish', {
@@ -55,7 +59,7 @@ const HomeScreen = () => {
                     <Image source={require('../../assets/logo.png')} style={styles.logo}></Image>
                     <Text style={styles.appName}>Mama's Kitchen</Text>
                 </View>
-                <SearchInput placeholder={"Search for dishes"}/>
+                <SearchInput placeholder={"Search for dishes"} value={searchQuery} onChangeText={setSearchQuery}/>
                 <FontAwesome5 name="utensils" size={26} color={'#FFCF0F'} style={styles.icon}/>
                 <Text style={styles.error}>{error}</Text>
                 <View style={styles.scrollView}>
@@ -69,7 +73,7 @@ const HomeScreen = () => {
                 </View>
                 <View>
                     <View style={[styles.flexRow, styles.justify]}>
-                    {dishes.filter(dish => dish.available_on === selectedDay).map((data) => (
+                    {filteredDishes.length > 0 ? filteredDishes.map((data)=> (
                         <View key={data.id} style={styles.dish}>
                             <Image style={styles.image} 
                                 source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${data.image_path}` }}/>
@@ -80,7 +84,7 @@ const HomeScreen = () => {
                             <Text style={styles.user}>{data.user_full_name}</Text>
                             <Ionicons style={styles.cart} name='cart' color={'black'} size={20}></Ionicons>
                         </View> 
-                        ))}
+                    )) : <Text style={styles.none}>No dishes found</Text>}
                     </View>
                 </View>
             </View>
