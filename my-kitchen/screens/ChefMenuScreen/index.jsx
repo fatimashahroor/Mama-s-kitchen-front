@@ -36,6 +36,7 @@ const ChefMenuScreen = ({ route, navigation }) => {
     return (
       <ScrollView>
         <View style={styles.container}>
+            <FontAwesome5 name="chevron-left" size={20} color="black" />
             <Image style= {styles.imageStyle} source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${chef.image_path}` }}></Image>
         </View>
       </ScrollView>  
