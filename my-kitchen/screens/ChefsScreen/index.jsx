@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ChefsScreen = () => {
     const [chefs, setChefs] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
     const [fontsLoaded] = useFonts({
       Inter_400Regular,Pacifico_400Regular});
       const StarRating = ({ rating }) => {
@@ -63,6 +64,9 @@ const ChefsScreen = () => {
     useEffect(() => {
       getChefs();
     }, []);
+    const filteredChefs = chefs.filter((data) => 
+      data.user.full_name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
     if (!fontsLoaded) {
       return <Text>Loading Fonts...</Text>;
     }
@@ -71,9 +75,9 @@ const ChefsScreen = () => {
         <View style={styles.container}>
           <Text style={styles.title}>Our Chefs</Text>
           <ScrollView>
-          <SearchInput placeholder={"Find your favorite chef"}/>
-          <View>
-            {chefs.map((data) => (
+          <SearchInput placeholder={"Find your favorite chef"} value={searchQuery} onChangeText={setSearchQuery}/>
+          <View style={styles.marginTop}>
+            {filteredChefs.map((data) => (
               <View key={data.user.id} style={styles.chef}>
                 <Image source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${data.user.image_path}` }}
                   style={styles.chefImage}
@@ -81,7 +85,7 @@ const ChefsScreen = () => {
                 <View style={styles.flexColumn}>
                 <Text style={styles.chefName}>{data.user.full_name}</Text>
                 <StarRating rating={data.user.rating} /> 
-                <Text style={{ color: getStatusColor(data.user.status) }}>
+                <Text style={{ color: getStatusColor(data.user.status), fontFamily: 'Inter_400Regular', fontSize: 12 }}>
                                     {data.user.status}
                 </Text>
                 </View>

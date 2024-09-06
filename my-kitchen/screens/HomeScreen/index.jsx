@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import styles from './styles';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts, Inter_400Regular } from '@expo-google-fonts/inter';
 import { Pacifico_400Regular } from '@expo-google-fonts/pacifico';
@@ -9,15 +10,13 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Ionicons } from '@expo/vector-icons';
 import { EXPO_PUBLIC_API_URL } from '@env';
 const HomeScreen = () => {
+    const navigation = useNavigation();
     const [error, setError] = useState(null);
     const [dishes, setDishes] = useState([]);
     const [selectedDay, setSelectedDay] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [fontsLoaded] = useFonts({
         Pacifico_400Regular, Inter_400Regular});
-    const ImageDisplay = ($image_path) => {
-        return  imageUrl = `${EXPO_PUBLIC_API_URL}/images/${$image_path}`;
-    }
     const days = ["Daily", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     const handleDayPress = (day) => {
         setSelectedDay(day);    }
@@ -60,7 +59,9 @@ const HomeScreen = () => {
                     <Text style={styles.appName}>Mama's Kitchen</Text>
                 </View>
                 <SearchInput placeholder={"Search for dishes"} value={searchQuery} onChangeText={setSearchQuery}/>
+                <TouchableOpacity onPress={() => navigation.navigate('Chefs')}>
                 <FontAwesome5 name="utensils" size={26} color={'#FFCF0F'} style={styles.icon}/>
+                 </TouchableOpacity>
                 <Text style={styles.error}>{error}</Text>
                 <View style={styles.scrollView}>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
