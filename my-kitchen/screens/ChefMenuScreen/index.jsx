@@ -60,6 +60,10 @@ const ChefMenuScreen = ({ route, navigation }) => {
                     <StarRating rating={chef.rating} />
                 </View>
                 <View style={styles.verticalLine} />
+                <View style={styles.flexColumn}>
+                    <Text style={styles.chefAge}>{chef.age}  year old</Text>
+                    <Text style={styles.chefPhone}>{chef.phone}</Text>
+                </View>
             </View>
         </View>
       </ScrollView>  
