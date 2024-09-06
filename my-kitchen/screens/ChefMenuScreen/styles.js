@@ -34,12 +34,19 @@ export default StyleSheet.create({
         flexWrap: 'wrap',
     },
     verticalLine: {
-        width: 1,
+        width: 1.5,
         height: '55%',
         backgroundColor: '#FFD21C',
         marginHorizontal: 8,
         marginTop: 40,
         marginRight: 20
+      },
+      horizontalLine: {
+          width: "70%",
+          height: 1.5,
+          backgroundColor: '#FFD21C',
+          marginTop: 20,
+          marginLeft: 48
       },
       chefPhone: {
         fontSize: 16,
