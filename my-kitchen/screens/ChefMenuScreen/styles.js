@@ -10,12 +10,12 @@ export default StyleSheet.create({
         height: 67,
         borderRadius: 35,
         marginTop: 40,
-        marginLeft: -2,
+        marginLeft: 0,
         marginRight: 8
     },
     icon: {
         marginLeft: 5,
-        marginTop: 5
+        marginTop: 2,
     },
     flexRow: {
         display: 'flex',
@@ -119,5 +119,38 @@ export default StyleSheet.create({
         flexWrap: 'wrap',     
         justifyContent: 'flex-start',
         gap: 16
+    },
+    dayTitle: {
+        fontSize: 14,
+        fontFamily: 'Inter_600SemiBold',
+        marginTop: 12,
+        marginLeft: 2,
+        color: '#B20530'
+    },
+    scrollView: {
+        height: 45,
+        marginTop: 10,
+        marginRight: 2,
+    },
+    dayText: {
+        marginTop: 12,
+        marginLeft: 20,
+        marginRight: 20,
+        fontFamily: 'Inter_600SemiBold',
+        fontSize: 15,
+        color: 'white',
+        textAlign: 'center',
+    },
+    dayButton: {
+        borderRadius: 30,
+        backgroundColor: "#B20530",
+        marginRight: 5,
+    },
+    none: {
+        color: "#B20530",
+        fontFamily: 'Inter_400Regular',
+        fontSize: 18,
+        marginTop: 60,
+        marginLeft: 90
     },
 })
