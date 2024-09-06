@@ -12,8 +12,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const ChefMenuScreen = ({ route, navigation }) => {
     const { chef } = route.params;
     const [chefMenu, setChefMenu] = useState([]);
+    const [selectedDay, setSelectedDay] = useState(null);
     const [fontsLoaded] = useFonts({
         Inter_400Regular, Pacifico_400Regular})
+    const days = ["Daily", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const handleDayPress = (day) => {
+        setSelectedDay(day);}    
     const StarRating = ({ rating }) => {
         const stars = [];
         for (let i = 0; i < rating; i++) {
@@ -50,13 +54,16 @@ const ChefMenuScreen = ({ route, navigation }) => {
     useEffect(() => {
         getChefDishes();
     }, []);
+    const filteredDishes = chefMenu
+    .filter(menu => menu.available_on === selectedDay)
     if (!fontsLoaded) {
         return <Text>Loading...</Text>;
     }
     return (
-      <ScrollView>
         <View style={styles.container}>
             <FontAwesome5 name="chevron-left" size={20} style={styles.icon} onPress={() => navigation.goBack()} />
+        <ScrollView showsVerticalScrollIndicator={false}>
+        <View>
             <View style={styles.flexRow}>
                 <Image style= {styles.imageStyle} source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${chef.image_path}` }}></Image>
                 <View style={styles.flexColumn}>
@@ -73,11 +80,20 @@ const ChefMenuScreen = ({ route, navigation }) => {
             <Text style={styles.chefBio}>{chef.bio}</Text>
             <View style={styles.horizontalLine} />
             <Text style={styles.menuTitle}>Menu</Text>
+            <View style={styles.scrollView}>
+                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                        {days.map((day, index) => (
+                            <TouchableOpacity style={styles.dayButton} key={index} onPress={() => handleDayPress(day)}>
+                                <Text style={styles.dayText}>{day}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                </View>
             <View style={styles.dishesContainer}>
-            {chefMenu.length > 0 ? chefMenu.map((item, index)=> (
+            {filteredDishes.length > 0 ? filteredDishes.map((item, index)=> (
                         <View key={item.id || index} style={styles.dish}>
                             <Image style={styles.image} 
-                                source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${item.image_path}` }}/>
+                                source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${item.image_path}`}}/>
                             <View style={[styles.flexColumn, styles.space]}>
                                 <Text style={styles.dishName}>{item.name} </Text>
                                 <Text style={styles.dishPrice}>{item.price + "$"}</Text>
@@ -87,7 +103,8 @@ const ChefMenuScreen = ({ route, navigation }) => {
                     )) : <Text style={styles.none}>No dishes found</Text>}
             </View>
         </View>
-      </ScrollView>  
+      </ScrollView> 
+    </View> 
     );
 };
 
