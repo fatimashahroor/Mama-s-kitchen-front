@@ -14,6 +14,22 @@ const ChefMenuScreen = ({ route, navigation }) => {
     const [chefMenu, setChefMenu] = useState([]);
     const [fontsLoaded] = useFonts({
         Inter_400Regular, Pacifico_400Regular})
+    const StarRating = ({ rating }) => {
+        const stars = [];
+        for (let i = 0; i < rating; i++) {
+            stars.push(
+                <FontAwesome5 key={i} name="star" solid size={13} 
+                style={{ color: 'gold', marginRight: 4, marginTop: 10}} />
+            );}
+        return (
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {stars}
+                {rating < 5 && Array.from({ length: 5 - rating }, (_, i) => (
+                    <FontAwesome5 key={i + rating} name="star" size={13} 
+                    style={{ color: 'lightgray', marginRight: 4, marginTop: 10}} />
+                ))}
+            </View>
+        );};
     const getChefDishes = async () => {
         try {
             const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/dishes/${chef.id}`, {
@@ -38,8 +54,12 @@ const ChefMenuScreen = ({ route, navigation }) => {
         <View style={styles.container}>
             <FontAwesome5 name="chevron-left" size={20} style={styles.icon} onPress={() => navigation.goBack()} />
             <View style={styles.flexRow}>
-            <Image style= {styles.imageStyle} source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${chef.image_path}` }}></Image>
-            <Text style={styles.chefName}>{chef.full_name}</Text>
+                <Image style= {styles.imageStyle} source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${chef.image_path}` }}></Image>
+                <View style={styles.flexColumn}>
+                    <Text style={styles.chefName}>{chef.full_name}</Text>
+                    <StarRating rating={chef.rating} />
+                </View>
+                <View style={styles.verticalLine} />
             </View>
         </View>
       </ScrollView>  
