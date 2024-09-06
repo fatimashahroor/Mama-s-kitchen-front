@@ -67,6 +67,8 @@ const ChefMenuScreen = ({ route, navigation }) => {
                 <Text style={styles.chefLocation}>{chef.located_in}</Text>
             </View>
             <Text style={styles.chefBio}>{chef.bio}</Text>
+            <View style={styles.horizontalLine} />
+
         </View>
       </ScrollView>  
     );
