@@ -92,7 +92,7 @@ const ChefsScreen = () => {
                 </Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ChefMenu', {chefId: data.user.id})}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ChefMenu', {chef: data.user})}>
                   <Text style={styles.menu}>View Menu</Text>
                 </TouchableOpacity>
                 </View>
