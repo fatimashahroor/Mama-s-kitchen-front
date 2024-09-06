@@ -30,13 +30,13 @@ export default StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 25,  
-        marginRight: 25,
+        marginRight: 20,
         marginLeft: 15, 
         marginTop: 25,
     },
     chefName: {
         fontSize: 14,
-        fontFamily: 'Inter_400Regular',
+        fontFamily: 'Inter_600SemiBold',
     },
     chef: {
         flexDirection: 'row',
@@ -59,9 +59,7 @@ export default StyleSheet.create({
         justifyContent: 'center',
         gap: 5,
     },
-    Status:{
-        fontSize: 12,
-        fontFamily: 'Inter_400Regular',
-        color: "gray",
+    marginTop: {
+        marginTop: 10
     }
 })
