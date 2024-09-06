@@ -40,12 +40,16 @@ const ChefMenuScreen = ({ route, navigation }) => {
                 },
             });
             const data = await response.json();
-            console.log(data);
-            // setChefMenu(data);
+            if (data) {
+                setChefMenu(data);
+            }
         } catch (error) {
             console.error(error);
         }
     }
+    useEffect(() => {
+        getChefDishes();
+    }, []);
     if (!fontsLoaded) {
         return <Text>Loading...</Text>;
     }
@@ -68,7 +72,20 @@ const ChefMenuScreen = ({ route, navigation }) => {
             </View>
             <Text style={styles.chefBio}>{chef.bio}</Text>
             <View style={styles.horizontalLine} />
-
+            <Text style={styles.menuTitle}>Menu</Text>
+            <View style={styles.dishesContainer}>
+            {chefMenu.length > 0 ? chefMenu.map((item, index)=> (
+                        <View key={item.id || index} style={styles.dish}>
+                            <Image style={styles.image} 
+                                source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${item.image_path}` }}/>
+                            <View style={[styles.flexColumn, styles.space]}>
+                                <Text style={styles.dishName}>{item.name} </Text>
+                                <Text style={styles.dishPrice}>{item.price + "$"}</Text>
+                            </View>
+                            <Ionicons style={styles.cart} name='cart' color={'black'} size={20}></Ionicons>
+                        </View> 
+                    )) : <Text style={styles.none}>No dishes found</Text>}
+            </View>
         </View>
       </ScrollView>  
     );
