@@ -12,4 +12,8 @@ export default StyleSheet.create({
         marginTop: 40,
         marginLeft: 5,
     },
+    icon: {
+        marginLeft: 5,
+        marginTop: 5
+    }
 })
