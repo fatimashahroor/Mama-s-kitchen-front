@@ -7,9 +7,11 @@ import SearchInput from '../../components/search/search';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { EXPO_PUBLIC_API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from "@react-navigation/native";
 
 const ChefsScreen = () => {
     const [chefs, setChefs] = useState([]);
+    const navigation = useNavigation();
     const [searchQuery, setSearchQuery] = useState('');
     const [fontsLoaded] = useFonts({
       Inter_400Regular,Pacifico_400Regular});
@@ -90,7 +92,7 @@ const ChefsScreen = () => {
                 </Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ChefMenu', {chefId: data.user.id})}>
                   <Text style={styles.menu}>View Menu</Text>
                 </TouchableOpacity>
                 </View>
