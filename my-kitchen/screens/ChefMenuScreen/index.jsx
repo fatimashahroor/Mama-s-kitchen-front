@@ -64,6 +64,7 @@ const ChefMenuScreen = ({ route, navigation }) => {
                     <Text style={styles.chefAge}>{chef.age}  year old</Text>
                     <Text style={styles.chefPhone}>{chef.phone}</Text>
                 </View>
+                <Text style={styles.chefLocation}>{chef.located_in}</Text>
             </View>
         </View>
       </ScrollView>  
