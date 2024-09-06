@@ -66,7 +66,7 @@ const HomeScreen = () => {
                 <View style={styles.scrollView}>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                         {days.map((day, index) => (
-                            <TouchableOpacity key={index} style={styles.dayContainer} onPress={() => handleDayPress(day)}>
+                            <TouchableOpacity key={index} onPress={() => handleDayPress(day)}>
                                 <Text style={styles.dayText}>{day}</Text>
                             </TouchableOpacity>
                         ))}
