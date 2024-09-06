@@ -10,13 +10,13 @@ import { EXPO_PUBLIC_API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ChefMenuScreen = ({ route, navigation }) => {
-    const { chefId } = route.params;
+    const { chef } = route.params;
     const [chefMenu, setChefMenu] = useState([]);
     const [fontsLoaded] = useFonts({
         Inter_400Regular, Pacifico_400Regular})
     const getChefDishes = async () => {
         try {
-            const response = await fetch(`${EXPO_PUBLIC_API_URL}/dishes/${chefId}`, {
+            const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/dishes/${chef.id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,13 +30,14 @@ const ChefMenuScreen = ({ route, navigation }) => {
             console.error(error);
         }
     }
-
     if (!fontsLoaded) {
         return <Text>Loading...</Text>;
     }
     return (
       <ScrollView>
-
+        <View style={styles.container}>
+            <Image style= {styles.imageStyle} source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${chef.image_path}` }}></Image>
+        </View>
       </ScrollView>  
     );
 };
