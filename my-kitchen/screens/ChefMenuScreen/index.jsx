@@ -9,7 +9,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { EXPO_PUBLIC_API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ChefMenuScreen = () => {
+const ChefMenuScreen = ({ route, navigation }) => {
+    const { chefId } = route.params;
     const navigation = useNavigation();
     const [fontsLoaded] = useFonts({
         Inter_400Regular, Pacifico_400Regular})
