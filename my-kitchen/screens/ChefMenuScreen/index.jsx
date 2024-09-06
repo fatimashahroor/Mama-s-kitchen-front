@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Image, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Text, View, Image, ScrollView, TouchableOpacity, Modal } from "react-native";
 import styles from "./styles";
-import { useNavigation } from '@react-navigation/native';
 import { useFonts, Inter_400Regular } from '@expo-google-fonts/inter';
 import { Pacifico_400Regular } from '@expo-google-fonts/pacifico';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -13,6 +12,8 @@ const ChefMenuScreen = ({ route, navigation }) => {
     const { chef } = route.params;
     const [chefMenu, setChefMenu] = useState([]);
     const [selectedDay, setSelectedDay] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false); 
+    const [userRating, setUserRating] = useState(0);
     const [fontsLoaded] = useFonts({
         Inter_400Regular, Pacifico_400Regular})
     const days = ["Daily", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -33,7 +34,23 @@ const ChefMenuScreen = ({ route, navigation }) => {
                     style={{ color: 'lightgray', marginRight: 4, marginTop: 10}} />
                 ))}
             </View>
-        );};
+    );};
+
+    const UserRatingInput = ({ userRating, setUserRating }) => {
+        const stars = [];
+        for (let i = 1; i <= 5; i++) {stars.push(
+                <TouchableOpacity 
+                    key={i} 
+                    onPress={() => setUserRating(i)} onPressIn={() => setUserRating(i-1)}>
+                    <FontAwesome5 name="star" solid={i <= userRating} size={30}
+                        style={{ color: i <= userRating ? 'gold' : 'lightgray', margin: 4 }}/>
+                </TouchableOpacity>
+            );}
+        return <View style={{ flexDirection: 'row', justifyContent: 'center' }}>{stars}</View>;
+    };
+    const handleRatingSubmit = () => {
+        setModalVisible(false); 
+    };
     const getChefDishes = async () => {
         try {
             const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/dishes/${chef.id}`, {
@@ -62,6 +79,7 @@ const ChefMenuScreen = ({ route, navigation }) => {
     return (
         <View style={styles.container}>
             <FontAwesome5 name="chevron-left" size={20} style={styles.icon} onPress={() => navigation.goBack()} />
+            <Ionicons name="star-half" size={22} color="#B20530" style={styles.star} onPress={() => setModalVisible(true)} />
         <ScrollView showsVerticalScrollIndicator={false}>
         <View>
             <View style={styles.flexRow}>
@@ -103,7 +121,23 @@ const ChefMenuScreen = ({ route, navigation }) => {
                     )) : <Text style={styles.none}>No dishes found</Text>}
             </View>
         </View>
-      </ScrollView> 
+        </ScrollView>
+        <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
+            <View style={styles.modalOverlay}>
+                <View style={styles.modalContainer}>
+                    <Text style={styles.modalTitle}>Rate {chef.full_name}</Text>
+                    <UserRatingInput userRating={userRating} setUserRating={setUserRating} />
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.modalButton} onPress={() => setModalVisible(false)}>
+                            <Text style={styles.buttonText}>Cancel</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.modalButton} onPress={handleRatingSubmit}>
+                            <Text style={styles.buttonText}>Confirm</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        </Modal> 
     </View> 
     );
 };
