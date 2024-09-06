@@ -17,6 +17,10 @@ export default StyleSheet.create({
         marginLeft: 5,
         marginTop: 2,
     },
+    star: {
+        marginLeft: 298,
+        marginTop: -19,
+    },
     flexRow: {
         display: 'flex',
         flexDirection: 'row',
@@ -153,4 +157,47 @@ export default StyleSheet.create({
         marginTop: 60,
         marginLeft: 90
     },
-})
+    modalOverlay: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContainer: {
+        width: 300,
+        height: 200,
+        padding: 20,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    modalTitle: {
+        fontSize: 18,
+        marginBottom: 15,
+        textAlign: 'center',
+        fontFamily: 'Inter_600SemiBold',
+    },
+    ratingContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    modalButton: {
+        backgroundColor: '#B20530', 
+        padding: 10,
+        borderRadius: 5,
+        flex: 1, 
+        alignItems: 'center',
+        marginHorizontal: 25,
+        marginTop: 20,
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+});
