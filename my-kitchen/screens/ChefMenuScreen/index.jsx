@@ -11,9 +11,26 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ChefMenuScreen = ({ route, navigation }) => {
     const { chefId } = route.params;
-    const navigation = useNavigation();
+    const [chefMenu, setChefMenu] = useState([]);
     const [fontsLoaded] = useFonts({
         Inter_400Regular, Pacifico_400Regular})
+    const getChefDishes = async () => {
+        try {
+            const response = await fetch(`${EXPO_PUBLIC_API_URL}/dishes/${chefId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`
+                },
+            });
+            const data = await response.json();
+            console.log(data);
+            // setChefMenu(data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     if (!fontsLoaded) {
         return <Text>Loading...</Text>;
     }
