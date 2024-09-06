@@ -11,6 +11,7 @@ export default StyleSheet.create({
         borderRadius: 35,
         marginTop: 40,
         marginLeft: 5,
+        marginRight: 8
     },
     icon: {
         marginLeft: 5,
@@ -22,9 +23,21 @@ export default StyleSheet.create({
         flexWrap: 'wrap',
     },
     chefName: {
-        marginLeft: 20,
         marginTop: 50,
         fontSize: 18,
         fontFamily: 'Inter_600SemiBold',
-    }
+    },
+    flexColumn: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        flexWrap: 'wrap',
+    },
+    verticalLine: {
+        width: 1,
+        height: '80%',
+        backgroundColor: '#FFD21Cs',
+        marginHorizontal: 8,
+        marginTop: 35
+      },
 })
