@@ -58,4 +58,11 @@ export default StyleSheet.create({
         color: 'gray',
         marginTop: 5
       },
+      chefBio: {
+        fontSize: 15,
+        fontFamily: 'Inter_400Regular',
+        color: 'black',
+        marginTop: 20,
+        marginLeft: 10,
+      },
 })
