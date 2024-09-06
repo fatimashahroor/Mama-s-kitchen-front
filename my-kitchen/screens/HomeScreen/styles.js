@@ -48,7 +48,7 @@ export default StyleSheet.create({
         borderRadius: 30,
         marginLeft: 15,
         marginTop: 25,
-        marginRight: 10,
+        marginRight: 15,
         width: 150,
         height: 200,
     },
@@ -79,15 +79,13 @@ export default StyleSheet.create({
         fontSize: 12,
     },
     scrollView: {
-        backgroundColor: "#B20530",
-        height: 50,
+        height: 45,
         marginTop: 10,
         marginLeft: 30,
-        borderRadius: 30,
         marginRight: 30,
     },
     dayText: {
-        marginTop: 15,
+        marginTop: 12,
         marginLeft: 20,
         marginRight: 20,
         fontFamily: 'Inter_600SemiBold',
@@ -101,4 +99,9 @@ export default StyleSheet.create({
         fontSize: 18,
         marginTop: 60,
     },
+    day: {
+        borderRadius: 30,
+        backgroundColor: "#B20530",
+        marginRight: 5,
+    }
 })
