@@ -15,5 +15,16 @@ export default StyleSheet.create({
     icon: {
         marginLeft: 5,
         marginTop: 5
+    },
+    flexRow: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
+    chefName: {
+        marginLeft: 20,
+        marginTop: 50,
+        fontSize: 18,
+        fontFamily: 'Inter_600SemiBold',
     }
 })
