@@ -35,10 +35,10 @@ export default StyleSheet.create({
     },
     verticalLine: {
         width: 1,
-        height: '80%',
+        height: '55%',
         backgroundColor: '#FFD21C',
         marginHorizontal: 8,
-        marginTop: 35,
+        marginTop: 40,
         marginRight: 20
       },
       chefPhone: {
@@ -50,5 +50,12 @@ export default StyleSheet.create({
         fontFamily: 'Inter_400Regular',
         marginTop: 52,
         marginBottom: 8
-      }
+      },
+      chefLocation: {
+        fontSize: 16,
+        fontFamily: 'Inter_400Regular',
+        marginLeft: 80,
+        color: 'gray',
+        marginTop: 5
+      },
 })
