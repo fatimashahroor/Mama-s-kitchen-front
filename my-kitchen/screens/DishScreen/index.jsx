@@ -9,7 +9,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DishScreen = ({ route, navigation }) => {
     const { dishId, cook } = route.params;
-    console.log(cook);
     const [dishDetails, setDishDetails] = useState([]);
     const [dishRating, setDishRating] = useState({});
     const [userRating, setUserRating] = useState(null);
@@ -30,7 +29,6 @@ const DishScreen = ({ route, navigation }) => {
             }
             const data = await response.json();
             setDishDetails(data);
-            console.log(data);
         } catch (error) {
             console.error(error);
         }
@@ -47,7 +45,6 @@ const DishScreen = ({ route, navigation }) => {
             <View style={styles.container}>
                 <View styles={styles.imageContainer}>
                     <FontAwesome5 name="chevron-left" size={24} style={styles.icon} onPress={() => navigation.goBack()}/>
-                    <Ionicons name="star-half" size={24} style={styles.star} onPress={() => setModalVisible(true)}/>
                     <Ionicons style={styles.cart} name='cart' size={27}></Ionicons>
                     <Image source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${dishDetails.image_path}` }} style={styles.image} />
                 </View>
@@ -57,6 +54,19 @@ const DishScreen = ({ route, navigation }) => {
                         <Text style={styles.cookName}>{cook}</Text>
                     </View>
                     <Text style={styles.price}>{dishDetails.price}$</Text>
+                </View>
+                <View style={styles.flexContainer}>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.text}>Duration</Text>
+                        <Text style={styles.text1}>{dishDetails.duration}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.text}>Diet-Type</Text> 
+                        <Text style={styles.text1}>{dishDetails.diet_type}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.text}>Rating</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </ScrollView>
