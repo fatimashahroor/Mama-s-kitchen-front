@@ -8,9 +8,37 @@ import { Ionicons } from '@expo/vector-icons';
 import { EXPO_PUBLIC_API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const DishScreen = () => {
+const DishScreen = ({ route, navigation }) => {
+    const { dishId } = route.params;
+    const [dishDetails, setDishDetails] = useState([]);
+    const [dishRating, setDishRating] = useState({});
+    const [userRating, setUserRating] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
     const [fontsLoaded] = useFonts({
         Inter_400Regular, Inter_600SemiBold});
+    const getDishDetails = async () => {
+        try {
+            const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/dish/${dishId}/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch dish details');
+            }
+            const data = await response.json();
+            setDishDetails(data);
+            console.log(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        getDishDetails();
+    }, []);
     if (!fontsLoaded) {
         return <Text>Loading Fonts...</Text>;
     }
