@@ -11,8 +11,6 @@ const DishScreen = ({ route, navigation }) => {
     const { dishId, cook } = route.params;
     const [dishDetails, setDishDetails] = useState([]);
     const [dishRating, setDishRating] = useState({});
-    const [userRating, setUserRating] = useState(null);
-    const [modalVisible, setModalVisible] = useState(false);
     const [fontsLoaded] = useFonts({
         Inter_400Regular, Inter_600SemiBold});
     const getDishDetails = async () => {
@@ -34,8 +32,27 @@ const DishScreen = ({ route, navigation }) => {
         }
     };
 
+    const getDishReviews = async () => {
+        try {
+            const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/review/${dishId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch dish reviews');
+            }
+            const data = await response.json();
+            setDishRating(data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
     useEffect(() => {
         getDishDetails();
+        getDishReviews();
     }, []);
     if (!fontsLoaded) {
         return <Text>Loading Fonts...</Text>;
