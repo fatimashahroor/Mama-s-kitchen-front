@@ -75,6 +75,7 @@ const HomeScreen = () => {
                 <View>
                     <View style={[styles.flexRow, styles.justify]}>
                     {filteredDishes.length > 0 ? filteredDishes.map((data)=> (
+                        <TouchableOpacity onPress={() => navigation.navigate('Dish', {'dishId': data.id})}>
                         <View key={data.id} style={styles.dish}>
                             <Image style={styles.image} 
                                 source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${data.image_path}` }}/>
@@ -85,6 +86,7 @@ const HomeScreen = () => {
                             <Text style={styles.user}>{data.user_full_name}</Text>
                             <Ionicons style={styles.cart} name='cart' color={'black'} size={20}></Ionicons>
                         </View> 
+                        </TouchableOpacity>
                     )) : <Text style={styles.none}>No dishes found</Text>}
                     </View>
                 </View>
