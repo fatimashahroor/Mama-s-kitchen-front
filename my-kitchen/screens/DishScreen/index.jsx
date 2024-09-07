@@ -103,6 +103,8 @@ const DishScreen = ({ route, navigation }) => {
                         <StarRating overallRating={overallRating}/>
                     </TouchableOpacity>
                 </View>
+                <Text style={styles.text2}>Steps</Text>
+                <Text style={styles.text3}>{dishDetails.steps}</Text>
             </View>
         </ScrollView>
     );
