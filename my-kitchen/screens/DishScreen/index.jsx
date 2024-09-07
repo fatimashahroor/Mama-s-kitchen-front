@@ -45,7 +45,10 @@ const DishScreen = ({ route, navigation }) => {
     return (
         <ScrollView>
             <View style={styles.container}>
-                <Image source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${dishDetails.image_path}` }} style={styles.image} />
+                <View styles={styles.imageContainer}>
+                    <FontAwesome5 name="chevron-left" size={24} style={styles.icon} color={'red'} onPress={() => navigation.goBack()}/>
+                    <Image source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${dishDetails.image_path}` }} style={styles.image} />
+                </View>
             </View>
         </ScrollView>
     );
