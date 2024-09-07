@@ -46,7 +46,9 @@ const DishScreen = ({ route, navigation }) => {
         <ScrollView>
             <View style={styles.container}>
                 <View styles={styles.imageContainer}>
-                    <FontAwesome5 name="chevron-left" size={24} style={styles.icon} color={'red'} onPress={() => navigation.goBack()}/>
+                    <FontAwesome5 name="chevron-left" size={24} style={styles.icon} onPress={() => navigation.goBack()}/>
+                    <Ionicons name="star-half" size={24} style={styles.star} onPress={() => setModalVisible(true)}/>
+                    <Ionicons style={styles.cart} name='cart' size={27}></Ionicons>
                     <Image source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${dishDetails.image_path}` }} style={styles.image} />
                 </View>
             </View>
