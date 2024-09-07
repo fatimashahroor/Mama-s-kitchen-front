@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const ChefMenuScreen = ({ route, navigation }) => {
     const { chef } = route.params;
     const [chefMenu, setChefMenu] = useState([]);
+    const [rating, setRating] = useState({});
     const [selectedDay, setSelectedDay] = useState(null);
     const [modalVisible, setModalVisible] = useState(false); 
     const [userRating, setUserRating] = useState(0);
@@ -48,9 +49,56 @@ const ChefMenuScreen = ({ route, navigation }) => {
             );}
         return <View style={{ flexDirection: 'row', justifyContent: 'center' }}>{stars}</View>;
     };
-    const handleRatingSubmit = () => {
-        setModalVisible(false); 
+    const handleRatingSubmit = async () => {
+        try {
+            const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/user/rating`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`,
+                },
+                body: JSON.stringify({
+                    user_id: chef.id,
+                    rating: userRating,
+                }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                setRating(prevRating => ({
+                    ...prevRating,
+                    [chef.id]: data.overall_rating
+                }))
+            } else {
+                console.error('Error setting rating:', data.message);
+            }
+        } catch (error) {
+            console.error('Error submitting rating:', error);
+        }
+        setModalVisible(false);
     };
+
+    const getOverallRating = async (cookId) => {
+        try {
+          const response = await fetch (`${EXPO_PUBLIC_API_URL}/api/user/rating/${cookId}`, {
+            method: 'GET',
+            headers: {
+              'content-type': 'application/json',
+              'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`
+            }
+          });
+          const data = await response.json();
+          if (data) {
+            setRating(prevRating => ({
+              ...prevRating,
+              [cookId]: data.overall_rating
+            }));
+          } else {
+            throw new Error(data.message || "Error fetching rating");
+          }
+      } catch (error) {
+        console.error(error);
+      }
+    }
     const getChefDishes = async () => {
         try {
             const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/dishes/${chef.id}`, {
@@ -70,9 +118,9 @@ const ChefMenuScreen = ({ route, navigation }) => {
     }
     useEffect(() => {
         getChefDishes();
+        getOverallRating(chef.id);
     }, []);
-    const filteredDishes = chefMenu
-    .filter(menu => menu.available_on === selectedDay)
+    const filteredDishes = chefMenu.filter(menu => menu.available_on === selectedDay)
     if (!fontsLoaded) {
         return <Text>Loading...</Text>;
     }
@@ -86,7 +134,7 @@ const ChefMenuScreen = ({ route, navigation }) => {
                 <Image style= {styles.imageStyle} source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${chef.image_path}` }}></Image>
                 <View style={styles.flexColumn}>
                     <Text style={styles.chefName}>{chef.full_name}</Text>
-                    <StarRating rating={chef.rating} />
+                    <StarRating rating={rating[chef.id] || 0} />
                 </View>
                 <View style={styles.verticalLine} />
                 <View style={styles.flexColumn}>
