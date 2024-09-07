@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Text, View, Image, ScrollView, TouchableOpacity, Modal } from "react-native";
 import styles from "./styles";
 import { useFonts, Inter_400Regular } from '@expo-google-fonts/inter';
-import { Pacifico_400Regular } from '@expo-google-fonts/pacifico';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Ionicons } from '@expo/vector-icons';
 import { EXPO_PUBLIC_API_URL } from '@env';
@@ -16,7 +15,7 @@ const ChefMenuScreen = ({ route, navigation }) => {
     const [modalVisible, setModalVisible] = useState(false); 
     const [userRating, setUserRating] = useState(0);
     const [fontsLoaded] = useFonts({
-        Inter_400Regular, Pacifico_400Regular})
+        Inter_400Regular})
     const days = ["Daily", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     const handleDayPress = (day) => {
         setSelectedDay(day);}    
