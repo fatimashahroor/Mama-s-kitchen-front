@@ -24,4 +24,18 @@ export default StyleSheet.create({
     imageContainer: {
         position: 'relative', 
     },
+    star: {
+        color: '#B20530',
+        position: 'absolute',
+        zIndex: 1,
+        marginTop: 25,
+        marginLeft: 298,
+    },
+    cart: {
+        color: '#B20530',
+        position: 'absolute',
+        zIndex: 1,
+        marginTop: 25,
+        marginLeft: 330,
+    },
 })
