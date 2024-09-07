@@ -51,6 +51,7 @@ const DishScreen = ({ route, navigation }) => {
                     <Ionicons style={styles.cart} name='cart' size={27}></Ionicons>
                     <Image source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${dishDetails.image_path}` }} style={styles.image} />
                 </View>
+                <Text style={styles.name}>{dishDetails.name}</Text>
             </View>
         </ScrollView>
     );
