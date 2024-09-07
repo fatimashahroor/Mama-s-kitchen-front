@@ -9,7 +9,8 @@ import { EXPO_PUBLIC_API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DishScreen = ({ route, navigation }) => {
-    const { dishId } = route.params;
+    const { dishId, cook } = route.params;
+    console.log(cook);
     const [dishDetails, setDishDetails] = useState([]);
     const [dishRating, setDishRating] = useState({});
     const [userRating, setUserRating] = useState(null);
@@ -52,6 +53,7 @@ const DishScreen = ({ route, navigation }) => {
                     <Image source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${dishDetails.image_path}` }} style={styles.image} />
                 </View>
                 <Text style={styles.name}>{dishDetails.name}</Text>
+                <Text style={styles.cookName}>{cook}</Text>
             </View>
         </ScrollView>
     );
