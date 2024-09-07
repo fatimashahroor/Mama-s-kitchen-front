@@ -13,7 +13,7 @@ const HomeScreen = () => {
     const navigation = useNavigation();
     const [error, setError] = useState(null);
     const [dishes, setDishes] = useState([]);
-    const [selectedDay, setSelectedDay] = useState(null);
+    const [selectedDay, setSelectedDay] = useState('Daily');
     const [searchQuery, setSearchQuery] = useState('');
     const [fontsLoaded] = useFonts({
         Pacifico_400Regular, Inter_400Regular});
@@ -75,7 +75,7 @@ const HomeScreen = () => {
                 <View>
                     <View style={[styles.flexRow, styles.justify]}>
                     {filteredDishes.length > 0 ? filteredDishes.map((data)=> (
-                        <TouchableOpacity onPress={() => navigation.navigate('Dish', {'dishId': data.id})}>
+                        <TouchableOpacity key={data.id} onPress={() => navigation.navigate('Dish', {'dishId': data.id})}>
                         <View key={data.id} style={styles.dish}>
                             <Image style={styles.image} 
                                 source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${data.image_path}` }}/>
