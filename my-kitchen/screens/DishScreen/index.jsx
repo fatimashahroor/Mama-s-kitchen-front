@@ -44,6 +44,9 @@ const DishScreen = ({ route, navigation }) => {
     }
     return (
         <ScrollView>
+            <View style={styles.container}>
+                <Image source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${dishDetails.image_path}` }} style={styles.image} />
+            </View>
         </ScrollView>
     );
 }
