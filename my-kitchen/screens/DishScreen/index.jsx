@@ -7,6 +7,17 @@ import { Ionicons } from '@expo/vector-icons';
 import { EXPO_PUBLIC_API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const DishScreen = () => {}
+const DishScreen = () => {
+    const [fontsLoaded] = useFonts({
+        Inter_400Regular, Inter_600SemiBold});
+
+    if (!fontsLoaded) {
+        return <Text>Loading Fonts...</Text>;
+    }
+    return (
+        <ScrollView>
+        </ScrollView>
+    );
+}
 
 export default DishScreen;
