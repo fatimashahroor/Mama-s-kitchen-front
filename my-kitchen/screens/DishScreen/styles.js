@@ -50,6 +50,7 @@ export default StyleSheet.create({
         fontFamily: 'Inter_600SemiBold',
         fontSize: 17,
         marginLeft: 25,
+        marginTop: 10,
     },
     price: {
         color: 'black',
@@ -86,4 +87,5 @@ export default StyleSheet.create({
         fontSize: 12,
         fontFamily: 'Inter_400Regular',
     },
+    
 })
