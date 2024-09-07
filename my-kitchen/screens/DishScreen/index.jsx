@@ -31,7 +31,6 @@ const DishScreen = ({ route, navigation }) => {
             console.error(error);
         }
     };
-
     const getDishReviews = async () => {
         try {
             const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/review/${dishId}`, {
@@ -50,6 +49,24 @@ const DishScreen = ({ route, navigation }) => {
             console.error(error);
         }
     }
+    const totalRatings = dishRating.length > 0 ? dishRating.reduce((sum, review) => sum + parseInt(review.rating), 0) : 0;
+    const overallRating = dishRating.length > 0 ? Math.round(totalRatings / dishRating.length).toFixed(1) : 'No ratings yet';
+    const StarRating = ({ overallRating }) => {
+        const stars = [];
+        for (let i = 0; i < overallRating; i++) {
+            stars.push(
+                <FontAwesome5 key={i} name="star" solid size={8} 
+                style={{ color: 'white', marginRight: 4, marginTop: -4}} />
+            );}
+        return (
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                {stars}
+                {overallRating < 5 && Array.from({ length: 5 - overallRating }, (_, i) => (
+                    <FontAwesome5 key={i + overallRating} name="star" size={8} 
+                    style={{ color: 'lightgray', marginRight: 4, marginTop: -4}} />
+                ))}
+            </View>
+    );};
     useEffect(() => {
         getDishDetails();
         getDishReviews();
@@ -83,6 +100,7 @@ const DishScreen = ({ route, navigation }) => {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button}>
                         <Text style={styles.text}>Rating</Text>
+                        <StarRating overallRating={overallRating}/>
                     </TouchableOpacity>
                 </View>
             </View>
