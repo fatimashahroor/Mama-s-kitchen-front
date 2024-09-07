@@ -38,4 +38,11 @@ export default StyleSheet.create({
         marginTop: 25,
         marginLeft: 330,
     },
+    name: {
+        color: 'black',
+        fontFamily: 'Inter_600SemiBold',
+        fontSize: 18,
+        marginLeft: 25,
+        marginTop: 10,
+    }
 })
