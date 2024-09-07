@@ -44,5 +44,11 @@ export default StyleSheet.create({
         fontSize: 18,
         marginLeft: 25,
         marginTop: 10,
+    },
+    cookName: {
+        color: 'gray',
+        fontFamily: 'Inter_600SemiBold',
+        fontSize: 17,
+        marginLeft: 25,
     }
 })
