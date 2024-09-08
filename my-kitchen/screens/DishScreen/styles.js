@@ -137,4 +137,17 @@ export default StyleSheet.create({
         marginHorizontal: 10,
         color: 'black',
     },
+    comment: {
+        backgroundColor: "#FFD21C",
+        borderRadius: 20,
+        marginTop: 15,
+    },
+    commentText: {
+        fontSize: 14,
+        color: 'gray',
+        marginLeft: 10,
+    },
+    commentIcon: {
+        marginRight: 20,
+    }
 })
