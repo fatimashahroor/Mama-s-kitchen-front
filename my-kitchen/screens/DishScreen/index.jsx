@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useFonts, Inter_400Regular, Inter_600SemiBold } from "@expo-google-fonts/inter";
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, TextInput, Alert } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity} from "react-native";
 import styles from "./styles";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,6 +10,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const DishScreen = ({ route, navigation }) => {
     const { dishId, cook } = route.params;
     const [dishDetails, setDishDetails] = useState([]);
+    const [additionalIngredients, setAdditionalIngredients] = useState([]);
+    const [quantities, setQuantities] = useState([]);
     const [dishRating, setDishRating] = useState({});
     const [fontsLoaded] = useFonts({
         Inter_400Regular, Inter_600SemiBold});
@@ -49,8 +51,30 @@ const DishScreen = ({ route, navigation }) => {
             console.error(error);
         }
     }
-    const totalRatings = dishRating.length > 0 ? dishRating.reduce((sum, review) => sum + parseInt(review.rating), 0) : 0;
-    const overallRating = dishRating.length > 0 ? Math.round(totalRatings / dishRating.length).toFixed(1) : 'No ratings yet';
+    const totalRatings = dishRating.length > 0 ? dishRating.reduce((sum, review) => 
+        sum + parseInt(review.rating), 0) : 0;
+    const overallRating = dishRating.length > 0 ? 
+    Math.round(totalRatings / dishRating.length).toFixed(1) : 'No ratings yet';
+
+    const getAdditionalIngredients = async () => {
+        try {
+            const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/dish/ingredients/${dishId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch additional ingredients');
+            }
+            const data = await response.json();
+            setAdditionalIngredients(data);
+            setQuantities(data.map(() => 0));
+        } catch (error) {
+            console.error(error);
+        }
+    };
     const StarRating = ({ overallRating }) => {
         const stars = [];
         for (let i = 0; i < overallRating; i++) {
@@ -67,15 +91,31 @@ const DishScreen = ({ route, navigation }) => {
                 ))}
             </View>
     );};
+    
+    const handleIncrement = (index) => {
+        const updatedQuantities = [...quantities];
+        updatedQuantities[index] += 1;
+        setQuantities(updatedQuantities);
+    };
+
+    const handleDecrement = (index) => {
+        const updatedQuantities = [...quantities];
+        if (updatedQuantities[index] > 0) {
+            updatedQuantities[index] -= 1;
+        }
+        setQuantities(updatedQuantities);
+    };
     useEffect(() => {
         getDishDetails();
         getDishReviews();
+        getAdditionalIngredients();
     }, []);
+
     if (!fontsLoaded) {
         return <Text>Loading Fonts...</Text>;
     }
     return (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false} >
             <View style={styles.container}>
                 <View styles={styles.imageContainer}>
                     <FontAwesome5 name="chevron-left" size={24} style={styles.icon} onPress={() => navigation.goBack()}/>
@@ -105,6 +145,32 @@ const DishScreen = ({ route, navigation }) => {
                 </View>
                 <Text style={styles.text2}>Steps</Text>
                 <Text style={styles.text3}>{dishDetails.steps}</Text>
+                <Text style={styles.text2}>Main Ingredients</Text>
+                <Text style={styles.text3}>{dishDetails.main_ingredients}</Text>
+                <Text style={styles.text2}>Additional Ingredients</Text>
+                <Text style={styles.text3}>Choose your preferred ingredients to add.</Text>
+                <View style={styles.ingredientList}>
+                {additionalIngredients.map((ingredient, index) => (
+                        <View key={index} style={styles.ingredientContainer}>
+                            <Text style={styles.ingredientText}>
+                                {ingredient.name} ({ingredient.cost}$)
+                            </Text>
+                            <View style={styles.controlsContainer}>
+                                <TouchableOpacity
+                                    onPress={() => handleDecrement(index)}
+                                    style={styles.controlButton}>
+                                    <Text style={styles.controlText}>-</Text>
+                                </TouchableOpacity>
+                                <Text style={styles.quantityText}>{quantities[index]}</Text>
+                                <TouchableOpacity
+                                    onPress={() => handleIncrement(index)}
+                                    style={styles.controlButton}>
+                                    <Text style={styles.controlText}>+</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    ))}
+                </View>
             </View>
         </ScrollView>
     );
