@@ -100,4 +100,41 @@ export default StyleSheet.create({
         marginLeft: 25,
         marginRight: 35,
     },
+    ingredientList:{
+        marginTop: 10,
+    },
+    ingredientContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingVertical: 5,
+        marginLeft: 27,
+        marginRight: 30,
+    },
+    ingredientText: {
+        fontSize: 14,
+        fontFamily: 'Inter_400Regular',
+    },
+    controlsContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#FFD21C", 
+        borderRadius: 20,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+    },
+    controlButton: {
+        paddingHorizontal: 7,
+    },
+    controlText: {
+        fontSize: 20,
+        fontWeight: "bold",
+        color: 'black',
+    },
+    quantityText: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        marginHorizontal: 10,
+        color: 'black',
+    },
 })
