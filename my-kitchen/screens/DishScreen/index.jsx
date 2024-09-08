@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useFonts, Inter_400Regular, Inter_600SemiBold } from "@expo-google-fonts/inter";
-import { View, Text, Image, ScrollView, TouchableOpacity} from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity, TextInput} from "react-native";
 import styles from "./styles";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,8 +11,9 @@ const DishScreen = ({ route, navigation }) => {
     const { dishId, cook } = route.params;
     const [dishDetails, setDishDetails] = useState([]);
     const [additionalIngredients, setAdditionalIngredients] = useState([]);
+    const [comments, setComments] = useState([]);
     const [quantities, setQuantities] = useState([]);
-    const [dishRating, setDishRating] = useState({});
+    const [dishRating, setDishRating] = useState([]);
     const [fontsLoaded] = useFonts({
         Inter_400Regular, Inter_600SemiBold});
     const getDishDetails = async () => {
@@ -168,6 +169,18 @@ const DishScreen = ({ route, navigation }) => {
                                     <Text style={styles.controlText}>+</Text>
                                 </TouchableOpacity>
                             </View>
+                        </View>
+                    ))}
+                    <TouchableOpacity style={[styles.ingredientContainer, styles.comment]}>
+                        <TextInput placeholder="Comment to add" style={styles.commentText}></TextInput>
+                    </TouchableOpacity>
+                </View>
+                <Text style={styles.text2}>Reviews</Text>
+                <View style={styles.reviewList}>
+                    {dishRating.map((review, index) => (
+                        <View key={index} style={styles.reviewContainer}>
+                        <Text style={styles.reviewName}>{review.full_name}</Text>
+                        <Text style={styles.reviewText}>{review.comment}</Text>
                         </View>
                     ))}
                 </View>
