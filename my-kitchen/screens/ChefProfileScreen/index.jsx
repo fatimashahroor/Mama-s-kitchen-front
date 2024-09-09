@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Image, ScrollView, TouchableOpacity, TouchableWithoutFeedback, TextInput } from "react-native";
+import { Text, View, Image, ScrollView, TouchableOpacity, TouchableWithoutFeedback, TextInput, Alert } from "react-native";
 import { useFonts, Inter_400Regular, Inter_600SemiBold } from '@expo-google-fonts/inter';
 import { Ionicons } from '@expo/vector-icons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -11,19 +11,30 @@ const ChefProfileScreen = () => {
     const [details, setDetails] = useState([]);
     const [profileImage, setProfileImage] = useState(null);
     const [inputHeight, setInputHeight] = useState(40);
-    const [inputWidth, setInputWidth] = useState(40);
     const [isEditable, setIsEditable] = useState(false); 
+    const [error, setError] = useState('');
     const [fontsLoaded] = useFonts({
         Inter_400Regular, Inter_600SemiBold});
     const handleContentSizeChange = (event) => {
         setInputHeight(event.nativeEvent.contentSize.height);
     };
-    const handleTextLayout = (event) => {
-        setInputWidth(event.nativeEvent.layout.width + 10);  
-      };
-
     const toggleEdit = () => {
+        if (!validateInputs()) {
+            return;
+        }
       setIsEditable(!isEditable); 
+    };
+    const validateInputs = () => {
+        if (!details.age || details.age.toString().trim() === '') {
+            Alert.alert('Error', 'Age cannot be empty');
+            return false;
+        }
+        if (!details.email || details.email.trim() === '') {
+            Alert.alert('Error', 'Email cannot be empty');
+            return false;
+        }
+        setError(''); 
+        return true;
     };
     const StarRating = ({ rating }) => {
         const stars = [];
@@ -105,17 +116,21 @@ const ChefProfileScreen = () => {
                 <View style={styles.ageContainer}>
                     <Text style={styles.label}>Age</Text>
                     <TouchableWithoutFeedback>
-                        <TextInput multiline={true} style={[styles.age, { height: inputHeight}]} 
-                        editable={isEditable} onContentSizeChange={handleContentSizeChange} >{details.age}</TextInput>
+                        <TextInput multiline={true} style={[styles.age, { height: inputHeight }]} editable={isEditable} 
+                            value={details.age ? details.age.toString() : ''} 
+                            onChangeText={(text) => setDetails({ ...details, age: text })}  
+                            onContentSizeChange={handleContentSizeChange}/>
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={styles.ageContainer}>
                     <Text style={styles.label}>Email</Text>
                     <TouchableWithoutFeedback>
-                        <TextInput multiline={true} style={[styles.age, { height: inputHeight}]} 
-                        editable={isEditable} onContentSizeChange={handleContentSizeChange}>{details.email}</TextInput>
+                        <TextInput multiline={true} style={[styles.age, { height: inputHeight }]} editable={isEditable} 
+                            value={details.email || ''} onChangeText={(text) => setDetails({ ...details, email: text })}  
+                            onContentSizeChange={handleContentSizeChange}/>
                     </TouchableWithoutFeedback>
                 </View>
+                {error ? <Text style={styles.errorText}>{error}</Text> : null}
             </ScrollView>
         </View>
     );
