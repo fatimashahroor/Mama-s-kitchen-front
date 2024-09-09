@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Image, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Text, View, Image, ScrollView, TouchableOpacity, TouchableWithoutFeedback, TextInput } from "react-native";
 import { useFonts, Inter_400Regular, Inter_600SemiBold } from '@expo-google-fonts/inter';
 import { Ionicons } from '@expo/vector-icons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -10,9 +10,21 @@ import styles from "./styles";
 const ChefProfileScreen = () => {
     const [details, setDetails] = useState([]);
     const [profileImage, setProfileImage] = useState(null);
+    const [inputHeight, setInputHeight] = useState(40);
+    const [inputWidth, setInputWidth] = useState(40);
+    const [isEditable, setIsEditable] = useState(false); 
     const [fontsLoaded] = useFonts({
         Inter_400Regular, Inter_600SemiBold});
+    const handleContentSizeChange = (event) => {
+        setInputHeight(event.nativeEvent.contentSize.height);
+    };
+    const handleTextLayout = (event) => {
+        setInputWidth(event.nativeEvent.layout.width + 10);  
+      };
 
+    const toggleEdit = () => {
+      setIsEditable(!isEditable); 
+    };
     const StarRating = ({ rating }) => {
         const stars = [];
         for (let i = 0; i < rating; i++) {
@@ -86,6 +98,25 @@ const ChefProfileScreen = () => {
                 <StarRating rating={Math.round(details.overall_rating)}/>
             </View>
             <View style={styles.horizontalLine} />
+            <TouchableOpacity onPress={toggleEdit} style={styles.editButton}>
+                    <Ionicons name={isEditable ? "checkmark" : "create"} size={24} color="gray"/>
+            </TouchableOpacity>
+            <ScrollView style={styles.flex}>
+                <View style={styles.ageContainer}>
+                    <Text style={styles.label}>Age</Text>
+                    <TouchableWithoutFeedback>
+                        <TextInput multiline={true} style={[styles.age, { height: inputHeight}]} 
+                        editable={isEditable} onContentSizeChange={handleContentSizeChange} >{details.age}</TextInput>
+                    </TouchableWithoutFeedback>
+                </View>
+                <View style={styles.ageContainer}>
+                    <Text style={styles.label}>Email</Text>
+                    <TouchableWithoutFeedback>
+                        <TextInput multiline={true} style={[styles.age, { height: inputHeight}]} 
+                        editable={isEditable} onContentSizeChange={handleContentSizeChange}>{details.email}</TextInput>
+                    </TouchableWithoutFeedback>
+                </View>
+            </ScrollView>
         </View>
     );
 };
