@@ -26,15 +26,8 @@ export default function App() {
         if (token) {
           const decoded = jwtDecode(token);
           if (decoded.exp * 1000 < Date.now()) {
-            const refreshedToken = await refreshToken();
-            if (refreshedToken) {
-              setUserToken(refreshedToken);
-            } else {
               Alert.alert('Session expired', 'Please log in again');
               setUserToken(null); 
-            }
-          } else {
-            setUserToken(token);
           }
         }
       } catch (error) {
@@ -47,28 +40,7 @@ export default function App() {
     checkToken();
   }, []);
 
-  const refreshToken = async () => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-      const response = await fetch(`${EXPO_PUBLIC_API_URL}/refresh-token`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ refreshToken: token })
-      });
-      const data = await response.json();
-      if (response.ok && data.token) {
-        await AsyncStorage.setItem('token', data.token);
-        return data.token;
-      } else {
-        throw new Error(data.error || 'Unable to refresh token');
-      }
-    } catch (error) {
-      console.error('Error refreshing token:', error);
-      return null;
-    }
-  };
+  
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
