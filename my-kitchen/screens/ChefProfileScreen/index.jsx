@@ -110,7 +110,7 @@ const ChefProfileScreen = () => {
             </View>
             <View style={styles.horizontalLine} />
             <TouchableOpacity onPress={toggleEdit} style={styles.editButton}>
-                    <Ionicons name={isEditable ? "checkmark" : "create"} size={24} color="gray"/>
+                    <Ionicons name={isEditable ? "checkmark" : "create"} size={24} color="#B20530"/>
             </TouchableOpacity>
             <ScrollView style={styles.flex}>
                 <View style={styles.ageContainer}>
