@@ -67,6 +67,17 @@ export default StyleSheet.create({
         marginLeft: 27,
         marginTop: 20,
     },
+    flexColumn: {
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: 20,
+        borderColor: '#B20530',
+        borderWidth: 1,
+        marginLeft: 27,
+        marginTop: 20,
+        marginRight: 30,
+        marginBottom: 20,
+    },
     text: {
         color: 'white',
         textAlign: 'center',
@@ -149,5 +160,63 @@ export default StyleSheet.create({
     },
     commentIcon: {
         marginRight: 20,
+    },
+    reviewName: {
+        color: 'black',
+        fontFamily: 'Inter_400Regular',
+        fontSize: 15,
+        marginLeft: 18,
+        marginTop: 10,
+    },
+    reviewList: {
+        borderWidth: 1,
+        borderColor: "#B20530",
+        borderRadius: 20,
+        marginTop: 10,
+        marginLeft: 27,
+        marginRight: 30,
+        marginBottom: 10,
+        padding: 5, 
+    },
+    reviewText: {
+        color: 'black',
+        fontFamily: 'Inter_400Regular',
+        fontSize: 13,
+        marginLeft: 18,
+        marginTop: 2,
+        lineHeight: 20,
+        marginBottom: 10,
+    },
+    reviewText2: {
+        fontFamily: 'Inter_400Regular',
+        fontSize: 13,
+        marginLeft: 18,
+        marginTop: 2,
+        lineHeight: 20,
+    },
+    sendIcon: {
+        marginRight: 7,
+    },
+    addReview: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        paddingBottom: 10,
+    },
+    placeholder: {
+        fontSize: 15,
+        marginLeft: 5,
+        paddingLeft: 7,
+        color: 'gray',
+    },
+    rate:{
+        marginTop: 10,
+        marginLeft: 5,
+    },
+    reviewContainer: {
+        marginBottom: 5,
     }
 })
