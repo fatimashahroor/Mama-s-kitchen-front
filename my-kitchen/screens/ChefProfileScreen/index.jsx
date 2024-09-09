@@ -45,7 +45,7 @@ const ChefProfileScreen = () => {
      
     return (
         <View style={styles.container}>
-            <Text>My Profile</Text>
+            <Text style={styles.title}>My Profile</Text>
         </View>
     );
 };
