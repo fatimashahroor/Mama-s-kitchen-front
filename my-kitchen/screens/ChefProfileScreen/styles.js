@@ -11,4 +11,27 @@ export default StyleSheet.create({
         marginBottom: 10,
         fontFamily: 'Inter_400Regular',
     },
+    profileContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    avatarContainer: {
+        position: 'relative',
+    },
+    avatarCircle: {
+        width: 100,
+        height: 100,
+        backgroundColor: '#FFCF0F', 
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    cameraIcon: {
+        position: 'absolute',
+        bottom: 0,
+        right: -10,
+        backgroundColor: '#fff',
+        borderRadius: 20,
+        padding: 5,
+    },
 })
