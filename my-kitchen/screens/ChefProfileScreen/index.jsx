@@ -5,24 +5,28 @@ import { EXPO_PUBLIC_API_URL } from "@env";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from "./styles";
 
-const ChefProfileScreen = ({route,navigation}) => {
-    const {chef} = route.params;
+const ChefProfileScreen = () => {
     const [details, setDetails] = useState([]);
     const [fontsLoaded] = useFonts({
-        Inter_400Regular, Inter_600SemiBold
-    });
+        Inter_400Regular, Inter_600SemiBold});
 
     const getCookDetails = async () => {
+        const chef = await AsyncStorage.getItem('user');
+        const chefId = JSON.parse(chef);
+        const token= await AsyncStorage.getItem('token');
+        if (!chefId?.id || !token) {
+            throw new Error('Invalid chef data or missing token');
+        }
         try {
-            const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/user/${chef}`, {
+            const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/user/${chefId.id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`
+                    'Authorization': `Bearer ${token}`
                 },
             });
             const data = await response.json();
-            if (response.ok) {
+            if (data) {
                 setDetails(data);
             } else {
                 throw new Error('Failed to fetch cook details');
@@ -41,6 +45,7 @@ const ChefProfileScreen = ({route,navigation}) => {
      
     return (
         <View style={styles.container}>
+            <Text>My Profile</Text>
         </View>
     );
 };
