@@ -49,37 +49,37 @@ export default StyleSheet.create({
         width: "80%",
         height: 1,
         backgroundColor: '#B20530',
-        marginTop: 25,
+        marginTop: 9,
         marginLeft: 38
-  },
-  ageContainer: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    marginTop: 5,
-    marginLeft: 40,
-    marginRight: 30
-  },
-  label: {
-    fontSize: 14,
-    fontFamily: 'Inter_400Regular',
-    marginLeft: 10
-  },
-  age: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 30,
-    paddingLeft: 17,
-    padding: 5,
-    marginTop: 1,
-    fontSize: 16,
-    fontFamily: 'Inter_400Regular',
-  },
-  flex: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  editButton: {
-    marginTop: 5,
-    marginLeft: 320
-  }
+    },
+    ageContainer: {
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        marginBottom: 5,
+        marginLeft: 30,
+        marginRight: 34,
+    },
+    label: {
+        fontSize: 16,
+        fontFamily: 'Inter_400Regular',
+        marginLeft: 10
+    },
+    age: {
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 30,
+        paddingLeft: 17,
+        padding: 5,
+        marginTop: 1,
+        fontSize: 17,
+        fontFamily: 'Inter_400Regular',
+    },
+    flex: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    editButton: {
+        marginTop: 5,
+        marginLeft: 330
+    },
 })
