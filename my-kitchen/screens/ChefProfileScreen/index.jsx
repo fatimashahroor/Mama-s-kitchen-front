@@ -64,6 +64,7 @@ const ChefProfileScreen = () => {
                     </TouchableOpacity>
                 </View>
             </View>
+            <Text style={styles.name}>{details.user.full_name}</Text>
         </View>
     );
 };
