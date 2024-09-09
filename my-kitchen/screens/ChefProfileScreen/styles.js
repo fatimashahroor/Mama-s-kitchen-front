@@ -52,4 +52,34 @@ export default StyleSheet.create({
         marginTop: 25,
         marginLeft: 38
   },
+  ageContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginTop: 10,
+    marginLeft: 40,
+    marginRight: 30
+  },
+  label: {
+    fontSize: 16,
+    fontFamily: 'Inter_400Regular',
+    marginLeft: 10
+  },
+  age: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 30,
+    paddingLeft: 17,
+    padding: 5,
+    marginTop: 5,
+    fontSize: 16,
+    fontFamily: 'Inter_400Regular',
+  },
+  flex: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  editButton: {
+    marginTop: 15,
+    marginLeft: 320
+  }
 })
