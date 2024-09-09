@@ -59,7 +59,7 @@ const HomeScreen = () => {
                     <Text style={styles.appName}>Mama's Kitchen</Text>
                 </View>
                 <SearchInput placeholder={"Search for dishes"} value={searchQuery} onChangeText={setSearchQuery}/>
-                <TouchableOpacity onPress={() => navigation.navigate('ChefProfile')}>
+                <TouchableOpacity onPress={() => navigation.navigate('ChefProfile', {'chef': dishes[0].user_id})}>
                 <FontAwesome5 name="utensils" size={26} color={'#FFCF0F'} style={styles.icon}/>
                  </TouchableOpacity>
                 <Text style={styles.error}>{error}</Text>
