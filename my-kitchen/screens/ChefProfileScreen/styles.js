@@ -12,7 +12,7 @@ export default StyleSheet.create({
         fontFamily: 'Inter_400Regular',
     },
     profileContainer: {
-        marginTop: 15,
+        marginTop: 35,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -35,4 +35,10 @@ export default StyleSheet.create({
         borderRadius: 20,
         padding: 5,
     },
+    name: {
+        fontSize: 20,
+        marginTop: 10,
+        fontFamily: 'Inter_400Regular',
+        textAlign: 'center',
+    }
 })
