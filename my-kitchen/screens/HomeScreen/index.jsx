@@ -3,8 +3,8 @@ import { View, Text, Image, ScrollView, TouchableWithoutFeedback, TouchableOpaci
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFonts, Inter_400Regular } from '@expo-google-fonts/inter';
-import { Pacifico_400Regular } from '@expo-google-fonts/pacifico';
+import { useFonts, Inter_400Regular, Inter_600SemiBold  } from '@expo-google-fonts/inter';
+import { Pacifico_400Regular} from '@expo-google-fonts/pacifico';
 import SearchInput from '../../components/search/search';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,7 +16,7 @@ const HomeScreen = () => {
     const [selectedDay, setSelectedDay] = useState('Daily');
     const [searchQuery, setSearchQuery] = useState('');
     const [fontsLoaded] = useFonts({
-        Pacifico_400Regular, Inter_400Regular});
+        Pacifico_400Regular, Inter_400Regular, Inter_600SemiBold});
     const days = ["Daily", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     const handleDayPress = (day) => {
         setSelectedDay(day);    }
