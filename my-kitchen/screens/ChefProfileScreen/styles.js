@@ -37,12 +37,19 @@ export default StyleSheet.create({
     },
     name: {
         fontSize: 20,
-        marginTop: 10,
+        marginTop: 3,
         fontFamily: 'Inter_400Regular',
         textAlign: 'center',
     },
     rating: {
-        marginTop: 5,
+        marginTop: 2,
         marginLeft:140,
-    }
+    },
+    horizontalLine: {
+        width: "80%",
+        height: 1,
+        backgroundColor: '#B20530',
+        marginTop: 25,
+        marginLeft: 38
+  },
 })
