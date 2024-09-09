@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Text, View, Image, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { useFonts, Inter_400Regular, Inter_600SemiBold } from '@expo-google-fonts/inter';
 import { Ionicons } from '@expo/vector-icons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { EXPO_PUBLIC_API_URL } from "@env";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from "./styles";
@@ -12,6 +13,22 @@ const ChefProfileScreen = () => {
     const [fontsLoaded] = useFonts({
         Inter_400Regular, Inter_600SemiBold});
 
+    const StarRating = ({ rating }) => {
+        const stars = [];
+        for (let i = 0; i < rating; i++) {
+            stars.push(
+                <FontAwesome5 key={i} name="star" solid size={14} style={{ color: 'gold', marginRight: 4}} />
+            );
+        }
+        return (
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {stars}
+                {rating < 5 && Array.from({ length: 5 - rating }, (_, i) => (
+                    <FontAwesome5 key={i + rating} name="star" size={14} style={{ color: 'lightgray', marginRight: 4 }} />
+                ))}
+            </View>
+        );
+    };
     const getCookDetails = async () => {
         const chef = await AsyncStorage.getItem('user');
         const chefId = JSON.parse(chef);
@@ -29,7 +46,7 @@ const ChefProfileScreen = () => {
             });
             const data = await response.json();
             if (data) {
-                setDetails(data);
+                setDetails(data.user);
                 setProfileImage(data.user.image_path && data.user.image_path !== "" ? data.user.image_path : null);
             } else {
                 throw new Error('Failed to fetch cook details');
@@ -64,7 +81,10 @@ const ChefProfileScreen = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <Text style={styles.name}>{details.user.full_name}</Text>
+            <Text style={styles.name}>{details.full_name}</Text>
+            <View style={styles.rating}>
+                <StarRating rating={Math.round(details.overall_rating)}/>
+            </View>
         </View>
     );
 };
