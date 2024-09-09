@@ -10,7 +10,7 @@ import styles from "./styles";
 const ChefProfileScreen = () => {
     const [details, setDetails] = useState([]);
     const [profileImage, setProfileImage] = useState(null);
-    const [inputHeight, setInputHeight] = useState(40);
+    const [inputHeight, setInputHeight] = useState(35);
     const [isEditable, setIsEditable] = useState(false); 
     const [error, setError] = useState('');
     const [fontsLoaded] = useFonts({
@@ -116,17 +116,45 @@ const ChefProfileScreen = () => {
                 <View style={styles.ageContainer}>
                     <Text style={styles.label}>Age</Text>
                     <TouchableWithoutFeedback>
-                        <TextInput multiline={true} style={[styles.age, { height: inputHeight }]} editable={isEditable} 
+                        <TextInput style={[styles.age]} editable={isEditable} 
                             value={details.age ? details.age.toString() : ''} 
-                            onChangeText={(text) => setDetails({ ...details, age: text })}  
-                            onContentSizeChange={handleContentSizeChange}/>
+                            onChangeText={(text) => setDetails({ ...details, age: text })}/>
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={styles.ageContainer}>
                     <Text style={styles.label}>Email</Text>
                     <TouchableWithoutFeedback>
-                        <TextInput multiline={true} style={[styles.age, { height: inputHeight }]} editable={isEditable} 
-                            value={details.email || ''} onChangeText={(text) => setDetails({ ...details, email: text })}  
+                        <TextInput style={[styles.age]} editable={isEditable} value={details.email || ''} 
+                        onChangeText={(text) => setDetails({ ...details, email: text })}/>
+                    </TouchableWithoutFeedback>
+                </View>
+                <View style={styles.ageContainer}>
+                    <Text style={styles.label}>Phone</Text>
+                    <TouchableWithoutFeedback>
+                        <TextInput style={[styles.age]} editable={isEditable} 
+                            value={details.phone || ''} onChangeText={(text) => setDetails({ ...details, phone: text })}/>
+                    </TouchableWithoutFeedback>
+                </View>
+                <View style={styles.ageContainer}>
+                    <Text style={styles.label}>Location</Text>
+                    <TouchableWithoutFeedback>
+                        <TextInput style={styles.age} editable={isEditable} value={details.located_in || ''} 
+                            onChangeText={(text)=>setDetails({...details, located_in: text })} 
+                            onContentSizeChange={handleContentSizeChange}/>
+                    </TouchableWithoutFeedback>
+                </View>
+                <View style={styles.ageContainer}>
+                    <Text style={styles.label}>Status</Text>
+                    <TouchableWithoutFeedback>
+                        <TextInput style={styles.age} editable={isEditable} value={details.status || ''} 
+                        onChangeText={(text) => setDetails({ ...details, status: text })}/>
+                    </TouchableWithoutFeedback>
+                </View>
+                <View style={styles.ageContainer}>
+                    <Text style={styles.label}>Bio</Text>
+                    <TouchableWithoutFeedback>
+                        <TextInput multiline={true} style={[styles.age, { height: inputHeight, textAlignVertical: 'top' }]} editable={isEditable} 
+                            value={details.bio || ''} onChangeText={(text) => setDetails({ ...details, bio: text })}
                             onContentSizeChange={handleContentSizeChange}/>
                     </TouchableWithoutFeedback>
                 </View>
