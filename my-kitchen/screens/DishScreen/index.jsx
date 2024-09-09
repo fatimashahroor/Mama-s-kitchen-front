@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useFonts, Inter_400Regular, Inter_600SemiBold } from "@expo-google-fonts/inter";
-import { View, Text, Image, FlatList, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, Image, FlatList, TouchableOpacity, TextInput, Alert } from "react-native";
 import styles from "./styles";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Ionicons } from '@expo/vector-icons';
@@ -26,6 +26,7 @@ const DishScreen = ({ route, navigation }) => {
     const { dishId, cook } = route.params;
     const [dishDetails, setDishDetails] = useState([]);
     const [additionalIngredients, setAdditionalIngredients] = useState([]);
+    const [sendReview , setSendReview] = useState('');
     const [userRating, setUserRating] = useState(0);
     const [quantities, setQuantities] = useState([]);
     const [dishRating, setDishRating] = useState([]);
@@ -125,6 +126,34 @@ const DishScreen = ({ route, navigation }) => {
         setQuantities(updatedQuantities);
     };
 
+    const submitReview = async () => {
+        const user = await AsyncStorage.getItem('user');
+        const userId = JSON.parse(user).id;
+        try {
+            const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/review/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`,
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    dish_id: dishId,
+                    rating: userRating,
+                    comment: sendReview
+                })
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || 'Failed to submit review');
+            Alert.alert('Success', 'Review submitted successfully');
+            setSendReview(''); 
+            setUserRating(0);
+            getDishReviews();
+        } catch (error) {
+            Alert.alert( 'Cannot submit review', error.message || 'Failed to submit review');
+        }
+    };
+    
     useEffect(() => {
         getDishDetails();
         getDishReviews();
@@ -210,8 +239,9 @@ const DishScreen = ({ route, navigation }) => {
                             <UserRating userRating={userRating} setUserRating={setUserRating} />
                             </View>
                         <View style={styles.addReview}>
-                            <TextInput placeholder="Add a review" style={styles.placeholder}></TextInput>
-                            <Ionicons name="paper-plane" size={24} style={styles.sendIcon} />
+                            <TextInput placeholder="Add a review" style={styles.placeholder} value={sendReview} 
+                            onChangeText={setSendReview}></TextInput>
+                            <Ionicons name="paper-plane" size={24} style={styles.sendIcon} onPress={submitReview}/>
                         </View>
                     </View>   
                 </View>
