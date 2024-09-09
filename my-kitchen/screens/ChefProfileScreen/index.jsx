@@ -85,6 +85,7 @@ const ChefProfileScreen = () => {
             <View style={styles.rating}>
                 <StarRating rating={Math.round(details.overall_rating)}/>
             </View>
+            <View style={styles.horizontalLine} />
         </View>
     );
 };
