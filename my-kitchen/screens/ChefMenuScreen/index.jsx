@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, Image, ScrollView, TouchableOpacity, Modal } from "react-native";
 import styles from "./styles";
-import { useFonts, Inter_400Regular } from '@expo-google-fonts/inter';
+import { useFonts, Inter_400Regular, Inter_600SemiBold } from '@expo-google-fonts/inter';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Ionicons } from '@expo/vector-icons';
 import { EXPO_PUBLIC_API_URL } from '@env';
@@ -15,7 +15,7 @@ const ChefMenuScreen = ({ route, navigation }) => {
     const [modalVisible, setModalVisible] = useState(false); 
     const [userRating, setUserRating] = useState(0);
     const [fontsLoaded] = useFonts({
-        Inter_400Regular})
+        Inter_400Regular, Inter_600SemiBold})
     const days = ["Daily", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     const handleDayPress = (day) => {
         setSelectedDay(day);}    
@@ -41,7 +41,7 @@ const ChefMenuScreen = ({ route, navigation }) => {
         for (let i = 1; i <= 5; i++) {stars.push(
                 <TouchableOpacity 
                     key={i} 
-                    onPress={() => setUserRating(i)} onPressIn={() => setUserRating(i-1)}>
+                    onPress={() => setUserRating(i)}>
                     <FontAwesome5 name="star" solid={i <= userRating} size={30}
                         style={{ color: i <= userRating ? 'gold' : 'lightgray', margin: 4 }}/>
                 </TouchableOpacity>
