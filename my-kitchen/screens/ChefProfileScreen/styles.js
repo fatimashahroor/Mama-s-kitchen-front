@@ -55,12 +55,12 @@ export default StyleSheet.create({
   ageContainer: {
     flexDirection: 'column',
     alignItems: 'flex-start',
-    marginTop: 10,
+    marginTop: 5,
     marginLeft: 40,
     marginRight: 30
   },
   label: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Inter_400Regular',
     marginLeft: 10
   },
@@ -70,7 +70,7 @@ export default StyleSheet.create({
     borderRadius: 30,
     paddingLeft: 17,
     padding: 5,
-    marginTop: 5,
+    marginTop: 1,
     fontSize: 16,
     fontFamily: 'Inter_400Regular',
   },
@@ -79,7 +79,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
   },
   editButton: {
-    marginTop: 15,
+    marginTop: 5,
     marginLeft: 320
   }
 })
