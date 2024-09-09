@@ -89,7 +89,6 @@ const ChefsScreen = () => {
     const filteredChefs = chefs.filter((chef) => 
       chef.full_name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    console.log(filteredChefs);
     if (!fontsLoaded) {
       return <Text>Loading Fonts...</Text>;
     }
