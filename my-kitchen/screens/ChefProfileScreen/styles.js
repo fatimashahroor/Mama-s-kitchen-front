@@ -40,5 +40,9 @@ export default StyleSheet.create({
         marginTop: 10,
         fontFamily: 'Inter_400Regular',
         textAlign: 'center',
+    },
+    rating: {
+        marginTop: 5,
+        marginLeft:140,
     }
 })
