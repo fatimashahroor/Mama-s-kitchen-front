@@ -10,5 +10,14 @@ export default StyleSheet.create({
         marginTop: 50,
         marginBottom: 10,
         fontFamily: 'Inter_400Regular',
+    },
+    flexRow: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent : 'space-evenly',
+    },
+    menu: {
+        marginTop: -23,
+        marginLeft: 325,
     }
 })
