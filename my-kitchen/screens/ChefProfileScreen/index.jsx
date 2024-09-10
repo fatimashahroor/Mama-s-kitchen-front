@@ -204,7 +204,8 @@ const ChefProfileScreen = () => {
                 <View style={styles.ageContainer}>
                     <Text style={styles.label}>Email</Text>
                     <TouchableWithoutFeedback>
-                        <TextInput style={[styles.age]} value={details.email} editable={false}/>
+                        <TextInput style={[styles.age]} value={details.email} editable={false}
+                        placeholder="eg: JohnDoe@gmail.com"/>
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={styles.ageContainer}>
@@ -231,7 +232,7 @@ const ChefProfileScreen = () => {
                     <TouchableWithoutFeedback>
                         <TextInput style={styles.age} editable={isEditable} value={details.located_in || ''} 
                             onChangeText={(text)=>setDetails({...details, located_in: text })} 
-                            onContentSizeChange={handleContentSizeChange}/>
+                            onContentSizeChange={handleContentSizeChange} placeholder="eg: Beirut"/>
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={styles.ageContainer}>
@@ -239,7 +240,7 @@ const ChefProfileScreen = () => {
                     <TouchableWithoutFeedback>
                         <TextInput multiline={true} style={[styles.age, { height: inputHeight, textAlignVertical: 'top' }]} editable={isEditable} 
                             value={details.bio || ''} onChangeText={(text) => setDetails({ ...details, bio: text })}
-                            onContentSizeChange={handleContentSizeChange}/>
+                            onContentSizeChange={handleContentSizeChange} placeholder="Describe yourself"/>
                     </TouchableWithoutFeedback>
                 </View>
                 {error ? <Text style={styles.errorText}>{error}</Text> : null}
