@@ -125,5 +125,19 @@ export default StyleSheet.create({
         color: "black",
         fontWeight: "bold",
         textAlign: "center",
+    },
+    durationContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    durationInput: {
+        width: 40,
+        textAlign: 'center',
+        marginHorizontal: 5,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc'
+    },    
+    text1: {
+        color: 'gray',
     }
 })
