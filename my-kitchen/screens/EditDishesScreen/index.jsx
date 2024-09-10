@@ -35,7 +35,7 @@ const EditDishesScreen = () => {
             console.log(error);
         }
     };
-
+    const filteredDishes = dishes.filter(dish => dish.name.toLowerCase().includes(searchQuery.toLowerCase()));
     useEffect(() => {
         getDishes();
     }, []);
