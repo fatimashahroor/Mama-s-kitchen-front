@@ -12,7 +12,9 @@ const EditDishesScreen = () => {
     const [dishes, setDishes] = useState([]);
     const [error, setError] = useState(null);
     const [ModalVisible, setModalVisible] = useState(false);
-
+    const [currentDish, setCurrentDish] = useState(null);
+    const [duration, setDuration] = useState({
+        hours: '', minutes: '', seconds: ''});
     const getDishes = async () => {
         const chef = await AsyncStorage.getItem('user');
         const chefId = JSON.parse(chef).id;
@@ -53,7 +55,9 @@ const EditDishesScreen = () => {
                             <TouchableOpacity onPress={() =>  {setModalVisible(true); setMenuVisible(!menuVisible)}} >
                                 <Text style={styles.dropdownItem}>Create dish</Text>
                             </TouchableOpacity>
-                            <Text style={styles.dropdownItem}>Edit dish</Text>
+                            <TouchableOpacity onPress={() => { setCurrentDish(item); setModalVisible(true); setMenuVisible(!menuVisible)}}>
+                                <Text style={styles.dropdownItem}>Edit dish</Text>
+                            </TouchableOpacity>
                             <Text style={styles.dropdownItem}>Delete dish</Text>
                         </View>
                     )}
@@ -77,16 +81,35 @@ const EditDishesScreen = () => {
                 </View>
                 <Modal
                     animationType="slide" transparent={true} visible={ModalVisible}
-                    onRequestClose={() => {setModalVisible(!ModalVisible);}}>
+                    onRequestClose={() => {setModalVisible(!ModalVisible); setCurrentDish(null);}}>
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <TextInput style={styles.modalText} placeholder="Plate's Name" />
-                            <TextInput style={styles.modalText} placeholder="Price" />
-                            <TextInput style={styles.modalText} placeholder="Main ingredients" />
-                            <TextInput style={styles.modalText} placeholder="Steps" optional />
-                            <TextInput style={styles.modalText} placeholder="Duration to be cooked" />
-                            <TextInput style={styles.modalText} placeholder="Diet type" />
-                            <TextInput style={styles.modalText} placeholder="Available on" />
+                            <TextInput style={styles.modalText} placeholder="Plate's Name" value={currentDish ? currentDish.name : ''}
+                                onChangeText={(text) => setCurrentDish({...currentDish, name: text})}/>
+                            <TextInput style={styles.modalText} placeholder="Price" value={currentDish ? String(currentDish.price) : ''}
+                                onChangeText={(text) => setCurrentDish({...currentDish, price: text})}/>
+                            <TextInput style={styles.modalText} placeholder="Main ingredients" value={currentDish ? String(currentDish.main_ingredients) : ''}
+                                onChangeText={(text) => setCurrentDish({...currentDish, main_ingredients: text})}/>
+                            <TextInput style={styles.modalText} placeholder="Steps" optional value={currentDish ? String(currentDish.steps) : ''}
+                                onChangeText={(text) => setCurrentDish({...currentDish, steps: text})}/>
+                            <View style={[styles.modalText, styles.durationContainer]}>
+                                <Text style={styles.text1}>Duration:</Text>
+                                <TextInput
+                                    style={styles.durationInput} placeholder="hrs" keyboardType="numeric" value={duration.hours}
+                                    onChangeText={(text) => setDuration({...duration, hours: text})}/>
+                                <Text>:</Text>
+                                <TextInput
+                                    style={styles.durationInput} placeholder="mins" keyboardType="numeric"
+                                    value={duration.minutes} onChangeText={(text) => setDuration({...duration, minutes: text})}/>
+                                <Text>:</Text>
+                                <TextInput
+                                    style={styles.durationInput} placeholder="secs" keyboardType="numeric"
+                                    value={duration.seconds} onChangeText={(text) => setDuration({...duration, seconds: text})}/>
+                            </View>
+                            <TextInput style={styles.modalText} placeholder="Diet type" value={currentDish ? String(currentDish.diet_type) : ''}
+                                onChangeText={(text) => setCurrentDish({...currentDish, diet_type: text})}/>
+                            <TextInput style={styles.modalText} placeholder="Available on" value={currentDish ? String(currentDish.available_on) : ''}
+                                onChangeText={(text) => setCurrentDish({...currentDish, available_on: text})}/>
                             <Ionicons color='#B20503' name='image' size={100}></Ionicons>
                             <View style={styles.flexRow}>
                                 <TouchableOpacity
