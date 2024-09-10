@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, TouchableOpacity, ScrollView, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { View, Text, Image, TouchableOpacity, ScrollView, TouchableWithoutFeedback, Keyboard, Modal, TextInput } from "react-native";
 import styles from "./styles";
 import SearchInput from "../../components/search/search";
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Ionicons } from '@expo/vector-icons';
 import { EXPO_PUBLIC_API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,6 +11,7 @@ const EditDishesScreen = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [dishes, setDishes] = useState([]);
     const [error, setError] = useState(null);
+    const [ModalVisible, setModalVisible] = useState(false);
 
     const getDishes = async () => {
         const chef = await AsyncStorage.getItem('user');
@@ -50,7 +50,9 @@ const EditDishesScreen = () => {
                     </TouchableOpacity>
                     {menuVisible && (
                         <View style={styles.dropdownMenu}>
-                            <Text style={styles.dropdownItem}>Create dish</Text>
+                            <TouchableOpacity onPress={() => setModalVisible(true)}>
+                                <Text style={styles.dropdownItem}>Create dish</Text>
+                            </TouchableOpacity>
                             <Text style={styles.dropdownItem}>Edit dish</Text>
                             <Text style={styles.dropdownItem}>Delete dish</Text>
                         </View>
@@ -70,8 +72,34 @@ const EditDishesScreen = () => {
                                     </View> 
                                 )) : <Text style={styles.none}>No dishes found</Text>}
                         </View>
+                        {error && <Text style={styles.none}>{error}</Text>}
                     </ScrollView>
                 </View>
+                <Modal
+                    animationType="slide" transparent={true} visible={ModalVisible}
+                    onRequestClose={() => {setModalVisible(!ModalVisible);}}>
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <TextInput style={styles.modalText} placeholder="Plate's Name" />
+                            <TextInput style={styles.modalText} placeholder="Price" />
+                            <TextInput style={styles.modalText} placeholder="Main ingredients" />
+                            <TextInput style={styles.modalText} placeholder="Steps" optional />
+                            <TextInput style={styles.modalText} placeholder="Duration to be cooked" />
+                            <TextInput style={styles.modalText} placeholder="Diet type" />
+                            <TextInput style={styles.modalText} placeholder="Available on" />
+                            <Ionicons color='#B20503' name='image' size={100}></Ionicons>
+                            <View style={styles.flexRow}>
+                                <TouchableOpacity
+                                    style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(!ModalVisible)}>
+                                    <Text style={styles.textStyle}>Cancel</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(!ModalVisible)}>
+                                    <Text style={styles.textStyle}>Confirm</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
             </View>
         </TouchableWithoutFeedback>
     );
