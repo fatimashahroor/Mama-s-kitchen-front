@@ -5,7 +5,7 @@ import styles from "./styles";
 const EditDishesScreen = () => {
     return (
         <View style={styles.container}>
-            <Text>My Plates</Text>
+            <Text style={styles.text}>My Plates</Text>
         </View>
     );
 };
