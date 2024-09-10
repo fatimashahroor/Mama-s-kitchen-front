@@ -50,7 +50,7 @@ const EditDishesScreen = () => {
                     </TouchableOpacity>
                     {menuVisible && (
                         <View style={styles.dropdownMenu}>
-                            <TouchableOpacity onPress={() => setModalVisible(true)}>
+                            <TouchableOpacity onPress={() =>  {setModalVisible(true); setMenuVisible(!menuVisible)}} >
                                 <Text style={styles.dropdownItem}>Create dish</Text>
                             </TouchableOpacity>
                             <Text style={styles.dropdownItem}>Edit dish</Text>
