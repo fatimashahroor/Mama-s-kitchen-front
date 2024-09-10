@@ -4,7 +4,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ActivityIndicator, View, Alert } from 'react-native';
+import { ActivityIndicator, View, Alert, Platform } from 'react-native';
+import { PermissionsProvider } from './components/PermissionsContext';
+import * as ImagePicker from 'expo-image-picker';
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import BoardingScreen1 from './screens/BoardingScreen1';
@@ -39,8 +41,17 @@ export default function App() {
     };
     checkToken();
   }, []);
+  useEffect(() => {
+    (async () => {
+        if (Platform.OS !== 'web') {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+                alert('We need camera roll permissions to access your photos!');
+            }
+        }
+    })();
+    }, []);
 
-  
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -49,6 +60,7 @@ export default function App() {
     );
   }
   return (
+    <PermissionsProvider>
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1 }}>
         <NavigationContainer>
@@ -65,5 +77,6 @@ export default function App() {
         </NavigationContainer>
       </SafeAreaView>
     </SafeAreaProvider>
+    </PermissionsProvider>
   );
 }
