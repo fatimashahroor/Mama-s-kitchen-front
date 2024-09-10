@@ -30,7 +30,6 @@ const EditDishesScreen = () => {
                 },
             });
             const data = await response.json();
-            console.log(data);
             if (response.ok) {
                 setDishes(data);
             } else {
@@ -63,12 +62,48 @@ const EditDishesScreen = () => {
         }
     }
 
+    const updateDish = async () => {
+        const form = new FormData();
+        form.append('name', currentDish.name);
+        form.append('main_ingredients', currentDish.main_ingredients);
+        form.append('steps', currentDish.steps);
+        form.append('price', currentDish.price);
+        form.append('available_on', availableOn);
+        form.append('diet_type', currentDish.diet_type);
+        form.append('duration', `${duration.hours}:${duration.minutes}:${duration.seconds}`);
+        if (currentImage) {
+            const uriParts = currentImage.split('.');
+            const fileType = uriParts[uriParts.length - 1];
+            form.append('photo', {
+                uri: currentImage,
+                name: `photo.${fileType}`, 
+                type: `image/${fileType}`
+            });
+        }
+        try {
+            const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/dish/update/${currentDish.id}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`,
+                },
+                body: form            
+            });
+            const data = await response.json();
+            console.log(data);
+            if (response.ok) {
+                getDishes(data);
+            } else {
+                setError(data.message);
+            }
+        } catch (error) {
+            setError(error);
+            console.log(error);
+        }
+    };
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
+            allowsEditing: true, aspect: [4, 3], quality: 1,
         });
         if (!result.canceled) {
             setCurrentImage(result.assets[0].uri);
@@ -123,7 +158,7 @@ const EditDishesScreen = () => {
                                         <View style={[styles.flexColumn, styles.space]}>
                                             <Text style={styles.dishName}>{item.name} </Text>
                                             <Text style={styles.dishPrice}>{item.price + "$"}</Text>
-                                            <TouchableOpacity onPress={() => { setCurrentDish(item); setModalVisible(true); }}>
+                                            <TouchableOpacity onPress={() => { setCurrentDish(item); setModalVisible(true);}}>
                                                 <Ionicons style={styles.editButton} name="create-outline" size={22}/>
                                             </TouchableOpacity>
                                             <TouchableOpacity onPress={() => { setCurrentDish(item); deleteDish();}}>
@@ -189,7 +224,7 @@ const EditDishesScreen = () => {
                                     style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(!ModalVisible)}>
                                     <Text style={styles.textStyle}>Cancel</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(!ModalVisible)}>
+                                <TouchableOpacity style={[styles.button, styles.buttonClose]} onPress={() => {setModalVisible(!ModalVisible); updateDish();}}>
                                     <Text style={styles.textStyle}>Confirm</Text>
                                 </TouchableOpacity>
                             </View>
