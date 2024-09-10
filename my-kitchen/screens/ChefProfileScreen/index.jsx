@@ -6,9 +6,11 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { EXPO_PUBLIC_API_URL } from "@env";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from "./styles";
+import * as ImagePicker from 'expo-image-picker';
+import { Picker } from "@react-native-picker/picker";
 
 const ChefProfileScreen = () => {
-    const [details, setDetails] = useState([]);
+    const [details, setDetails] = useState({});
     const [profileImage, setProfileImage] = useState(null);
     const [inputHeight, setInputHeight] = useState(35);
     const [isEditable, setIsEditable] = useState(false); 
@@ -18,24 +20,47 @@ const ChefProfileScreen = () => {
     const handleContentSizeChange = (event) => {
         setInputHeight(event.nativeEvent.contentSize.height);
     };
-    const toggleEdit = () => {
-        if (!validateInputs()) {
-            return;
-        }
-      setIsEditable(!isEditable); 
+    const toggleEdit = async () => {
+        if (isEditable) {
+            if (!validateInputs()) {
+                return;
+            }
+            await updateDetails(); 
+            setIsEditable(false); 
+        } else {
+            setIsEditable(true); 
+        } 
     };
     const validateInputs = () => {
+        let isValid = true;
+        let errors = [];
         if (!details.age || details.age.toString().trim() === '') {
-            Alert.alert('Error', 'Age cannot be empty');
-            return false;
+            errors.push('Age is empty');
+            isValid = false;
         }
-        if (!details.email || details.email.trim() === '') {
-            Alert.alert('Error', 'Email cannot be empty');
-            return false;
+        if (!details.phone || details.phone.trim() === '') {
+            errors.push('Phone number is empty');
+            isValid = false;
         }
-        setError(''); 
-        return true;
+        if (!details.bio || details.bio.trim() === '') {
+            errors.push('Bio is empty');
+            isValid = false;
+        }
+        if (!details.located_in || details.located_in.trim() === '') {
+            errors.push('Location is empty');
+            isValid = false;
+        }
+        if (!details.status || details.status.trim() === '') {
+            errors.push('Status is empty');
+            isValid = false;
+        }
+        if (!isValid) {
+            Alert.alert('Error', errors.join('\n'));
+        }
+        setError(errors.join(', '));
+        return isValid;
     };
+    
     const StarRating = ({ rating }) => {
         const stars = [];
         for (let i = 0; i < rating; i++) {
@@ -70,7 +95,9 @@ const ChefProfileScreen = () => {
             const data = await response.json();
             if (data) {
                 setDetails(data.user);
-                setProfileImage(data.user.image_path && data.user.image_path !== "" ? data.user.image_path : null);
+                const image = (data.user.image_path && data.user.image_path !== "" ? data.user.image_path : null);
+                const image_uri = `${EXPO_PUBLIC_API_URL}/images/${image}`;
+                setProfileImage(image_uri);
             } else {
                 throw new Error('Failed to fetch cook details');
             } 
@@ -79,6 +106,59 @@ const ChefProfileScreen = () => {
         }
     };
 
+
+    const updateDetails = async () => {
+        const user = await AsyncStorage.getItem('user');
+        const userId = JSON.parse(user).id;
+        const formData = new FormData();
+        formData.append('phone', details.phone);
+        formData.append('age', details.age); 
+        formData.append('bio', details.bio);
+        formData.append('located_in', details.located_in);
+        formData.append('status', details.status);
+        if (profileImage) {
+            const uriParts = profileImage.split('.');
+            const fileType = uriParts[uriParts.length - 1];
+            formData.append('photo', {
+                uri: profileImage,
+                name: `photo.${fileType}`, 
+                type: `image/${fileType}`
+            });
+        }
+        try {
+            const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/user/update/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`
+                },
+                body: formData
+            });
+            const data = await response.json();
+            if (data) {
+                setDetails(data.user);
+                const image = (data.user.image_path && data.user.image_path !== "" ? data.user.image_path : null);
+                const image_uri = `${EXPO_PUBLIC_API_URL}/images/${image}`;
+                setProfileImage(image_uri);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    const pickImage = async () => {
+        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (permissionResult.granted === false) {
+            Alert.alert("Permission required", "We need permission to access your photos to update your profile picture!");
+            return;
+        }
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images, allowsEditing: true, quality: 1, aspect: [4, 3],      
+        });
+        console.log(result);
+        if (!result.canceled) {
+            setProfileImage(result.assets[0].uri);
+        }
+    };
+    
     useEffect(() => {
         getCookDetails();
     }, []);
@@ -89,18 +169,21 @@ const ChefProfileScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>My Profile</Text>
+            <TouchableOpacity onPress={toggleEdit} style={styles.editButton}>
+                <Ionicons name={isEditable ? "checkmark" : "create"} size={24} color="#B20530"/>
+            </TouchableOpacity>
             <View style={styles.profileContainer}>
                 <View style={styles.avatarContainer}>
                     <View style={styles.avatarCircle}>
                     {profileImage ? (
                             <Image
-                                source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${profileImage}`}} style={styles.avatarCircle}/>
+                                source={{ uri: profileImage}} style={styles.avatarCircle}/>
                         ) : (
                             <Ionicons name="person-outline" size={50} color="gray" />
                         )}
                     </View>
                     <TouchableOpacity style={styles.cameraIcon}>
-                        <Ionicons name="camera" size={24} color="#B20530" />
+                        <Ionicons name="camera" size={24} color={isEditable ? "#B20530" : "gray"} onPress={isEditable? pickImage : null}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -109,14 +192,11 @@ const ChefProfileScreen = () => {
                 <StarRating rating={Math.round(details.overall_rating)}/>
             </View>
             <View style={styles.horizontalLine} />
-            <TouchableOpacity onPress={toggleEdit} style={styles.editButton}>
-                    <Ionicons name={isEditable ? "checkmark" : "create"} size={24} color="#B20530"/>
-            </TouchableOpacity>
             <ScrollView style={styles.flex}>
                 <View style={styles.ageContainer}>
                     <Text style={styles.label}>Age</Text>
                     <TouchableWithoutFeedback>
-                        <TextInput style={[styles.age]} editable={isEditable} 
+                        <TextInput style={[styles.age]} editable={isEditable} placeholder="eg: 25"
                             value={details.age ? details.age.toString() : ''} 
                             onChangeText={(text) => setDetails({ ...details, age: text })}/>
                     </TouchableWithoutFeedback>
@@ -124,16 +204,27 @@ const ChefProfileScreen = () => {
                 <View style={styles.ageContainer}>
                     <Text style={styles.label}>Email</Text>
                     <TouchableWithoutFeedback>
-                        <TextInput style={[styles.age]} editable={isEditable} value={details.email || ''} 
-                        onChangeText={(text) => setDetails({ ...details, email: text })}/>
+                        <TextInput style={[styles.age]} value={details.email} editable={false}/>
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={styles.ageContainer}>
                     <Text style={styles.label}>Phone</Text>
                     <TouchableWithoutFeedback>
-                        <TextInput style={[styles.age]} editable={isEditable} 
+                        <TextInput style={[styles.age]} editable={isEditable} placeholder="eg: +961 76543210"
                             value={details.phone || ''} onChangeText={(text) => setDetails({ ...details, phone: text })}/>
                     </TouchableWithoutFeedback>
+                </View>
+                <View style={styles.ageContainer}>
+                    <Text style={styles.label}>Status</Text>
+                    <View style={styles.pickerContainer}>
+                        <Picker style={styles.picker} selectedValue={details.status} 
+                            onValueChange={(itemValue, itemIndex) => setDetails({ ...details, status: itemValue })}
+                            enabled={isEditable} mode="dropdown" >
+                            <Picker.Item label="Available" value="Available" style={styles.available}/>
+                            <Picker.Item label="Busy" value="Busy" style={styles.busy}/>
+                            <Picker.Item label="Offline" value="Offline" style={styles.offline}/>
+                        </Picker>
+                    </View>
                 </View>
                 <View style={styles.ageContainer}>
                     <Text style={styles.label}>Location</Text>
@@ -141,13 +232,6 @@ const ChefProfileScreen = () => {
                         <TextInput style={styles.age} editable={isEditable} value={details.located_in || ''} 
                             onChangeText={(text)=>setDetails({...details, located_in: text })} 
                             onContentSizeChange={handleContentSizeChange}/>
-                    </TouchableWithoutFeedback>
-                </View>
-                <View style={styles.ageContainer}>
-                    <Text style={styles.label}>Status</Text>
-                    <TouchableWithoutFeedback>
-                        <TextInput style={styles.age} editable={isEditable} value={details.status || ''} 
-                        onChangeText={(text) => setDetails({ ...details, status: text })}/>
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={styles.ageContainer}>
