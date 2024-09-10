@@ -90,7 +90,7 @@ export default StyleSheet.create({
     centeredView: {
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 180
+        marginTop: 160
     },
     modalView: {
         backgroundColor: "#fff",
@@ -139,5 +139,18 @@ export default StyleSheet.create({
     },    
     text1: {
         color: 'gray',
+    },
+    picker: {
+        width: 250,
+        color: 'gray',
+        top: -10,
+        left: -5,
+    },
+    pickerContainer: {
+        top: 2,
+        borderWidth: 1,
+        borderColor: '#B20530',
+        height: 35,
+        width: 240,
     }
 })
