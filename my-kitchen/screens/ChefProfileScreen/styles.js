@@ -50,7 +50,8 @@ export default StyleSheet.create({
         height: 1,
         backgroundColor: '#B20530',
         marginTop: 9,
-        marginLeft: 38
+        marginLeft: 38,
+        marginBottom: 20,
     },
     ageContainer: {
         flexDirection: 'column',
@@ -58,11 +59,13 @@ export default StyleSheet.create({
         marginBottom: 5,
         marginLeft: 30,
         marginRight: 34,
+        paddingTop: 10,
     },
     label: {
         fontSize: 16,
         fontFamily: 'Inter_400Regular',
-        marginLeft: 10
+        marginLeft: 10,
+        marginBottom: 5,
     },
     age: {
         borderWidth: 1,
@@ -73,13 +76,39 @@ export default StyleSheet.create({
         marginTop: 1,
         fontSize: 17,
         fontFamily: 'Inter_400Regular',
+        width: 320
     },
     flex: {
         display: 'flex',
         flexDirection: 'column',
     },
     editButton: {
-        marginTop: 5,
-        marginLeft: 330
+        marginLeft: 325,
+        marginTop: -42,
+    },
+    available : {
+        color: 'green',
+    },
+    busy : {
+        color: 'red',
+    },
+    offline : {
+        color: 'gray',
+    },
+    pickerContainer: {
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 30,
+        height: 45,
+        marginTop: 1,
+        width: 320,
+        overflow: 'scroll', 
+    },
+    picker: {
+        backgroundColor: 'transparent', 
+        width: '100%',
+        marginLeft: 3,
+        fontFamily: 'Inter_400Regular',
+        top: -5
     },
 })
