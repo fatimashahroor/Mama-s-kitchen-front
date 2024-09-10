@@ -39,4 +39,52 @@ export default StyleSheet.create({
         fontFamily: 'Inter_400Regular',
         marginLeft : 10,
     },
+    image: {
+        width: 120,
+        height: 100,
+        marginLeft: 15,
+        marginRight: 30,
+        marginTop: 15,
+        borderRadius: 15,
+    },
+    dish: {
+        backgroundColor: "#FFD21C",
+        borderRadius: 30,
+        marginLeft: 27,
+        marginTop: 25,
+        width: 150,
+        height: 180,
+    },
+    dishName: {
+        marginTop: 7,
+        marginLeft: 17,
+        fontFamily: 'Inter_600SemiBold',
+        fontSize: 12,
+    },  
+    dishPrice: {
+        marginTop: 10,
+        marginLeft: 17,
+        fontFamily: 'Inter_400Regular',
+        fontSize: 12,
+    },
+    space: {
+        alignContent: 'center',
+    },
+    dishesContainer: {
+        flexDirection: 'row',  
+        flexWrap: 'wrap',     
+        justifyContent: 'center',
+    },
+    scrollView: {
+        height: '100%',
+        marginTop: 10,
+        marginRight: 2,
+    },
+    none: {
+        color: "#B20530",
+        fontFamily: 'Inter_400Regular',
+        fontSize: 18,
+        marginTop: 60,
+        marginLeft: 130
+    },
 })
