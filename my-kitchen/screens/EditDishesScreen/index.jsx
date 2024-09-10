@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { EXPO_PUBLIC_API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Picker} from '@react-native-picker/picker';
-
+import * as ImagePicker from 'expo-image-picker';
 const EditDishesScreen = () => {
     const [menuVisible, setMenuVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
@@ -15,6 +15,7 @@ const EditDishesScreen = () => {
     const [ModalVisible, setModalVisible] = useState(false);
     const [currentDish, setCurrentDish] = useState(null);
     const [availableOn, setAvailableOn] = useState('');
+    const [currentImage, setCurrentImage] = useState(null);
     const [duration, setDuration] = useState({
         hours: '', minutes: '', seconds: ''});
     const getDishes = async () => {
@@ -40,6 +41,18 @@ const EditDishesScreen = () => {
             console.log(error);
         }
     };
+
+    const pickImage = async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        if (!result.canceled) {
+            setCurrentImage(result.assets[0].uri);
+        }
+    };
     const filteredDishes = dishes.filter(dish => dish.name.toLowerCase().includes(searchQuery.toLowerCase()));
     useEffect(() => {
         getDishes();
@@ -57,6 +70,8 @@ const EditDishesScreen = () => {
             } else {
                 setDuration({ hours: '', minutes: '', seconds: '' });
             }
+            if (currentDish.image_path)
+                setCurrentImage(`${EXPO_PUBLIC_API_URL}/images/${currentDish.image_path}`);
         }
     }, [currentDish]);    
     
@@ -144,7 +159,10 @@ const EditDishesScreen = () => {
                                     <Picker.Item label="Sunday" value="Sunday" />
                                 </Picker>
                             </View>
-                            <Ionicons color='#B20503' name='image' size={100}></Ionicons>
+                            <Image source={{ uri: currentImage }} style={styles.modalImage} />
+                            <TouchableOpacity onPress={pickImage} style={styles.imagePickerIcon}>
+                                <Ionicons name="camera" size={24} color="#B20530" />
+                            </TouchableOpacity>
                             <View style={styles.flexRow}>
                                 <TouchableOpacity
                                     style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(!ModalVisible)}>
