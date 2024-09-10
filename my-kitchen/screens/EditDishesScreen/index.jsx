@@ -29,6 +29,7 @@ const EditDishesScreen = () => {
                 },
             });
             const data = await response.json();
+            console.log(data);
             if (response.ok) {
                 setDishes(data);
             } else {
@@ -44,17 +45,20 @@ const EditDishesScreen = () => {
         getDishes();
     }, []);
     useEffect(() => {
-        if (currentDish && currentDish.duration) {
-            const parts = currentDish.duration.split(':');
-            setDuration({
-                hours: parts[0],
-                minutes: parts[1],
-                seconds: parts[2]
-            });
         if (currentDish) {
             setAvailableOn(currentDish.available_on || '');
+            if (currentDish.duration) {
+                const parts = currentDish.duration.split(':');
+                setDuration({
+                    hours: parts[0],
+                    minutes: parts[1],
+                    seconds: parts[2]
+                });
+            } else {
+                setDuration({ hours: '', minutes: '', seconds: '' });
+            }
         }
-        }}, [currentDish]);
+    }, [currentDish]);    
     
     return (
         <TouchableWithoutFeedback onPress={() => {setMenuVisible(false); {Keyboard.dismiss()}}}>
@@ -62,18 +66,14 @@ const EditDishesScreen = () => {
                 <Text style={styles.text}>My Plates</Text>
                 <TouchableOpacity activeOpacity={1} >
                     <SearchInput placeholder=" Search for your dishes" value={searchQuery} onChangeText={setSearchQuery}/>
-                    <TouchableOpacity onPress={() => setMenuVisible(!menuVisible)}>
-                        <Ionicons name='menu' size={27} style={styles.menu} />
+                    <TouchableOpacity onPress={() => { setCurrentDish(item); setModalVisible(true); }}>
+                        <Ionicons name='add-circle-outline' size={27} style={styles.menu} />
                     </TouchableOpacity>
                     {menuVisible && (
                         <View style={styles.dropdownMenu}>
-                            <TouchableOpacity onPress={() =>  {setModalVisible(true); setMenuVisible(!menuVisible)}} >
+                            <TouchableOpacity onPress={() => {setModalVisible(true); setMenuVisible(!menuVisible)}} >
                                 <Text style={styles.dropdownItem}>Create dish</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => { setCurrentDish(item); setModalVisible(true); setMenuVisible(!menuVisible)}}>
-                                <Text style={styles.dropdownItem}>Edit dish</Text>
-                            </TouchableOpacity>
-                            <Text style={styles.dropdownItem}>Delete dish</Text>
                         </View>
                     )}
                 </TouchableOpacity>
@@ -87,6 +87,12 @@ const EditDishesScreen = () => {
                                         <View style={[styles.flexColumn, styles.space]}>
                                             <Text style={styles.dishName}>{item.name} </Text>
                                             <Text style={styles.dishPrice}>{item.price + "$"}</Text>
+                                            <TouchableOpacity onPress={() => { setCurrentDish(item); setModalVisible(true); }}>
+                                                <Ionicons style={styles.editButton} name="create-outline" size={22}/>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity onPress={() => { setCurrentDish(item); setModalVisible(true); }}>
+                                                <Ionicons style={styles.trash} name="trash" size={20} />
+                                            </TouchableOpacity>
                                         </View>
                                     </View> 
                                 )) : <Text style={styles.none}>No dishes found</Text>}
