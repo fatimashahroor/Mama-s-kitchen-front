@@ -159,5 +159,16 @@ export default StyleSheet.create({
     trash: {
         marginTop: -170,
         marginLeft: 125
-    }
+    },
+    modalImage: {
+        width: 100,
+        height: 100,
+        borderRadius: 5,
+        margin: 10
+    },
+    imagePickerIcon: {
+        position: 'absolute',
+        right: 45,
+        bottom: 170,
+    },
 })
