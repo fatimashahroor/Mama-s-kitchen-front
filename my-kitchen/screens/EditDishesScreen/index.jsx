@@ -8,7 +8,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Picker} from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
 const EditDishesScreen = () => {
-    const [menuVisible, setMenuVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [dishes, setDishes] = useState([]);
     const [error, setError] = useState(null);
@@ -37,7 +36,7 @@ const EditDishesScreen = () => {
             }
         } catch (error) {
             setError(error);
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -58,7 +57,7 @@ const EditDishesScreen = () => {
             }
         } catch (error) {
             setError(error);
-            console.log(error);
+            console.error(error);
         }
     }
 
@@ -89,7 +88,6 @@ const EditDishesScreen = () => {
                 body: form            
             });
             const data = await response.json();
-            console.log(data);
             if (response.ok) {
                 getDishes(data);
             } else {
@@ -97,7 +95,7 @@ const EditDishesScreen = () => {
             }
         } catch (error) {
             setError(error);
-            console.log(error);
+            console.error(error);
         }
     };
     const pickImage = async () => {
@@ -109,6 +107,49 @@ const EditDishesScreen = () => {
             setCurrentImage(result.assets[0].uri);
         }
     };
+
+    const createDish = async () => {
+        const chef = await AsyncStorage.getItem('user');
+        const chefId = JSON.parse(chef).id;
+        const form = new FormData();
+        const formattedDuration = `${duration.hours.padStart(2, '0')}:${duration.minutes.padStart(2, '0')}:${duration.seconds.padStart(2, '0')}`;
+        form.append('user_id', chefId);
+        form.append('name', currentDish.name);
+        console.log(currentDish);
+        form.append('main_ingredients', currentDish.main_ingredients);
+        form.append('steps', currentDish.steps);
+        form.append('price', currentDish.price);
+        form.append('available_on', availableOn);
+        form.append('diet_type', currentDish.diet_type);
+        form.append('duration', formattedDuration);
+        if (currentImage) {
+            const uriParts = currentImage.split('.');
+            const fileType = uriParts.pop();
+            form.append('photo', {
+                uri: currentImage,
+                name: `photo.${fileType}`,
+                type: `image/${fileType}`
+            });
+        }
+        try {
+            const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/dish/create`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`,
+                },
+                body: form
+            })
+            const data = await response.json();
+            if (response.ok) {
+                getDishes(data);
+            } else {
+                setError(data.message);
+            }
+        } catch (error) {
+            setError(error);
+            console.error(error);
+        }
+    }
     const filteredDishes = dishes.filter(dish => dish.name.toLowerCase().includes(searchQuery.toLowerCase()));
     useEffect(() => {
         getDishes();
@@ -132,21 +173,16 @@ const EditDishesScreen = () => {
     }, [currentDish]);    
     
     return (
-        <TouchableWithoutFeedback onPress={() => {setMenuVisible(false); {Keyboard.dismiss()}}}>
+        <TouchableWithoutFeedback onPress={() => {{Keyboard.dismiss()}}}>
             <View style={styles.container}>
                 <Text style={styles.text}>My Plates</Text>
                 <TouchableOpacity activeOpacity={1} >
                     <SearchInput placeholder=" Search for your dishes" value={searchQuery} onChangeText={setSearchQuery}/>
-                    <TouchableOpacity onPress={() => { setCurrentDish(item); setModalVisible(true); }}>
+                    <TouchableOpacity onPress={() => { setCurrentDish({name: '', main_ingredients: '', steps: '', price: '', image_path: '', diet_type: '', 
+                                available_on: 'Daily', duration: '00:00:00'}); setModalVisible(true); setDuration({hours: '', minutes: '', seconds: ''}); 
+                                setAvailableOn('Daily'); setCurrentImage(null); setModalVisible(true); }}>
                         <Ionicons name='add-circle-outline' size={27} style={styles.menu} />
                     </TouchableOpacity>
-                    {menuVisible && (
-                        <View style={styles.dropdownMenu}>
-                            <TouchableOpacity onPress={() => {setModalVisible(true); setMenuVisible(!menuVisible)}} >
-                                <Text style={styles.dropdownItem}>Create dish</Text>
-                            </TouchableOpacity>
-                        </View>
-                    )}
                 </TouchableOpacity>
                 <View style={styles.scrollView}>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -168,7 +204,6 @@ const EditDishesScreen = () => {
                                     </View> 
                                 )) : <Text style={styles.none}>No dishes found</Text>}
                         </View>
-                        {error && <Text style={styles.none}>{error}</Text>}
                     </ScrollView>
                 </View>
                 <Modal
@@ -203,7 +238,7 @@ const EditDishesScreen = () => {
                                 onChangeText={(text) => setCurrentDish({...currentDish, diet_type: text})}/>
                             <View style={styles.pickerContainer}>
                                 <Picker
-                                    selectedValue={availableOn} onValueChange={(itemValue, itemIndex) => setAvailableOn(itemValue)}
+                                    selectedValue={availableOn} onValueChange={(itemValue) => setAvailableOn(itemValue)}
                                     style={[styles.picker]}>
                                     <Picker.Item label="Daily" value="Daily" />
                                     <Picker.Item label="Monday" value="Monday" />
@@ -224,7 +259,8 @@ const EditDishesScreen = () => {
                                     style={[styles.button, styles.buttonClose]} onPress={() => setModalVisible(!ModalVisible)}>
                                     <Text style={styles.textStyle}>Cancel</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={[styles.button, styles.buttonClose]} onPress={() => {setModalVisible(!ModalVisible); updateDish();}}>
+                                <TouchableOpacity style={[styles.button, styles.buttonClose]} onPress={() => 
+                                    {if (currentDish && currentDish.id) {updateDish();} else {createDish();}  setModalVisible(false);}}>
                                     <Text style={styles.textStyle}>Confirm</Text>
                                 </TouchableOpacity>
                             </View>
