@@ -31,11 +31,12 @@ export default function App() {
           if (decoded.exp * 1000 < Date.now()) {
               Alert.alert('Session expired', 'Please log in again');
               setUserToken(null); 
+              AsyncStorage.clear();
           }
         }
       } catch (error) {
         console.log('Error checking token:', error);
-        setUserToken(null); 
+        //setUserToken(null); 
       } finally {
         setIsLoading(false);
       }

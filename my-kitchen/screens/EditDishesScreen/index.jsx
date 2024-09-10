@@ -15,7 +15,7 @@ const EditDishesScreen = () => {
 
     const getDishes = async () => {
         const chef = await AsyncStorage.getItem('user');
-        const chefId = JSON.parse(chef)._id;
+        const chefId = JSON.parse(chef).id;
         try {
             const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/dishes/${chefId}`, {
                 method: 'GET',
@@ -26,7 +26,7 @@ const EditDishesScreen = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                setDishes(data.data);
+                setDishes(data);
             } else {
                 setError(data.message);
             }
@@ -44,7 +44,7 @@ const EditDishesScreen = () => {
             <View style={styles.container}>
                 <Text style={styles.text}>My Plates</Text>
                 <TouchableOpacity activeOpacity={1} >
-                    <SearchInput placeholder=" Search for your dishes"/>
+                    <SearchInput placeholder=" Search for your dishes" value={searchQuery} onChangeText={setSearchQuery}/>
                     <TouchableOpacity onPress={() => setMenuVisible(!menuVisible)}>
                         <Ionicons name='menu' size={27} style={styles.menu} />
                     </TouchableOpacity>
@@ -56,6 +56,22 @@ const EditDishesScreen = () => {
                         </View>
                     )}
                 </TouchableOpacity>
+                <View style={styles.scrollView}>
+                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                        <View style={styles.dishesContainer}>
+                        {filteredDishes.length > 0 ? filteredDishes.map((item, index)=> (
+                                    <View key={item.id || index} style={styles.dish}>
+                                        <Image style={styles.image} 
+                                            source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${item.image_path}`}}/>
+                                        <View style={[styles.flexColumn, styles.space]}>
+                                            <Text style={styles.dishName}>{item.name} </Text>
+                                            <Text style={styles.dishPrice}>{item.price + "$"}</Text>
+                                        </View>
+                                    </View> 
+                                )) : <Text style={styles.none}>No dishes found</Text>}
+                        </View>
+                    </ScrollView>
+                </View>
             </View>
         </TouchableWithoutFeedback>
     );
