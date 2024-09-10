@@ -42,6 +42,27 @@ const EditDishesScreen = () => {
         }
     };
 
+    const deleteDish = async () => {
+        try {
+            const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/dish/delete/${currentDish.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`,
+                },
+            });
+            const data = await response.json();
+            if (response.ok) {
+                getDishes();
+            } else {
+                setError(data.message);
+            }
+        } catch (error) {
+            setError(error);
+            console.log(error);
+        }
+    }
+
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -105,7 +126,7 @@ const EditDishesScreen = () => {
                                             <TouchableOpacity onPress={() => { setCurrentDish(item); setModalVisible(true); }}>
                                                 <Ionicons style={styles.editButton} name="create-outline" size={22}/>
                                             </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => { setCurrentDish(item); setModalVisible(true); }}>
+                                            <TouchableOpacity onPress={() => { setCurrentDish(item); deleteDish();}}>
                                                 <Ionicons style={styles.trash} name="trash" size={20} />
                                             </TouchableOpacity>
                                         </View>
