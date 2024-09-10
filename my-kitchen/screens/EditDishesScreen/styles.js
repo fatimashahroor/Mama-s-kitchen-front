@@ -152,5 +152,12 @@ export default StyleSheet.create({
         borderColor: '#B20530',
         height: 35,
         width: 240,
+    },
+    editButton: {
+        marginTop: -170
+    },
+    trash: {
+        marginTop: -170,
+        marginLeft: 125
     }
 })
