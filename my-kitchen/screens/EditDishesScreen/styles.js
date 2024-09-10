@@ -14,7 +14,6 @@ export default StyleSheet.create({
     flexRow: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent : 'space-evenly',
     },
     menu: {
         marginTop: -23,
@@ -30,7 +29,7 @@ export default StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
-        zIndex: 1, 
+        zIndex: 100, 
     },
     dropdownItem: {
         padding: 10,
@@ -77,8 +76,9 @@ export default StyleSheet.create({
     },
     scrollView: {
         height: '100%',
-        marginTop: 10,
+        marginTop: 20,
         marginRight: 2,
+        zIndex: -10
     },
     none: {
         color: "#B20530",
@@ -87,4 +87,43 @@ export default StyleSheet.create({
         marginTop: 60,
         marginLeft: 130
     },
+    centeredView: {
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 180
+    },
+    modalView: {
+        backgroundColor: "#fff",
+        borderRadius: 30,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 50,
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "flex-start",
+        width: 240,
+        borderWidth: 1,
+        borderColor: '#B20530',
+        paddingLeft: 10,
+        paddingBottom: 5
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        margin: 5,
+        width: 100,
+    },
+    buttonClose: {
+        borderWidth: 1,
+        borderColor: '#B20530',
+    },
+    textStyle: {
+        color: "black",
+        fontWeight: "bold",
+        textAlign: "center",
+    }
 })
