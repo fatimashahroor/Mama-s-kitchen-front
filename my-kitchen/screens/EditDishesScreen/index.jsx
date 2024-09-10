@@ -5,6 +5,7 @@ import SearchInput from "../../components/search/search";
 import { Ionicons } from '@expo/vector-icons';
 import { EXPO_PUBLIC_API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Picker} from '@react-native-picker/picker';
 
 const EditDishesScreen = () => {
     const [menuVisible, setMenuVisible] = useState(false);
@@ -13,6 +14,7 @@ const EditDishesScreen = () => {
     const [error, setError] = useState(null);
     const [ModalVisible, setModalVisible] = useState(false);
     const [currentDish, setCurrentDish] = useState(null);
+    const [availableOn, setAvailableOn] = useState('');
     const [duration, setDuration] = useState({
         hours: '', minutes: '', seconds: ''});
     const getDishes = async () => {
@@ -41,6 +43,19 @@ const EditDishesScreen = () => {
     useEffect(() => {
         getDishes();
     }, []);
+    useEffect(() => {
+        if (currentDish && currentDish.duration) {
+            const parts = currentDish.duration.split(':');
+            setDuration({
+                hours: parts[0],
+                minutes: parts[1],
+                seconds: parts[2]
+            });
+        if (currentDish) {
+            setAvailableOn(currentDish.available_on || '');
+        }
+        }}, [currentDish]);
+    
     return (
         <TouchableWithoutFeedback onPress={() => {setMenuVisible(false); {Keyboard.dismiss()}}}>
             <View style={styles.container}>
@@ -81,7 +96,8 @@ const EditDishesScreen = () => {
                 </View>
                 <Modal
                     animationType="slide" transparent={true} visible={ModalVisible}
-                    onRequestClose={() => {setModalVisible(!ModalVisible); setCurrentDish(null);}}>
+                    onRequestClose={() => {setModalVisible(!ModalVisible); setCurrentDish(null); setDuration({ hours: '', minutes: '', seconds: '' });
+                    setAvailableOn('');}}>
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
                             <TextInput style={styles.modalText} placeholder="Plate's Name" value={currentDish ? currentDish.name : ''}
@@ -108,8 +124,20 @@ const EditDishesScreen = () => {
                             </View>
                             <TextInput style={styles.modalText} placeholder="Diet type" value={currentDish ? String(currentDish.diet_type) : ''}
                                 onChangeText={(text) => setCurrentDish({...currentDish, diet_type: text})}/>
-                            <TextInput style={styles.modalText} placeholder="Available on" value={currentDish ? String(currentDish.available_on) : ''}
-                                onChangeText={(text) => setCurrentDish({...currentDish, available_on: text})}/>
+                            <View style={styles.pickerContainer}>
+                                <Picker
+                                    selectedValue={availableOn} onValueChange={(itemValue, itemIndex) => setAvailableOn(itemValue)}
+                                    style={[styles.picker]}>
+                                    <Picker.Item label="Daily" value="Daily" />
+                                    <Picker.Item label="Monday" value="Monday" />
+                                    <Picker.Item label="Tuesday" value="Tuesday" />
+                                    <Picker.Item label="Wednesday" value="Wednesday" />
+                                    <Picker.Item label="Thursday" value="Thursday" />
+                                    <Picker.Item label="Friday" value="Friday" />
+                                    <Picker.Item label="Saturday" value="Saturday" />
+                                    <Picker.Item label="Sunday" value="Sunday" />
+                                </Picker>
+                            </View>
                             <Ionicons color='#B20503' name='image' size={100}></Ionicons>
                             <View style={styles.flexRow}>
                                 <TouchableOpacity
