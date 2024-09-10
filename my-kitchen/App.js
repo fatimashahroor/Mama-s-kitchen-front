@@ -15,6 +15,7 @@ import ChefsScreen from './screens/ChefsScreen';
 import ChefMenuScreen from './screens/ChefMenuScreen';
 import DishScreen from './screens/DishScreen';
 import ChefProfileScreen from './screens/ChefProfileScreen';
+import EditDishesScreen from './screens/EditDishesScreen';
 export default function App() {
   const Stack = createNativeStackNavigator();
   const [isLoading, setIsLoading] = useState(true);
@@ -73,6 +74,7 @@ export default function App() {
             <Stack.Screen name="ChefMenu" component={ChefMenuScreen} />
             <Stack.Screen name="Dish" component={DishScreen} />
             <Stack.Screen name="ChefProfile" component={ChefProfileScreen} />
+            <Stack.Screen name="EditDishes" component={EditDishesScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
