@@ -20,6 +20,7 @@ import ChefOrdersScreen from './screens/ChefOrdersScreen';
 import ChefTabs from './components/ChefTabs';
 import CartScreen from './screens/CartScreen';
 import MyOrdersScreen from './screens/MyOrdersScreen';
+import CustomerTabs from './components/CustomerTabs';
 export default function App() {
   const Stack = createNativeStackNavigator();
   const [isLoading, setIsLoading] = useState(true);
@@ -84,6 +85,7 @@ export default function App() {
             <Stack.Screen name="ChefTabs" component={ChefTabs} />
             <Stack.Screen name="Cart" component={CartScreen} />
             <Stack.Screen name="MyOrders" component={MyOrdersScreen} />
+            <Stack.Screen name="CustomerTabs" component={CustomerTabs} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
