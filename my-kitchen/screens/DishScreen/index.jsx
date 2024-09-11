@@ -61,6 +61,7 @@ const DishScreen = ({ route, navigation }) => {
                     'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`,
                 },
             });
+            console.log(response);
             if (!response.ok) {
                 throw new Error('Failed to fetch dish reviews');
             }
