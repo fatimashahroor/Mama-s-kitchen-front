@@ -35,7 +35,8 @@ const ChefTabs = ({route}) => {
             },
             tabBarIconStyle: {
                 marginTop: 6,
-            }
+            },
+            headerShown: false
           })}
             >
             <Tab.Screen 
