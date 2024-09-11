@@ -17,11 +17,11 @@ const ChefTabs = ({route}) => {
               let iconName;
               if (route.name === 'Home') {
                 iconName = focused ? 'home' : 'home-outline';
-              } else if (route.name === 'ChefOrders') {
+              } else if (route.name === 'Orders') {
                 iconName = focused ? 'cube' : 'cube-outline';
-              } else if (route.name === 'EditDishes') {
+              } else if (route.name === 'My Dishes') {
                 iconName = focused ? 'restaurant' : 'restaurant-outline';
-              } else if (route.name === 'ChefProfile') {
+              } else if (route.name === 'Profile') {
                 iconName = focused ? 'person' : 'person-outline';  
               }
               return <Ionicons name={iconName} size={29} color={color} />;
@@ -30,11 +30,11 @@ const ChefTabs = ({route}) => {
             tabBarInactiveTintColor: '#B20530', 
             tabBarStyle: {
                 backgroundColor: '#fff', 
-                paddingBottom: 5,
-                height: 65, 
+                paddingBottom: 8,
+                height: 70, 
             },
             tabBarIconStyle: {
-                marginTop: 6,
+                marginTop: 2,
             },
             headerShown: false
           })}
@@ -43,26 +43,26 @@ const ChefTabs = ({route}) => {
               name="Home" 
               component={HomeScreen} 
               options={{ 
-                tabBarShowLabel: false  
+                tabBarShowLabel: true
               }} 
               initialParams={{streak}} />          
             <Tab.Screen 
-            name="ChefOrders" 
+            name="Orders" 
             component={ChefOrdersScreen} 
             options={{ 
-              tabBarShowLabel: false  
+              tabBarShowLabel: true  
             }}
             initialParams={{streak}}/>
-              <Tab.Screen name="EditDishes" 
+              <Tab.Screen name="My Dishes" 
               component={EditDishesScreen} 
               options={{ 
-                tabBarShowLabel: false 
+                tabBarShowLabel: true 
               }}
               initialParams={{streak}}/>
-              <Tab.Screen name="ChefProfile" 
+              <Tab.Screen name="Profile" 
               component={ChefProfileScreen} 
               options={{
-                tabBarShowLabel: false 
+                tabBarShowLabel: true 
               }}
               initialParams={{streak: streak}}/>
             </Tab.Navigator>
