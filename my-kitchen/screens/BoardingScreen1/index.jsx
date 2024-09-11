@@ -3,7 +3,6 @@ import { useNavigation } from '@react-navigation/native';
 import styles from "./styles";
 import {Inter_400Regular, Inter_600SemiBold} from '@expo-google-fonts/inter';
 import { useFonts, Pacifico_400Regular} from '@expo-google-fonts/pacifico';
-import InputText from "../../components/input/input";
 
 const BoardingScreen1 = () => {
     const navigation = useNavigation();
@@ -20,7 +19,7 @@ const BoardingScreen1 = () => {
           </View>
           <Image source={require('../../assets/onBoarding2.jpg')} style={styles.imageStyle}></Image>
           <Text style={styles.customText}>Dive into the pleasure of home-made {'\n'} food with your favorite flavors!</Text>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CustomerTabs')}>
             <Text style={styles.buttonText}>Get Started</Text>
           </TouchableOpacity>
         </View>
