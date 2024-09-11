@@ -20,24 +20,6 @@ export default StyleSheet.create({
         marginLeft: 325,
         color: '#B20530',
     },
-    dropdownMenu: {
-        position: 'absolute',
-        top: 56, 
-        right: 37,
-        backgroundColor: 'white',
-        shadowColor: '#000',
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-        zIndex: 100, 
-    },
-    dropdownItem: {
-        padding: 10,
-        fontSize: 16,
-        width: 110,
-        fontFamily: 'Inter_400Regular',
-        marginLeft : 10,
-    },
     image: {
         width: 120,
         height: 100,
@@ -78,7 +60,6 @@ export default StyleSheet.create({
         height: '100%',
         marginTop: 20,
         marginRight: 2,
-        zIndex: -10
     },
     none: {
         color: "#B20530",
@@ -90,7 +71,7 @@ export default StyleSheet.create({
     centeredView: {
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 160
+        marginTop: 125
     },
     modalView: {
         backgroundColor: "#fff",
@@ -171,4 +152,7 @@ export default StyleSheet.create({
         right: 45,
         bottom: 170,
     },
+    marginTop: {
+        marginTop: 20
+    }
 })
