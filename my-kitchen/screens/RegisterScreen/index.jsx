@@ -48,8 +48,8 @@ function RegisterScreen() {
       });
       const data = await response.json();
       if (data) {
-        const { access_token, user } = data;
-        await AsyncStorage.setItem('token', access_token);
+        const { token, user } = data;
+        await AsyncStorage.setItem('token', token);
         await AsyncStorage.setItem('user', JSON.stringify(user));
         navigation.navigate('Boarding1');
       } else {
