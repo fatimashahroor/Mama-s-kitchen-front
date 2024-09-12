@@ -69,5 +69,21 @@ export const addDish = (dish) => async (dispatch) => {
     }
 }; 
 
-export const deleteDish = (dishId) => ({type: DELETE_DISH, dishId});
+export const deleteDish = (dishId) => async (dispatch) => {
+    try {
+        const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/dish/delete/${dishId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`,
+            },
+        });
+        if (!response.ok) {
+            throw new Error("Failed to delete dish");
+        }
+        dispatch({type: DELETE_DISH, dishId});
+    } catch (error) {
+        console.error(error);
+    }
+};
 export const updateDish = (dish) => ({type: UPDATE_DISH, dish});
