@@ -24,14 +24,12 @@ import CartScreen from './screens/CartScreen';
 import MyOrdersScreen from './screens/MyOrdersScreen';
 import CustomerTabs from './components/CustomerTabs';
 import AddIngredientsScreen from './screens/AddIngredientsScreen';
+import store from './components/store';
 export default function App() {
   const Stack = createNativeStackNavigator();
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
 
-  const store = configureStore({
-    reducer: {}
-  });
   useEffect(() => {
     const checkToken = async () => {
       setIsLoading(true);
@@ -47,7 +45,7 @@ export default function App() {
         }
       } catch (error) {
         console.log('Error checking token:', error);
-        //setUserToken(null); 
+        setUserToken(null); 
       } finally {
         setIsLoading(false);
       }
