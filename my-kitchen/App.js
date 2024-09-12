@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
+import { configureStore } from '@reduxjs/toolkit';
+import {Provider} from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
@@ -21,11 +23,15 @@ import ChefTabs from './components/ChefTabs';
 import CartScreen from './screens/CartScreen';
 import MyOrdersScreen from './screens/MyOrdersScreen';
 import CustomerTabs from './components/CustomerTabs';
+import AddIngredientsScreen from './screens/AddIngredientsScreen';
 export default function App() {
   const Stack = createNativeStackNavigator();
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
 
+  const store = configureStore({
+    reducer: {}
+  });
   useEffect(() => {
     const checkToken = async () => {
       setIsLoading(true);
@@ -67,29 +73,32 @@ export default function App() {
     );
   }
   return (
-    <PermissionsProvider>
-    <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1 }}>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName={userToken ? "Home" : "Login"} screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
-            <Stack.Screen name="Boarding1" component={BoardingScreen1} />
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Chefs" component={ChefsScreen} />
-            <Stack.Screen name="ChefMenu" component={ChefMenuScreen} />
-            <Stack.Screen name="Dish" component={DishScreen} />
-            <Stack.Screen name="ChefProfile" component={ChefProfileScreen} />
-            <Stack.Screen name="EditDishes" component={EditDishesScreen} />
-            <Stack.Screen name="ChefOrders" component={ChefOrdersScreen} />
-            <Stack.Screen name="ChefTabs" component={ChefTabs} />
-            <Stack.Screen name="Cart" component={CartScreen} />
-            <Stack.Screen name="MyOrders" component={MyOrdersScreen} />
-            <Stack.Screen name="CustomerTabs" component={CustomerTabs} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </SafeAreaView>
-    </SafeAreaProvider>
-    </PermissionsProvider>
+    <Provider store={store}>
+      <PermissionsProvider>
+      <SafeAreaProvider>
+        <SafeAreaView style={{ flex: 1 }}>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName={userToken ? "Home" : "Login"} screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Register" component={RegisterScreen} />
+              <Stack.Screen name="Boarding1" component={BoardingScreen1} />
+              <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="Chefs" component={ChefsScreen} />
+              <Stack.Screen name="ChefMenu" component={ChefMenuScreen} />
+              <Stack.Screen name="Dish" component={DishScreen} />
+              <Stack.Screen name="ChefProfile" component={ChefProfileScreen} />
+              <Stack.Screen name="EditDishes" component={EditDishesScreen} />
+              <Stack.Screen name="ChefOrders" component={ChefOrdersScreen} />
+              <Stack.Screen name="ChefTabs" component={ChefTabs} />
+              <Stack.Screen name="Cart" component={CartScreen} />
+              <Stack.Screen name="MyOrders" component={MyOrdersScreen} />
+              <Stack.Screen name="CustomerTabs" component={CustomerTabs} />
+              <Stack.Screen name="AddIngredients" component={AddIngredientsScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </SafeAreaView>
+      </SafeAreaProvider>
+      </PermissionsProvider>
+    </Provider>
   );
 }
