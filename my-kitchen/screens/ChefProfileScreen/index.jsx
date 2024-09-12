@@ -141,7 +141,7 @@ const ChefProfileScreen = () => {
                 setProfileImage(image_uri);
             }
         } catch (error) {
-            console.error(error);
+            setError(error);
         }
     }
     const pickImage = async () => {
