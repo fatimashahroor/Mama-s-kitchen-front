@@ -31,7 +31,8 @@ export default StyleSheet.create({
     dish: {
         backgroundColor: "#FFD21C",
         borderRadius: 30,
-        marginLeft: 27,
+        marginLeft: 12,
+        marginRight: 12,
         marginTop: 25,
         width: 150,
         height: 180,
@@ -57,7 +58,8 @@ export default StyleSheet.create({
         justifyContent: 'center',
     },
     scrollView: {
-        height: '100%',
+        flex: 2,
+        height: "100%",
         marginTop: 20,
         marginRight: 2,
     },
@@ -66,7 +68,7 @@ export default StyleSheet.create({
         fontFamily: 'Inter_400Regular',
         fontSize: 18,
         marginTop: 60,
-        marginLeft: 130
+        marginLeft: 0
     },
     centeredView: {
         justifyContent: "center",
