@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addDish, getDishes} from "../../components/store/actions/dishActions";
+import { addDish, getDishes, updateDish , deleteDish} from "../../components/store/actions/dishActions";
 import { View, Text, Image, TouchableOpacity, ScrollView, TouchableWithoutFeedback, Keyboard, Modal, TextInput } from "react-native";
 import styles from "./styles";
 import SearchInput from "../../components/search/search";
 import { Ionicons } from '@expo/vector-icons';
-import { EXPO_PUBLIC_API_URL } from '@env';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Picker} from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
 const EditDishesScreen = () => {
     const dispatch = useDispatch();
     const [searchQuery, setSearchQuery] = useState('');
     const { dishes } = useSelector(state => state.dishes);
-    const [error, setError] = useState(null);
     const [ModalVisible, setModalVisible] = useState(false);
     const [currentDish, setCurrentDish] = useState({
         name: '', main_ingredients: '', steps: '', price: '', available_on: 'Daily', diet_type: '', duration: { hours: '00', minutes: '30', seconds: '00' }, 
@@ -22,28 +19,8 @@ const EditDishesScreen = () => {
     useEffect(() => {
         dispatch(getDishes());
     }, [dispatch]);
-    const deleteDish = async () => {
-        console.log("currentDish.id", currentDish.id);
-        try {
-            const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/dish/delete/${currentDish.id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`,
-                },
-            });
-            if (!response.ok) {
-                throw new Error("Failed to delete dish");
-            }
-            setDishes(prevDishes => prevDishes.filter(dish => dish.id !== currentDish.id));
-        } catch (error) {
-            setError(error);
-            console.error(error);
-        }
-    };
-    const handleDelete = (item) => {
-        deleteDish(item);
-    };
+    const handleDelete = (dishId) => {
+        dispatch(deleteDish(dishId));};
 
     const updateDish = async () => {
         const form = new FormData();
@@ -132,8 +109,7 @@ const EditDishesScreen = () => {
                                             <TouchableOpacity onPressIn={() => { setCurrentDish(item); setModalVisible(true);}}>
                                                 <Ionicons style={styles.editButton} name="create-outline" size={22}/>
                                             </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => { setCurrentDish(item); handleDelete(item); 
-                                                setModalVisible(false)}}>
+                                            <TouchableOpacity onPress={() => {handleDelete(item.id);}}>
                                                 <Ionicons style={styles.trash} name="trash" size={20} />
                                             </TouchableOpacity>
                                         </View>
