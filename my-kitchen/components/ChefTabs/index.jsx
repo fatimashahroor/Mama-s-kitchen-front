@@ -5,6 +5,7 @@ import HomeScreen from "../../screens/HomeScreen";
 import ChefProfileScreen from "../../screens/ChefProfileScreen";
 import EditDishesScreen from "../../screens/EditDishesScreen";
 import ChefOrdersScreen from "../../screens/ChefOrdersScreen";
+import AddIngredientsScreen from "../../screens/AddIngredientsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,6 +24,8 @@ const ChefTabs = ({route}) => {
                 iconName = focused ? 'restaurant' : 'restaurant-outline';
               } else if (route.name === 'Profile') {
                 iconName = focused ? 'person' : 'person-outline';  
+              } else if (route.name === 'Ingredients') {
+                iconName = focused ? 'pizza' : 'pizza-outline';
               }
               return <Ionicons name={iconName} size={29} color={color} />;
             },
@@ -55,6 +58,12 @@ const ChefTabs = ({route}) => {
             initialParams={{streak}}/>
               <Tab.Screen name="My Dishes" 
               component={EditDishesScreen} 
+              options={{ 
+                tabBarShowLabel: true 
+              }}
+              initialParams={{streak}}/>
+              <Tab.Screen name="Ingredients" 
+              component={AddIngredientsScreen} 
               options={{ 
                 tabBarShowLabel: true 
               }}
