@@ -92,15 +92,15 @@ const EditDishesScreen = () => {
                 },
                 body: form            
             });
-            const data = await response.json();
             if (response.ok) {
-                getDishes(data);
+                const data = await response.json(); 
+                getDishes();
             } else {
-                setError(data.message);
+                console.log("Non-200 response", await response.text());
             }
         } catch (error) {
             setError(error);
-            console.error(error);
+            getDishes();
         }
     };
     const pickImage = async () => {
@@ -142,14 +142,14 @@ const EditDishesScreen = () => {
                 body: form
             })
             const data = await response.json();
-            if (data) {
+            console.log('data', data);
+            const dish = await data;
+            if (dish) {
                 getDishes(data);
-            } else {
-                setError(data.message);
             }
         } catch (error) {
             setError(error);
-            console.error(error);
+            getDishes();
         }
     }
     const filteredDishes = dishes.filter(dish => dish.name.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -194,7 +194,7 @@ const EditDishesScreen = () => {
                     </TouchableOpacity>
                 </TouchableOpacity>
                 <View style={styles.scrollView}>
-                    <ScrollView vertical={true} showsVerticalScrollIndicator={false}>
+                    <ScrollView vertical={true} showsVerticalScrollIndicator={true}>
                         <View style={styles.dishesContainer}>
                         {filteredDishes.length > 0 ? filteredDishes.map((item, index)=> (
                                     <View key={item.id || index} style={styles.dish}>
@@ -206,7 +206,7 @@ const EditDishesScreen = () => {
                                             <TouchableOpacity onPressIn={() => { setCurrentDish(item); setModalVisible(true);}}>
                                                 <Ionicons style={styles.editButton} name="create-outline" size={22}/>
                                             </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => { setCurrentDish(item); handleDelete(currentDish); 
+                                            <TouchableOpacity onPress={() => { setCurrentDish(item); handleDelete(item); 
                                                 setModalVisible(false)}}>
                                                 <Ionicons style={styles.trash} name="trash" size={20} />
                                             </TouchableOpacity>
