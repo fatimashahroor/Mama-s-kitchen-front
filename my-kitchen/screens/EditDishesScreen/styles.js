@@ -33,7 +33,8 @@ export default StyleSheet.create({
         borderRadius: 30,
         marginLeft: 12,
         marginRight: 12,
-        marginTop: 25,
+        marginTop: 40,
+        marginBottom: 10,
         width: 150,
         height: 180,
     },
@@ -73,7 +74,7 @@ export default StyleSheet.create({
     centeredView: {
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 125
+        marginTop: 100
     },
     modalView: {
         backgroundColor: "#fff",
@@ -130,18 +131,18 @@ export default StyleSheet.create({
         left: -5,
     },
     pickerContainer: {
-        top: 2,
+        top: -1,
         borderWidth: 1,
         borderColor: '#B20530',
         height: 35,
         width: 240,
     },
     editButton: {
-        marginTop: -170
+        marginLeft: 130,
     },
     trash: {
-        marginTop: -170,
-        marginLeft: 125
+        marginTop: -186,
+        marginLeft: 128
     },
     modalImage: {
         width: 100,
@@ -155,6 +156,31 @@ export default StyleSheet.create({
         bottom: 170,
     },
     marginTop: {
-        marginTop: 20
+        marginTop: 16
+    },
+    checkbox:{
+        marginLeft: -35
+    },
+    checkboxContainer: {
+        flexDirection: 'row',
+        gap: 10
+    },
+    checkboxLabel: {
+        marginRight: 10,
+        fontFamily: 'Inter_400Regular',
+        fontSize: 14,
+        marginBottom: 5
+    },
+    checkboxSelected: {
+        width: 20,
+        height: 20,
+        backgroundColor: '#000', 
+    },
+    checkboxUnselected: {
+        width: 20,
+        height: 20,
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: '#000',
     }
 })
