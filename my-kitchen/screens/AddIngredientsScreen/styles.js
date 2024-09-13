@@ -58,6 +58,7 @@ export default StyleSheet.create({
         fontSize: 16,
         flex: 1,
         fontFamily: 'Inter_600SemiBold',
+        color: '#dbb30b',
     },
     cost: {
         fontSize: 16,
