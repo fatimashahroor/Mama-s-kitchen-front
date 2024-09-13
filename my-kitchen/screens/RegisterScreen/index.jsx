@@ -16,7 +16,8 @@ function RegisterScreen() {
   const [inputs , setInputs] = useState({
       full_name: '',
       email: '',
-      password: ''
+      password: '',
+      phone: '',
   })
   const togglePasswordVisibility = () => {
     setPasswordVisible(prevState => !prevState);
@@ -44,6 +45,7 @@ function RegisterScreen() {
           full_name: inputs.full_name,
           email: inputs.email,
           password: inputs.password,
+          phone: inputs.phone
         }),
       });
       const data = await response.json();
@@ -67,32 +69,27 @@ function RegisterScreen() {
                 </View>
                 <Text style={[styles.signUpText, styles.customText]}>Sign Up</Text>
                 <View style={styles.margin2}>
-                  <InputText placeholder="Full name" placeholderTextColor={'#989997'} secureTextEntry={false} 
-                  onChangeText={value => handleChange('full_name', value)}/>
+                  <View style={styles.margin}>
+                    <InputText placeholder="Full name" placeholderTextColor={'#989997'} secureTextEntry={false} 
+                    onChangeText={value => handleChange('full_name', value)}/> 
+                  </View>
+                  <View style={styles.margin}>
                   <InputText placeholder="Email" placeholderTextColor={'#989997'} secureTextEntry={false}
                   onChangeText={value => handleChange('email', value)}></InputText>
+                  </View>
+                  <View style={styles.margin}>
                   <InputText placeholder="Password" placeholderTextColor={'#989997'} secureTextEntry={!passwordVisible}
                   onChangeText={value => handleChange('password', value)}/>
+                  </View>
                   <TouchableOpacity onPress={togglePasswordVisibility} style={styles.eyeIcon}>
-                  <Ionicons name={passwordVisible ? "eye" : "eye-off"} size={24} color="gray" />
-                </TouchableOpacity>
-                  {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
-                  <TouchableOpacity  onPress={handleSubmit} style={styles.button}>
-                    <Text style={styles.buttonText}>Sign up</Text>
+                    <Ionicons name={passwordVisible ? "eye" : "eye-off"} size={24} color="gray" />
                   </TouchableOpacity>
-                  <View style={styles.flexRow}>
-                      <Text style={[styles.customText1, styles.signUp, styles.margin1]}>___________________ </Text>
-                      <Text style={[styles.customText1, styles.signUp, styles.margin1]}>or</Text>
-                      <Text style={[styles.customText1, styles.signUp, styles.margin1]}> ___________________</Text>
-                  </View>
-                  <View style={styles.flexColumn}>
-                    <Text style={[styles.customText, styles.signUpWithText, styles.margin2]}>Sign up with</Text>
-                  </View>
-                  <View style={[styles.flexRow, styles.margin1]}>
-                    <View style={styles.margin}>
-                        <FontAwesome5 name="google" size={24} color="#B20530"/></View>
-                        <FontAwesome5 name= "apple" size={30} color="#B20530"/>
-                  </View>
+                  {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
+                  <InputText placeholder="Phone number" placeholderTextColor={'#989997'} secureTextEntry={false} 
+                  onChangeText={value => handleChange('phone', value)}/>
+                  <TouchableOpacity  onPress={handleSubmit} style={styles.button}>
+                    <Text style={styles.buttonText}>Submit</Text>
+                  </TouchableOpacity>
                 </View>
             </View>
     );
