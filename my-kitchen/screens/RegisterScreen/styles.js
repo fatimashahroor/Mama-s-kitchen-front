@@ -29,7 +29,7 @@ export default StyleSheet.create({
         fontFamily: 'Inter_600SemiBold',
     },
     customText1: {
-    fontFamily: 'Inter_400Regular',
+        fontFamily: 'Inter_400Regular',
     },
     textInput: {
         height: 55,
@@ -42,8 +42,7 @@ export default StyleSheet.create({
         fontSize: 18,
     },
     margin: {
-        marginTop: 6,
-        marginRight: 16
+        marginBottom: -6,
     },
     margin1: {
         marginTop: 10,
@@ -55,7 +54,7 @@ export default StyleSheet.create({
         borderRadius: 30,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 25,
+        marginTop: 35,
         marginLeft: 50,
     },
     buttonText: {
@@ -64,7 +63,7 @@ export default StyleSheet.create({
         fontFamily: 'Inter_400Regular',
     },
     margin2: {
-        marginTop: 20,
+        marginTop: 30,
     },
     signUpWithText: {
         textAlign: 'center',
@@ -92,6 +91,6 @@ export default StyleSheet.create({
     eyeIcon: {
         position: 'absolute',
         right: 68,
-        top: 176,
+        top: 163,
     },
 })
