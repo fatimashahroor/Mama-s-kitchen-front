@@ -7,6 +7,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ChefTabs = () => {
     const [orders, setOrders] = useState([]);
+    const [filter, setFilter] = useState('pending');
+    const handlePending = () => setFilter('pending');    
+    const handleCompleted = () => setFilter('completed');
     const getOrders = async () => {
         const user = await AsyncStorage.getItem('user');
         const userId = JSON.parse(user).id;
@@ -76,6 +79,27 @@ const ChefTabs = () => {
             }
         }))
     }
+    const updateStatus = async (orderId) => {
+            try {
+                const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/order/update/${orderId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`,
+                        'Content-type' : 'application/json'
+                    },
+                    body: JSON.stringify({ status: 'completed' })
+                });
+                const data = await response.json();
+                if (data) {
+                    setOrders(orders.map(order => 
+                        order.id === orderId ? {...order, status: 'completed'} : order
+                    ));
+                    alert('Order updated successfully!');
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
     const renderItem = ({ item }) => (
         <View style={styles.flexRow}>
             <View style={[styles.cards, {flex: 1}]}>
@@ -97,33 +121,36 @@ const ChefTabs = () => {
                         }</Text>
                         <Text style={styles.comment}>Location: {item.location_city}, {item.location_region}, {item.location_building} bldng, 
                              {item.location_street} str, {item.location_floor}th floor, {item.location_near}</Text>
+                        <Text style={styles.comment}>Phone nb: {item.user_phone}</Text>
                     </View>
-            <TouchableOpacity>
-                <Ionicons name="checkmark-circle-outline" color={'#B20530'} size={24}/>
-            </TouchableOpacity>
+                    <TouchableOpacity  onPress={() => updateStatus(item.id)} disabled={item.status === 'completed'}
+                        style={item.status === 'completed' ? styles.disabledButton : styles.enabledButton}>
+                        <Ionicons name="checkmark-circle-outline" color={'#B20530'} size={24}/>
+                    </TouchableOpacity>
+                </View>
+            ))}
+            </View>
         </View>
-    ))}
-    </View>
-    </View>
     );
     return (
         <View style={styles.container}>
             <Text style={styles.text}>My Orders</Text>
             <View style={styles.flexRow}>
-                <TouchableOpacity style={[styles.filterButton]}>
-                    <Text style={styles.filterText}>Pending</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.filterButton]}>
-                    <Text style={styles.filterText}>Completed</Text>
-                </TouchableOpacity>
+            <TouchableOpacity style={[styles.filterButton, filter === 'pending' ? styles.activeFilter : {}]} onPress={handlePending}>
+                <Text style={styles.filterText}>Pending</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.filterButton, filter === 'completed' ? styles.activeFilter : {}]} onPress={handleCompleted}>
+                <Text style={styles.filterText}>Completed</Text>
+            </TouchableOpacity>
             </View>
             <FlatList
-                data={orders}
+                data={orders.filter(order => order.status === filter)}
                 renderItem={renderItem}
                 keyExtractor={item => item.id.toString()}
                 showsVerticalScrollIndicator={false}
             />
         </View>
     );
-};
+}
+
 export default ChefTabs;
