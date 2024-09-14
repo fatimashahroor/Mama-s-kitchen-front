@@ -14,12 +14,13 @@ export default StyleSheet.create({
     cards: {
         borderWidth: 1,
         borderColor: '#B20530',
-        marginTop: 40,
+        marginTop: 30,
         marginLeft: 27,
         marginRight: 27,
         borderRadius: 30,
         padding: 10,
-        height: 200
+        height: 225,
+        marginBottom: 20
     },
     orderImage: {
         width: 90,
@@ -75,7 +76,6 @@ export default StyleSheet.create({
         marginBottom: 3,
     },
     filterButton: {
-        backgroundColor: '#B20530',
         width: 100,
         height: 50,
         borderRadius: 30,
@@ -85,9 +85,29 @@ export default StyleSheet.create({
         marginLeft: 10,
     },
     filterText: {
-        color: 'white',
+        color: "#B20530",
         fontSize: 16,
         fontFamily: 'Inter_400Regular',
+    },
+    verticalLine: {
+        width: 1.5,
+        height: '55%',
+        backgroundColor: '#B20530',
+        marginHorizontal: 8,
+        marginTop: 40,
+        marginRight: -5,
+        marginLeft: -5,
+    },
+    activeFilter : {
+        backgroundColor: '#dedede', 
+        fontWeight: 'bold',
+        color: 'black'
+    },
+    enabledButton : {
+        backgroundColor: 'transparent', 
+    },    
+    disabledButton : {
+        backgroundColor: 'transparent',
+        opacity: 0.1, 
     }
-
 })
