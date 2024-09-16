@@ -19,10 +19,16 @@ export default StyleSheet.create({
         marginLeft: 12,
         marginTop: 40,
     },
+    flexedByRow: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
     flexRow: {
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
+        justifyContent: 'center',
     },
     flexStart: {
         justifyContent: 'flex-start',
@@ -97,7 +103,8 @@ export default StyleSheet.create({
         color: "#B20530",
         fontFamily: 'Inter_400Regular',
         fontSize: 18,
-        marginTop: 60,
+        marginTop: 80,
+        marginLeft: 110,
     },
     day: {
         borderRadius: 30,
