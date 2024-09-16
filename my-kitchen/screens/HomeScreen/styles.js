@@ -28,8 +28,8 @@ export default StyleSheet.create({
         justifyContent: 'flex-start',
     },
     icon: {
-        marginTop: -22,
-        marginLeft: 328,
+        marginTop: -25,
+        marginLeft: 323,
         border: '#B20530',
     },
     justify: {
@@ -103,5 +103,43 @@ export default StyleSheet.create({
         borderRadius: 30,
         backgroundColor: "#B20530",
         marginRight: 5,
-    }
+    },
+    modalOverlay: {
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+    },
+    modalView: {
+        backgroundColor: "#fff",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 50,
+        width: 300,  
+    },
+    modalText: {
+        backgroundColor: '#FFCF0F',
+        borderRadius: 15,
+        marginBottom: 15,
+        fontFamily: 'Inter_400Regular',
+        textAlign: "left",
+        width: 240,
+        padding: 10,
+        fontSize: 14,
+    },
+    closeText: {
+        color: 'black',
+        fontFamily: 'Inter_400Regular',
+        fontSize: 14,
+        marginTop: 40,
+    },
+    robot: {
+        marginBottom: 5,
+        marginTop: -18,
+    },
 })
