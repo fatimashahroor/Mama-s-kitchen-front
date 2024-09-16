@@ -83,6 +83,8 @@ const HomeScreen = () => {
     };
 
     const processReviewsThroughAPI = async (reviews) => {
+        console.log('Reviews:');
+        console.log(reviews);
         try {
             const response = await fetch(`${OPENAI_URL}/process_reviews`, {
                 method: 'POST',
@@ -121,6 +123,10 @@ const HomeScreen = () => {
         if (fontsLoaded) {
             getDishes();
             getRole();
+            fetchDishEvery1Minute();
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
         }
     }, [fontsLoaded]);
 
@@ -184,7 +190,7 @@ const HomeScreen = () => {
                             <Text style={styles.modalText}>Hey there, it's me! Your AI assistant.</Text>
                             <Text style={styles.modalText}>Here are some suggestions to improve:</Text>
                             <Text></Text>
-                            {/* <Text style={styles.suggestions}>{suggestions}</Text> */}
+                            <Text style={styles.suggestions}>{suggestions}</Text>
                             <TouchableOpacity onPress={() => setShowModal(false)}>
                                 <Text style={styles.closeText}>Close</Text>
                             </TouchableOpacity>
