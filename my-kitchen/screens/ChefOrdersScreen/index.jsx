@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, ScrollView, Image , Text, FlatList, TouchableOpacity} from "react-native";
+import { View, Image , Text, FlatList, TouchableOpacity} from "react-native";
 import styles from "./styles";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import { Ionicons } from "@expo/vector-icons";
@@ -11,10 +11,8 @@ const ChefTabs = () => {
     const handlePending = () => setFilter('pending');    
     const handleCompleted = () => setFilter('completed');
     const getOrders = async () => {
-        const user = await AsyncStorage.getItem('user');
-        const userId = JSON.parse(user).id;
         try {
-            const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/order/${userId}`, {
+            const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/order`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`,
@@ -117,7 +115,7 @@ const ChefTabs = () => {
                         <Text style={styles.quantity}>Quantity: {dish.quantity}</Text>
                         <Text style={styles.comment}>Comment: {dish.comment || 'No comments'}</Text>
                         <Text style={styles.ingredients}>Added ingredients: {
-                            dish.additional_ingredients.map(ing => `${ing.name}: ${ing.quantity}`).join(', ') || 'none'
+                            dish.additional_ingredients.map(ing => `${ing.name}: ${ing.pivot.quantity}`).join(', ') || 'none'
                         }</Text>
                         <Text style={styles.comment}>Location: {item.location_city}, {item.location_region}, {item.location_building} bldng, 
                              {item.location_street} str, {item.location_floor}th floor, {item.location_near}</Text>

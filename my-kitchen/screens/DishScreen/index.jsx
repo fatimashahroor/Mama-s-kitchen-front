@@ -61,12 +61,10 @@ const DishScreen = ({ route, navigation }) => {
                     'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`,
                 },
             });
-            console.log(response);
             if (!response.ok) {
                 throw new Error('Failed to fetch dish reviews');
             }
             const data = await response.json();
-            console.log(data);
             setDishRating(data);
         } catch (error) {
             console.error(error);
