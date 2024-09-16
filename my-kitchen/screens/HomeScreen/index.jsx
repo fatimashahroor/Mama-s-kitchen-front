@@ -118,7 +118,10 @@ const HomeScreen = () => {
 
         }, 60000); 
     };
-
+    const handleOpenModal = () => {
+        setShowModal(true);
+        processReviewsThroughAPI(reviews); 
+    }
     useEffect(() => {
         if (fontsLoaded) {
             getDishes();
@@ -160,7 +163,7 @@ const HomeScreen = () => {
                 </View>
                 <SearchInput placeholder={"Search for dishes"} value={searchQuery} onChangeText={setSearchQuery} />
                 {role == 2 && (
-                    <TouchableOpacity onPress={() => setShowModal(true)}>
+                    <TouchableOpacity onPress={handleOpenModal}>
                         <FontAwesome5 name="robot" size={24} color={'#f5c502'} style={styles.icon} />
                     </TouchableOpacity>
                 )}
