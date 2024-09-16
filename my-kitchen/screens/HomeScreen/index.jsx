@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Keyboard, Modal } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,6 +13,7 @@ const HomeScreen = () => {
     const navigation = useNavigation();
     const [error, setError] = useState(null);
     const [dishes, setDishes] = useState([]);
+    const [showModal, setShowModal] = useState(false);
     const [selectedDay, setSelectedDay] = useState('Daily');
     const [searchQuery, setSearchQuery] = useState('');
     const [fontsLoaded] = useFonts({
@@ -59,8 +60,8 @@ const HomeScreen = () => {
                     <Text style={styles.appName}>Mama's Kitchen</Text>
                 </View>
                 <SearchInput placeholder={"Search for dishes"} value={searchQuery} onChangeText={setSearchQuery}/>
-                <TouchableOpacity>
-                <FontAwesome5 name="utensils" size={26} color={'#FFCF0F'} style={styles.icon}/>
+                <TouchableOpacity onPress={() => setShowModal(true)}>
+                <FontAwesome5 name="robot" size={24} color={'#FFCF0F'} style={styles.icon}/>
                  </TouchableOpacity>
                 <Text style={styles.error}>{error}</Text>
                 <View style={styles.scrollView}>
@@ -90,6 +91,22 @@ const HomeScreen = () => {
                     )) : <Text style={styles.none}>No dishes found</Text>}
                     </View>
                 </View>
+                <Modal
+                    visible={showModal}
+                    transparent={true}
+                    animationType="slide"
+                    onRequestClose={() => setShowModal(false)}
+                >
+                    <View style={styles.modalOverlay}>
+                        <View style={styles.modalView}>
+                            <FontAwesome5 name="robot" size={18} color={'#FFCF0F'} style={styles.robot}/>
+                            <Text style={styles.modalText}>Hello there, It's me! Your AI assistant. Let's figure out how to improve</Text>
+                            <TouchableOpacity onPress={() => setShowModal(false)}>
+                                <Text style={styles.closeText}>Close</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
             </View>
         </TouchableWithoutFeedback>
     );
