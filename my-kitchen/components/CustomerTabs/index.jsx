@@ -4,7 +4,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import HomeScreen from "../../screens/HomeScreen";
 import ChefsScreen from "../../screens/ChefsScreen";
 import CartScreen from "../../screens/CartScreen";
-import MyOrdersScreen from "../../screens/MyOrdersScreen";
+import ChefOrdersScreen from "../../screens/ChefOrdersScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,26 +16,26 @@ const CustomerTabs = ({route}) => {
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
               if (route.name === 'Home') {
-                iconName = focused ? 'home' : 'home';
+                iconName = focused ? 'house' : 'house';
               } else if (route.name === 'Chefs') {
-                iconName = focused ? 'restaurant-menu' : 'local-dining';
+                iconName = focused ? 'restaurant' : 'restaurant';
               } else if (route.name === 'Cart') {
                 iconName = focused ? 'shopping-cart' : 'shopping-cart';
               } else if (route.name === 'My Orders') {
                 iconName = focused ? 'archive' : 'archive';
               }
-              return <MaterialIcons name={iconName} size={29} color={color} />;
+              return <MaterialIcons name={iconName} size={27} color={color} />;
             },
             tabBarActiveTintColor: '#FFCF0F',
             tabBarInactiveTintColor: '#B20530',
             tabBarStyle: {
                 backgroundColor: '#fff',
-                paddingBottom: 8,
+                paddingBottom: 12,
                 height: 70,
-
+                marginLeft: -11
             },
             tabBarIconStyle: {
-                marginTop: 2,
+                marginTop: 7,
             },
             headerShown: false
           })}
@@ -66,7 +66,7 @@ const CustomerTabs = ({route}) => {
             />
             <Tab.Screen
               name="My Orders"
-              component={MyOrdersScreen}
+              component={ChefOrdersScreen}
               options={{
                 tabBarShowLabel: true
               }}
