@@ -46,7 +46,7 @@ export default StyleSheet.create({
         flexWrap: 'wrap',
         borderRadius: 30,
         borderColor: "#B20530",
-        borderWidth: 2,
+        borderWidth: 1,
         height: 110,
         marginLeft: 30,
         marginTop: 30, 
