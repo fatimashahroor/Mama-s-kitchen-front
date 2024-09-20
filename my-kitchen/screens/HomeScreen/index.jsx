@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect} from 'react';
 import { View, Text, Image, FlatList, TouchableWithoutFeedback, TouchableOpacity, Keyboard, Modal } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
@@ -9,24 +9,28 @@ import SearchInput from '../../components/search/search';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Ionicons } from '@expo/vector-icons';
 import { EXPO_PUBLIC_API_URL, OPENAI_URL } from '@env';
-
+import { useSelector, useDispatch } from "react-redux";
+import { addToCart } from "../../utils/redux/cartSlice";
 const HomeScreen = () => {
+    const dispatch = useDispatch();
+    const [cookId, setCookId] = useState(null);
     const navigation = useNavigation();
     const [error, setError] = useState(null);
     const [role, setRole] = useState(null);
     const [dishes, setDishes] = useState([]);
+    const [lastFetchedDishIndex, setLastFetchedDishIndex] = useState(0);
     const [reviews, setReviews] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedDay, setSelectedDay] = useState('Daily');
     const [searchQuery, setSearchQuery] = useState('');
-    const [lastFetchedDishIndex, setLastFetchedDishIndex] = useState(0); 
-    const intervalRef = useRef(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [currentDishName, setCurrentDishName] = useState('');
     const [fontsLoaded] = useFonts({
         Pacifico_400Regular, Inter_400Regular, Inter_600SemiBold
     });
     const days = ["Daily", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
+    const cart = useSelector((state) => state.cart.cart);
     const handleDayPress = (day) => {
         setSelectedDay(day);
     };
@@ -39,6 +43,7 @@ const HomeScreen = () => {
         const user = await AsyncStorage.getItem('user');
         const user_info = JSON.parse(user).roles;
         setRole(user_info);
+        setCookId(JSON.parse(user).id);
     };
 
     const getDishes = async () => {
@@ -58,11 +63,10 @@ const HomeScreen = () => {
             }
         } catch (error) {
             setError(error.toString());
-            console.log(error);
         }
     };
-
-    const getDishReviews = async (dishId) => {
+    const getDishReviews = async (dishId, dishName) => {
+        setIsLoading(true);
         try {
             const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/review/${dishId}`, {
                 method: 'GET',
@@ -72,19 +76,17 @@ const HomeScreen = () => {
                 },
             });
             const data = await response.json();
-            if (response.ok) {
-                const commentsArray = data.map(element => element.comment);
-                setReviews(commentsArray);
-                processReviewsThroughAPI(commentsArray); 
-            }
+            const commentsArray = data.map(element => element.comment);
+            setReviews(commentsArray);
+            processReviewsThroughAPI(commentsArray, dishName); 
         } catch (error) {
             console.error(error);
+        } finally {
+            setIsLoading(false);  
         }
     };
 
-    const processReviewsThroughAPI = async (reviews) => {
-        console.log('Reviews:');
-        console.log(reviews);
+    const processReviewsThroughAPI = async (reviews, dishName) => {
         try {
             const response = await fetch(`${OPENAI_URL}/process_reviews`, {
                 method: 'POST',
@@ -94,44 +96,40 @@ const HomeScreen = () => {
                 },
                 body: JSON.stringify({ reviews })
             });
-            console.log(response);
             const data = await response.json();
-            console.log(data);
-            if (response.ok) {
-                setSuggestions(data.suggestions);  
-                setShowModal(true);
+            if (data.suggestions && data.suggestions.length > 0) {
+                setSuggestions(data.suggestions);
+                setCurrentDishName(dishName);
+            } else {
+                setSuggestions(["No suggestions to improve the dish."]);
             }
         } catch (error) {
             console.error('Error processing reviews:', error);
         }
     };
 
-    const fetchDishEvery1Minute = () => {
-        if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-        }    
-        intervalRef.current = setInterval(async () => {
-            const nextDishIndex = (lastFetchedDishIndex + 1) % dishes.length;
-            const nextDishId = dishes[nextDishIndex].id;
-            await getDishReviews(nextDishId);
-            setLastFetchedDishIndex(nextDishIndex);
-
-        }, 60000); 
-    };
-    const handleOpenModal = () => {
+    const handleOpenModal = async () => {
         setShowModal(true);
-        processReviewsThroughAPI(reviews); 
+        cookDishes = dishes.filter (dish => dish.user_id == cookId);
+        const currentDishIndex = lastFetchedDishIndex % cookDishes.length; 
+        const currentDish = cookDishes[currentDishIndex];
+        await getDishReviews(currentDish.id, currentDish.name);
+        setLastFetchedDishIndex(currentDishIndex + 1);
+    };
+
+    const addDishToCart = (item) => {
+            for(let i=0; i<cart.length; i++){
+                if(cart[i].id == item.id)
+                    return;
+            }
+            
+            dispatch(addToCart({...item, quantity:1}));
     }
+
     useEffect(() => {
-        if (fontsLoaded) {
             getDishes();
             getRole();
-            fetchDishEvery1Minute();
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-            }
-        }
-    }, [fontsLoaded]);
+        }, []);
 
     const renderDish = ({ item }) => (
         <TouchableOpacity key={item.id} onPress={() => {
@@ -145,11 +143,11 @@ const HomeScreen = () => {
                     <Text style={styles.dishPrice}>{item.price + "$"}</Text>
                 </View>
                 <Text style={styles.user}>{item.user_full_name}</Text>
-                <Ionicons style={styles.cart} name='cart' color={'black'} size={20}></Ionicons>
+                <Ionicons style={styles.cart} name='cart' color={'black'} size={20} 
+                onPress={() => addDishToCart(item)}></Ionicons>
             </View>
         </TouchableOpacity>
     );
-
     if (!fontsLoaded) {
         return <Text>Loading Fonts...</Text>;
     }
@@ -161,7 +159,8 @@ const HomeScreen = () => {
                     <Image source={require('../../assets/logo.png')} style={styles.logo}></Image>
                     <Text style={styles.appName}>Mama's Kitchen</Text>
                 </View>
-                <SearchInput placeholder={"Search for dishes"} value={searchQuery} onChangeText={setSearchQuery} />
+                <SearchInput placeholder={"Search for dishes"} value={searchQuery} onChangeText={setSearchQuery}
+                   width={role == 2 ? '72%' : '84%'} />
                 {role == 2 && (
                     <TouchableOpacity onPress={handleOpenModal}>
                         <FontAwesome5 name="robot" size={24} color={'#f5c502'} style={styles.icon} />
@@ -189,12 +188,16 @@ const HomeScreen = () => {
                     onRequestClose={() => setShowModal(false)}>
                     <View style={styles.modalOverlay}>
                         <View style={styles.modalView}>
-                            <FontAwesome5 name="robot" size={18} color={'#FFCF0F'} style={styles.robot} />
-                            <Text style={styles.modalText}>Hey there, it's me! Your AI assistant.</Text>
-                            <Text style={styles.modalText}>Here are some suggestions to improve:</Text>
-                            <Text></Text>
-                            <Text style={styles.suggestions}>{suggestions}</Text>
-                            <TouchableOpacity onPress={() => setShowModal(false)}>
+                            <FontAwesome5 name="robot" size={15} color={'#FFCF0F'} style={styles.robot} />
+                            <Text style={styles.modalText}>Hey there, it's me! Your AI assistant. 
+                                Here are some suggestions to improve your:</Text>
+                            {isLoading ? (
+                                <Text style={styles.text}>Loading suggestions...</Text>
+                            ) : (<>
+                                    <Text style={styles.suggestions}>{currentDishName} dish: {"\n"}{suggestions}</Text>
+                                </>)}
+                            <TouchableOpacity onPress={() => {setShowModal(false); setSuggestions([]); setIsLoading(false)
+                                setCurrentDishName(''); }}>
                                 <Text style={styles.closeText}>Close</Text>
                             </TouchableOpacity>
                         </View>
