@@ -42,16 +42,19 @@ const ChefsScreen = () => {
       }
   };
     const getChefs = async () => {
+      const user = await AsyncStorage.getItem('user');
+      const parsedUser = JSON.parse(user);
+      const token = await AsyncStorage.getItem('token');
       try {
         const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/cooks`, {
           method: 'GET',
           headers: {
             'content-type': 'application/json',
-            'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`
+            'Authorization': `Bearer ${token}`
           }
         });
         const data = await response.json();
-        if (data) {        ;
+        if (data) {  
           setChefs(data.cooks);
           data.cooks.forEach(cook => getOverallRating(cook.id));
         } else {
@@ -86,6 +89,7 @@ const ChefsScreen = () => {
     useEffect(() => {
       getChefs();
     }, []);
+
     const filteredChefs = chefs.filter((chef) => 
       chef.full_name.toLowerCase().includes(searchQuery.toLowerCase())
     );
