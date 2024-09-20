@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Text, View, Image, TouchableOpacity,  TouchableWithoutFeedback, Keyboard } from "react-native";
+import { Text, View, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Linking } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import styles from "./styles";
 import { useFonts, Inter_400Regular, Inter_600SemiBold} from '@expo-google-fonts/inter';
@@ -11,6 +11,9 @@ import {EXPO_PUBLIC_API_URL} from '@env';
 function LoginScreen() {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const navigation = useNavigation();  
+    const EmailAddress = "fatima2@ex.com";  
+    const SubjectText = "Application for cook registration";  
+    const bodyText = `Full Name:  \nEmail: \nPhone: \nLocation: \nAge: \n\nBy sending this email, I agree to be charged for 10$ per month. To be sent during the upcoming two days through wish at the following phone number: 01234567`;  
     const [errorMessage, setErrorMessage] = useState("");
     const [inputs , setInputs] = useState({
         email: '',
@@ -91,7 +94,10 @@ function LoginScreen() {
                 </View>
                 <View style={styles.flexColumn}>
                     <Text style={[styles.customText1, styles.accountText, styles.margin]}>You're a cook and wants to {'\n'}start your journey with us? </Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('ContactUs')}>
+                    <TouchableOpacity onPress={() => {
+                      const mailtoLink = `mailto:${EmailAddress}?subject=${encodeURIComponent(SubjectText)}&body=${encodeURIComponent(bodyText)}`;
+                      Linking.openURL(mailtoLink).catch(err => console.error('An error occurred', err));
+                    }}>
                         <Text style={[styles.customText1, styles.signUp]}>Contact Us</Text>
                     </TouchableOpacity>
                 </View>
