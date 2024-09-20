@@ -6,12 +6,16 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Ionicons } from '@expo/vector-icons';
 import { EXPO_PUBLIC_API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../utils/redux/cartSlice";
 
 const ChefMenuScreen = ({ route, navigation }) => {
+    const dispatch = useDispatch();
+    const cart = useSelector(state => state.cart.cart);
     const { chef } = route.params;
     const [chefMenu, setChefMenu] = useState([]);
     const [rating, setRating] = useState({});
-    const [selectedDay, setSelectedDay] = useState(null);
+    const [selectedDay, setSelectedDay] = useState('Daily');
     const [modalVisible, setModalVisible] = useState(false); 
     const [userRating, setUserRating] = useState(0);
     const [fontsLoaded] = useFonts({
@@ -126,14 +130,15 @@ const ChefMenuScreen = ({ route, navigation }) => {
     return (
         <View style={styles.container}>
             <FontAwesome5 name="chevron-left" size={20} style={styles.icon} onPress={() => navigation.goBack()} />
-            <Ionicons name="star-half" size={22} color="#B20530" style={styles.star} onPress={() => setModalVisible(true)} />
         <ScrollView showsVerticalScrollIndicator={false}>
         <View>
             <View style={styles.flexRow}>
                 <Image style= {styles.imageStyle} source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${chef.image_path}` }}></Image>
                 <View style={styles.flexColumn}>
                     <Text style={styles.chefName}>{chef.full_name}</Text>
-                    <StarRating rating={rating[chef.id] || 0} />
+                    <TouchableOpacity onPress={() => setModalVisible(true)}>
+                        <StarRating rating={rating[chef.id] || 0} />
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.verticalLine} />
                 <View style={styles.flexColumn}>
@@ -163,7 +168,8 @@ const ChefMenuScreen = ({ route, navigation }) => {
                                 <Text style={styles.dishName}>{item.name} </Text>
                                 <Text style={styles.dishPrice}>{item.price + "$"}</Text>
                             </View>
-                            <Ionicons style={styles.cart} name='cart' color={'black'} size={20}></Ionicons>
+                            <Ionicons style={styles.cart} name='cart' color={'black'} size={20}
+                            onPress={() => dispatch(addToCart(item))}></Ionicons>
                         </View> 
                     )) : <Text style={styles.none}>No dishes found</Text>}
             </View>
