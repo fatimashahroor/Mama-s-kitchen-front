@@ -57,7 +57,7 @@ const ChefProfileScreen = () => {
         if (!isValid) {
             Alert.alert('Error', errors.join('\n'));
         }
-        setError(errors.join(', '));
+        setError(errors.join(', ').toString());
         return isValid;
     };
     
@@ -141,7 +141,7 @@ const ChefProfileScreen = () => {
                 setProfileImage(image_uri);
             }
         } catch (error) {
-            setError(error);
+            console.log(error.toString());
         }
     }
     const pickImage = async () => {
@@ -153,7 +153,6 @@ const ChefProfileScreen = () => {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images, allowsEditing: true, quality: 1, aspect: [4, 3],      
         });
-        console.log(result);
         if (!result.canceled) {
             setProfileImage(result.assets[0].uri);
         }
