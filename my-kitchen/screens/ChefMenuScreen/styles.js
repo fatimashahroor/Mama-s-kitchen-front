@@ -4,6 +4,7 @@ export default StyleSheet.create({
     container: {
         margin: 30,
         flex: 1,
+        backgroundColor: 'white',
     },
     imageStyle: {
         width: 67,
@@ -100,7 +101,7 @@ export default StyleSheet.create({
     },
     dishName: {
         marginTop: 7,
-        marginLeft: 35,
+        marginLeft: 38,
         fontFamily: 'Inter_600SemiBold',
         fontSize: 12,
     },  
