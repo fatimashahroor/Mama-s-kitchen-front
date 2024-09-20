@@ -2,11 +2,12 @@ import {View, TextInput} from 'react-native';
 import styles from './searchStyle';
 import { Ionicons } from '@expo/vector-icons';
  
-const SearchInput = ({placeholder, onChangeText, placeholderTextColor, onBlur, onFocus, value}) => {
+const SearchInput = ({placeholder, onChangeText, placeholderTextColor, onBlur, onFocus, value, width}) => {
   return (
       <View style={styles.container}>
           <TextInput
               style={styles.input}
+              width={width}
               onChangeText={onChangeText}
               placeholder={placeholder}
               placeholderTextColor={placeholderTextColor}
