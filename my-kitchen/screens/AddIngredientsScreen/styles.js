@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'white',
     },
     text: {
         fontSize: 28,
@@ -51,14 +52,14 @@ export default StyleSheet.create({
     },
     ing: {
         paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc', 
+        borderBottomWidth: 2,
+        borderBottomColor: '#FFD21C', 
     },
     name: {
         fontSize: 16,
         flex: 1,
         fontFamily: 'Inter_600SemiBold',
-        color: '#dbb30b',
+        color: 'black',
     },
     cost: {
         fontSize: 16,
