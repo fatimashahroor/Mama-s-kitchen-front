@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
-import { configureStore } from '@reduxjs/toolkit';
 import {Provider} from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -21,10 +20,10 @@ import EditDishesScreen from './screens/EditDishesScreen';
 import ChefOrdersScreen from './screens/ChefOrdersScreen';
 import ChefTabs from './components/ChefTabs';
 import CartScreen from './screens/CartScreen';
-import MyOrdersScreen from './screens/MyOrdersScreen';
 import CustomerTabs from './components/CustomerTabs';
 import AddIngredientsScreen from './screens/AddIngredientsScreen';
-import store from './components/store';
+import CheckoutScreen from './screens/CheckoutScreen';
+import { Store } from './utils/redux';
 export default function App() {
   const Stack = createNativeStackNavigator();
   const [isLoading, setIsLoading] = useState(true);
@@ -71,7 +70,7 @@ export default function App() {
     );
   }
   return (
-    <Provider store={store}>
+    <Provider store={Store}>
       <PermissionsProvider>
       <SafeAreaProvider>
         <SafeAreaView style={{ flex: 1 }}>
@@ -89,9 +88,9 @@ export default function App() {
               <Stack.Screen name="ChefOrders" component={ChefOrdersScreen} />
               <Stack.Screen name="ChefTabs" component={ChefTabs} />
               <Stack.Screen name="Cart" component={CartScreen} />
-              <Stack.Screen name="MyOrders" component={MyOrdersScreen} />
               <Stack.Screen name="CustomerTabs" component={CustomerTabs} />
               <Stack.Screen name="AddIngredients" component={AddIngredientsScreen} />
+              <Stack.Screen name="Checkout" component={CheckoutScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </SafeAreaView>
