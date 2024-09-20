@@ -28,7 +28,7 @@ export default StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
     },
     flexStart: {
         justifyContent: 'flex-start',
@@ -52,9 +52,9 @@ export default StyleSheet.create({
     dish: {
         backgroundColor: "#FFD21C",
         borderRadius: 30,
-        marginLeft: 15,
+        marginLeft: 28,
         marginTop: 25,
-        marginRight: 15,
+        marginRight: 0,
         width: 150,
         height: 200,
     },
@@ -103,8 +103,8 @@ export default StyleSheet.create({
         color: "#B20530",
         fontFamily: 'Inter_400Regular',
         fontSize: 18,
-        marginTop: 80,
-        marginLeft: 110,
+        marginTop: 100,
+        marginLeft: 126,
     },
     day: {
         borderRadius: 30,
@@ -137,7 +137,7 @@ export default StyleSheet.create({
         textAlign: "left",
         width: 240,
         padding: 10,
-        fontSize: 14,
+        fontSize: 16,
     },
     closeText: {
         color: 'black',
@@ -148,5 +148,11 @@ export default StyleSheet.create({
     robot: {
         marginBottom: 5,
         marginTop: -18,
+    },
+    suggestions: {
+        fontSize: 16,                       
+        color: '#666',                      
+        textAlign: 'left',    
+        fontFamily: 'Inter_400Regular',             
     },
 })
