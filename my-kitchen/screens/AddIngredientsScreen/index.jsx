@@ -105,7 +105,8 @@ const AddIngredientsScreen = () => {
             <View style={styles.container}>
                 <Text style={styles.text}>My Ingredients</Text>
                 <TouchableOpacity activeOpacity={1} >
-                    <SearchInput placeholder="Search for your ingredients" value={searchQuery} onChangeText={setSearchQuery}/>
+                    <SearchInput placeholder="Search for your ingredients" value={searchQuery} 
+                    onChangeText={setSearchQuery} width={'72%'}/>
                     <TouchableOpacity onPress={() => {setModalVisible(true); setCurrentIngredient({name : '', cost: ''})}}>
                         <Ionicons name='add-circle-outline' size={27} style={styles.menu} />
                     </TouchableOpacity>
