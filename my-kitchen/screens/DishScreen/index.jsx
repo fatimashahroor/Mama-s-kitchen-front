@@ -6,7 +6,8 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Ionicons } from '@expo/vector-icons';
 import { EXPO_PUBLIC_API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../utils/redux/cartSlice";
 
 const UserRating = ({ userRating, setUserRating }) => {
     const stars = [];
@@ -21,18 +22,28 @@ const UserRating = ({ userRating, setUserRating }) => {
     return <View style={{ flexDirection: 'row', justifyContent: 'center' }}>{stars}</View>;
 };
 
-
 const DishScreen = ({ route, navigation }) => {
+    const dispatch = useDispatch();
+    const cart  = useSelector((state) => state.cart.cart);
+    const [comment, setComment] = useState('');
     const { dishId, cook } = route.params;
     const [dishDetails, setDishDetails] = useState([]);
     const [additionalIngredients, setAdditionalIngredients] = useState([]);
     const [sendReview , setSendReview] = useState('');
     const [userRating, setUserRating] = useState(0);
+    const [dishQuantity, setDishQuantity] = useState(1);
     const [quantities, setQuantities] = useState([]);
     const [dishRating, setDishRating] = useState([]);
     const [fontsLoaded] = useFonts({
         Inter_400Regular, Inter_600SemiBold});
     
+    const handleIncrementDish = () => {
+        setDishQuantity(prevQty => prevQty + 1);
+    };
+
+    const handleDecrementDish = () => {
+        setDishQuantity(prevQty => prevQty > 1 ? prevQty - 1 : 1);
+    };
     const getDishDetails = async () => {
         try {
             const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/dish/${dishId}`, {
@@ -48,7 +59,7 @@ const DishScreen = ({ route, navigation }) => {
             const data = await response.json();
             setDishDetails(data);
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     };
 
@@ -67,13 +78,13 @@ const DishScreen = ({ route, navigation }) => {
             const data = await response.json();
             setDishRating(data);
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     };
     const totalRatings = dishRating.length > 0 ? dishRating.reduce((sum, review) => 
         sum + parseInt(review.rating), 0) : 0;
     const overallRating = dishRating.length > 0 ? 
-    Math.round(totalRatings / dishRating.length).toFixed(1) : 'No ratings yet';
+    Math.round(totalRatings / dishRating.length).toFixed(1) : 0;
 
     const getAdditionalIngredients = async () => {
         try {
@@ -91,7 +102,7 @@ const DishScreen = ({ route, navigation }) => {
             setAdditionalIngredients(data);
             setQuantities(data.map(() => 0));
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     };
 
@@ -153,7 +164,34 @@ const DishScreen = ({ route, navigation }) => {
             Alert.alert( 'Cannot submit review', error.message || 'Failed to submit review');
         }
     };
-    
+    const addDishToCart = (dishDetails) => {
+        const isDishInCart = cart.some(item => item.id === dishDetails.id);
+        if (!isDishInCart) {
+            const filteredIngredients = additionalIngredients
+                .filter((ingredient, index) => quantities[index] > 0)
+                .map((ingredient, index) => ({
+                    id: ingredient.id,
+                    name: ingredient.name,
+                    quantity: quantities[index],
+                    cost: ingredient.cost
+                }));
+            const newDish = {
+                id: dishDetails.id,
+                name: dishDetails.name,
+                image_path: dishDetails.image_path,
+                cook_id : dishDetails.user_id,
+                price: dishDetails.price,
+                quantity: dishQuantity,
+                comment: comment,
+                additional_ings: filteredIngredients
+            };
+            dispatch(addToCart(newDish));
+            console.log(cart[0]);
+        } else {
+            Alert.alert("Notice", "This dish is already in your cart.");
+        }
+    };
+
     useEffect(() => {
         getDishDetails();
         getDishReviews();
@@ -177,13 +215,27 @@ const DishScreen = ({ route, navigation }) => {
                 <View style={styles.container}>
                     <View styles={styles.imageContainer}>
                         <FontAwesome5 name="chevron-left" size={24} style={styles.icon} onPress={() => navigation.goBack()}/>
-                        <Ionicons style={styles.cart} name='cart' size={27}></Ionicons>
+                        <Ionicons style={styles.cart} name='cart' size={27}
+                        onPress={() => addDishToCart(dishDetails)}></Ionicons>
                         <Image source={{ uri: `${EXPO_PUBLIC_API_URL}/images/${dishDetails.image_path}` }} style={styles.image} />
                     </View>
                     <View style={styles.flexRow}>
                         <View>
                             <Text style={styles.name}>{dishDetails.name}</Text>
                             <Text style={styles.cookName}>{cook}</Text>
+                        <View style={[styles.controlsContainer, styles.quantity]}>
+                            <TouchableOpacity
+                                onPress={handleDecrementDish}
+                                style={styles.controlButton}>
+                                <Text style={styles.controlText}>-</Text>
+                            </TouchableOpacity>
+                            <Text style={styles.quantityText}>{dishQuantity}</Text>
+                            <TouchableOpacity
+                                onPress={handleIncrementDish}
+                                style={styles.controlButton}>
+                                <Text style={styles.controlText}>+</Text>
+                            </TouchableOpacity>
+                        </View>
                         </View>
                         <Text style={styles.price}>{dishDetails.price}$</Text>
                     </View>
@@ -198,7 +250,7 @@ const DishScreen = ({ route, navigation }) => {
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.button}>
                             <Text style={styles.text}>Rating</Text>
-                            <StarRating overallRating={overallRating}/>
+                            <StarRating overallRating={overallRating ? overallRating : 0}/>
                         </TouchableOpacity>
                     </View>
                     <Text style={styles.text2}>Steps</Text>
@@ -206,32 +258,41 @@ const DishScreen = ({ route, navigation }) => {
                     <Text style={styles.text2}>Main Ingredients</Text>
                     <Text style={styles.text3}>{dishDetails.main_ingredients}</Text>
                     <Text style={styles.text2}>Additional Ingredients</Text>
-                    <Text style={styles.text3}>Choose your preferred ingredients to add.</Text>
-                    <View style={styles.ingredientList}>
-                        {additionalIngredients.map((ingredient, index) => (
-                            <View key={index} style={styles.ingredientContainer}>
-                                <Text style={styles.ingredientText}>
-                                    {ingredient.name} ({ingredient.cost}$)
-                                </Text>
-                                <View style={styles.controlsContainer}>
-                                    <TouchableOpacity
-                                        onPress={() => handleDecrement(index)}
-                                        style={styles.controlButton}>
-                                        <Text style={styles.controlText}>-</Text>
-                                    </TouchableOpacity>
-                                    <Text style={styles.quantityText}>{quantities[index]}</Text>
-                                    <TouchableOpacity
-                                        onPress={() => handleIncrement(index)}
-                                        style={styles.controlButton}>
-                                        <Text style={styles.controlText}>+</Text>
-                                    </TouchableOpacity>
+                    {additionalIngredients.length === 0 ? (
+                            <Text style={styles.text3}>No additional ingredients</Text>
+                        ) : (
+                            <>
+                                <Text style={styles.text3}>Choose your preferred ingredients to add.</Text>
+                                <View style={styles.ingredientList}>
+                                    {additionalIngredients.map((ingredient, index) => (
+                                        <View key={index} style={styles.ingredientContainer}>
+                                            <Text style={styles.ingredientText}>
+                                                {ingredient.name} ({ingredient.cost}$)
+                                            </Text>
+                                            <View style={styles.controlsContainer}>
+                                                <TouchableOpacity
+                                                    onPress={() => handleDecrement(index)}
+                                                    style={styles.controlButton}>
+                                                    <Text style={styles.controlText}>-</Text>
+                                                </TouchableOpacity>
+                                                <Text style={styles.quantityText}>{quantities[index]}</Text>
+                                                <TouchableOpacity
+                                                    onPress={() => handleIncrement(index)}
+                                                    style={styles.controlButton}>
+                                                    <Text style={styles.controlText}>+</Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                    ))}
                                 </View>
-                            </View>
-                        ))}
+                            </>
+                        )}
                         <TouchableOpacity style={[styles.ingredientContainer, styles.comment]}>
-                            <TextInput placeholder="Any special instructions?" style={styles.commentText}></TextInput>
-                        </TouchableOpacity>
-                    </View>
+                            <TextInput 
+                                placeholder="Any special instructions?" value={comment} onChangeText={setComment}
+                                style={styles.commentText}
+                            ></TextInput>
+                        </TouchableOpacity> 
                     <Text style={styles.text2}>Reviews</Text>
                     <View style={[styles.flexColumn]}>
                         <View style={styles.addReview}>
@@ -246,7 +307,7 @@ const DishScreen = ({ route, navigation }) => {
                     </View>   
                 </View>
             );
-        } else if (item.type === 'review') {
+        } else if (item.type === 'review' && item.review) {
             return renderReview({ item: item.review });
         }
         return null;};
