@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'white',
     },
     image: {
         width: "100%",
@@ -56,8 +57,8 @@ export default StyleSheet.create({
         color: 'black',
         fontFamily: 'Inter_600SemiBold',
         fontSize: 16,
-        marginLeft: 328,
-        marginTop: -45,
+        marginLeft: 326,
+        marginTop: -55,
     },
     flexContainer: {
         display: 'flex',
@@ -142,6 +143,13 @@ export default StyleSheet.create({
         fontWeight: "bold",
         color: 'black',
     },
+    quantity: {
+        height: 30,
+        width: 100,
+        marginLeft: 255,
+        marginTop: -25,
+        paddingVertical: -10,
+    },
     quantityText: {
         fontSize: 14,
         fontWeight: 'bold',
@@ -167,6 +175,7 @@ export default StyleSheet.create({
         fontSize: 15,
         marginLeft: 18,
         marginTop: 10,
+        backgroundColor: '#fff',
     },
     reviewList: {
         borderWidth: 1,
@@ -186,6 +195,7 @@ export default StyleSheet.create({
         marginTop: 2,
         lineHeight: 20,
         marginBottom: 10,
+        backgroundColor: '#fff',
     },
     reviewText2: {
         fontFamily: 'Inter_400Regular',
@@ -193,6 +203,7 @@ export default StyleSheet.create({
         marginLeft: 18,
         marginTop: 2,
         lineHeight: 20,
+        backgroundColor: '#fff',
     },
     sendIcon: {
         marginRight: 7,
@@ -218,5 +229,6 @@ export default StyleSheet.create({
     },
     reviewContainer: {
         marginBottom: 5,
+        backgroundColor: '#fff',
     }
 })
