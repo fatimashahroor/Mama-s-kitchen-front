@@ -87,7 +87,6 @@ const AddIngredientsScreen = () => {
                 body: JSON.stringify({name: currentIngredient.name, cost: currentIngredient.cost})
             });
             const data = await response.json();
-            console.log(response);
             if (!response.ok) {
                 throw new Error("Failed to update ingredient");
             }
