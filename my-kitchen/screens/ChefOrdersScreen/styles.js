@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'white',
     },
     text: {
         fontSize: 28,
@@ -19,7 +20,6 @@ export default StyleSheet.create({
         marginRight: 27,
         borderRadius: 30,
         padding: 10,
-        height: 225,
         marginBottom: 20
     },
     orderImage: {
@@ -76,6 +76,7 @@ export default StyleSheet.create({
         marginBottom: 3,
     },
     filterButton: {
+        backgroundColor: '#B20530',
         width: 100,
         height: 50,
         borderRadius: 30,
@@ -85,7 +86,7 @@ export default StyleSheet.create({
         marginLeft: 10,
     },
     filterText: {
-        color: "#B20530",
+        color: 'white',
         fontSize: 16,
         fontFamily: 'Inter_400Regular',
     },
@@ -98,16 +99,21 @@ export default StyleSheet.create({
         marginRight: -5,
         marginLeft: -5,
     },
-    activeFilter : {
-        backgroundColor: '#dedede', 
-        fontWeight: 'bold',
-        color: 'black'
-    },
     enabledButton : {
         backgroundColor: 'transparent', 
+        marginLeft: 280,
     },    
     disabledButton : {
         backgroundColor: 'transparent',
         opacity: 0.1, 
-    }
+        marginLeft: 280,
+    },
+    noOrdersText: {
+        fontSize: 20,
+        textAlign: 'center',
+        marginTop: 120,
+        marginBottom: 10,
+        fontFamily: 'Inter_400Regular',
+        color: '#B20530',
+    },
 })
