@@ -9,7 +9,7 @@ export default StyleSheet.create({
         borderColor: 'gray',
         borderWidth: 1,
         marginLeft: 30,
-        marginRight: 80,
+        marginRight: 30,
         borderRadius: 30,
         fontSize: 14,
         fontFamily: 'Inter_400Regular',
