@@ -10,7 +10,10 @@ export const dishesSlice = createSlice({
   reducers: {
     addDish: {
       reducer(state, action) {
-        state.dishesList.push(action.payload);
+        state.dishesList = [...state.dishesList, action.payload];
+      },
+      prepare(data) {
+        return { payload: data};
       }
     },
     initiateDishes: {
@@ -25,7 +28,7 @@ export const dishesSlice = createSlice({
       state.dishesList = state.dishesList.filter(dish => dish.id !== action.payload);
     },
     updateDish(state, action) {
-      const { id, name, price, steps, main_ingredients, duration, rating, image_path, available_on, diet_type } = action.payload;
+      const { id, name, price, steps, main_ingredients, duration, image_path, available_on, diet_type } = action.payload;
       const existingDish = state.dishesList.find(dish => dish.id === id);
       if (existingDish) {
         existingDish.name = name;
@@ -33,7 +36,6 @@ export const dishesSlice = createSlice({
         existingDish.steps = steps;
         existingDish.main_ingredients = main_ingredients;
         existingDish.duration = duration;
-        existingDish.rating = rating;
         existingDish.image_path = image_path;
         existingDish.available_on = available_on;
         existingDish.diet_type = diet_type;
