@@ -1,13 +1,16 @@
 import React, { useState , useEffect} from "react";
-import { View, Text, TouchableOpacity, Modal, TextInput, CheckBox, FlatList } from "react-native";
+import { View, Text, TouchableOpacity, Modal, TextInput, FlatList, Alert } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from "@expo/vector-icons";
 import styles from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { EXPO_PUBLIC_API_URL } from "@env";
-
+import { useDispatch } from "react-redux";
+import { emptyingCart } from "../../utils/redux/cartSlice";
 const CheckoutScreen = ({route, navigation}) => {
-    const { cart, total } = route.params;
+    const { cart } = route.params;
+    const dispatch = useDispatch();
+    const [isChecked, setIsChecked] = useState(false);
     const [selectedLocationId, setSelectedLocationId] = useState(null);
     const [locations, setLocations] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
@@ -19,11 +22,12 @@ const CheckoutScreen = ({route, navigation}) => {
     const [newlocation, setNewLocation] = useState({
         city: '', region: '', street: '', building: '', floor_nb: '',
         near: ''});
-
+    const toggleCheckbox = () => {
+        setIsChecked(!isChecked);
+    };
     const ordersMap = {};
-    console.log(cart);
     cart.forEach(dish => {
-        const cook_id = dish.cook_id;
+        const cook_id = dish.user.id;
         if (!ordersMap[cook_id]) {
             ordersMap[cook_id] = {
                 cook_id: cook_id,
@@ -32,25 +36,13 @@ const CheckoutScreen = ({route, navigation}) => {
             };
         }
         let tmpDish = {};
-        // if(ordersMap[cook_id].dishes.additional_ings){
-            console.log("I'm here bae");
             tmpDish = {
                 dish_id: dish.id,
                 quantity: dish.quantity,
                 comment: dish.comment || null,
                 price : dish.price,
                 additional_ings: dish.additional_ings || []
-             }
-        // }
-        // else
-        //     tmpDish = {
-        //         dish_id: dish.id,
-        //         quantity: dish.quantity,
-        //         comment: dish.comment || null,
-        //         price : dish.price,
-        //         additional_ings: []
-        //     }
-            
+             }          
         ordersMap[cook_id].dishes.push(tmpDish);
         ordersMap[cook_id].order_price = ordersMap[cook_id].dishes.reduce((acc, dish) => {
             dishTotal = parseFloat(dish.price * dish.quantity);
@@ -86,15 +78,15 @@ const CheckoutScreen = ({route, navigation}) => {
                     orders: orders    
                 }),
             });
-            // console.log(response);
-            // console.log('dishes',orders[0].dishes);
-            // console.log('additional',orders[0].dishes[0].additional_ings);
-            // console.log(orders[1]);
             const data = await response.json();
-            console.log(data.errors);
             if(!response.ok) {
                 throw new Error(data.errors);
             }
+            alert("Order created successfully");
+            setTimeout(() => {
+                navigation.navigate('CustomerTabs', { screen: 'Home' });
+            }, 1000);
+            dispatch(emptyingCart());
             return data;
         } catch (error) {
             console.error(error);
@@ -129,7 +121,6 @@ const CheckoutScreen = ({route, navigation}) => {
             const currentTime = selectedTime || date;
             setShowTimePicker(false); 
             const updatedDate = new Date(date.setHours(currentTime.getHours(), currentTime.getMinutes()));
-            console.log(updatedDate);
             formatDate(updatedDate);
         } else {
             setShowTimePicker(false);
@@ -201,7 +192,6 @@ const CheckoutScreen = ({route, navigation}) => {
             [fieldName]: text
         }));
     };
-    
     return (
         <View style={styles.container}>
             <Text style={styles.text}>Checkout</Text>
@@ -238,13 +228,20 @@ const CheckoutScreen = ({route, navigation}) => {
                     </TouchableOpacity>
                 )}
                 ListFooterComponent={
-                    <TouchableOpacity onPress={() => {
-                        console.log("Hello");
-                        createOrder();
-                        console.log("Bye");
-                        }} style={styles.addLocationButton}>
-                        <Text style={styles.addLocationText}>Place Order</Text>
-                    </TouchableOpacity>
+                    <View>
+                        <View style={styles.paymentContainer}>
+                            <Text style={styles.paymentText}>Payment Method</Text>
+                            <TouchableOpacity onPress={toggleCheckbox} style={styles.payment}>
+                                <View style={[styles.checkbox, isChecked ? styles.checked : null]}>
+                                {isChecked && <Text style={styles.checkmark}>✓</Text>}
+                                </View>
+                                <Text style={styles.label}>Cash on delivery</Text>
+                            </TouchableOpacity>
+                        </View> 
+                        <TouchableOpacity onPress={() => createOrder()} style={styles.addLocationButton}>
+                            <Text style={styles.addLocationText}>Place Order</Text>
+                        </TouchableOpacity>
+                    </View>
                 }/>
             <Modal
                 animationType="slide" transparent={true}
