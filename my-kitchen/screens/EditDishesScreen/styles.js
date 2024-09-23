@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#fff',
     },
     text: {
         fontSize: 28,
@@ -59,7 +60,7 @@ export default StyleSheet.create({
         justifyContent: 'center',
     },
     scrollView: {
-        flex: 2,
+        flex: 4,
         height: "100%",
         marginTop: 20,
         marginRight: 2,
