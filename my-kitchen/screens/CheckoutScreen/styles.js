@@ -126,5 +126,39 @@ export default StyleSheet.create({
         color: '#fff',  
         fontSize: 16,
     },
+    payment : {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+    },
+    checkbox: {
+        width: 24,
+        height: 24,
+        marginRight: 10,
+        borderWidth: 1,
+        borderColor: '#B20530',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: -10,
+    },
+    checked: {
+        backgroundColor: '#B20530',
+    },
+    checkmark: {
+        color: '#fff',
+        fontWeight: 'bold',
+    },
+    label: {
+        fontSize: 14,
+        fontFamily: 'Inter_400Regular',
+    },
+    paymentContainer: {
+        margin: 30,
+    },
+    paymentText: {
+        fontSize: 18,
+        marginBottom: 10,
+        fontFamily: 'Inter_400Regular',
+    }
 })
 
