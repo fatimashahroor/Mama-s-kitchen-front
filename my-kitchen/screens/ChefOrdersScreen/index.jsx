@@ -62,7 +62,7 @@ const ChefTabs = () => {
         const flattenedOrders = orders.flat();
         return Promise.all(flattenedOrders.map(async (order) => {
             try {
-                const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/location/${order.location_id}`, {
+                const response = await fetch(`${EXPO_PUBLIC_API_URL}/api/user/location/${order.location_id}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${await AsyncStorage.getItem('token')}`,
@@ -115,7 +115,9 @@ const ChefTabs = () => {
                     </View>
                     <View style={{ flex: 1, marginLeft: -10 }}>
                         <Text style={styles.orderName}>{dish.name}</Text>
+                        {parsedUser.roles === 3 && (
                         <Text style={styles.orderedBy}>Ordered by: {item.user_full_name}</Text>
+                        )}
                         <Text style={styles.quantity}>Quantity: {dish.quantity}</Text>
                         <Text style={styles.comment}>Comment: {dish.comment || 'No comments'}</Text>
                         <Text style={styles.ingredients}>Added ingredients: {
