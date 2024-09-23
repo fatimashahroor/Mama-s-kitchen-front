@@ -118,12 +118,13 @@ const HomeScreen = () => {
     };
 
     const addDishToCart = (item) => {
-            for(let i=0; i<cart.length; i++){
-                if(cart[i].id == item.id)
-                    return;
-            }
-            
-            dispatch(addToCart({...item, quantity:1}));
+        for(let i=0; i<cart.length; i++){
+            if(cart[i].id == item.id)
+                alert("Dish already in cart");
+                return;
+        }
+        dispatch(addToCart({...item, quantity:1}));
+        alert("Dish added to cart");
     }
 
     useEffect(() => {
@@ -144,7 +145,7 @@ const HomeScreen = () => {
                 </View>
                 <Text style={styles.user}>{item.user_full_name}</Text>
                 <Ionicons style={styles.cart} name='cart' color={'black'} size={20} 
-                onPress={() => addDishToCart(item)}></Ionicons>
+                onPress={() => {addDishToCart(item)}}></Ionicons>
             </View>
         </TouchableOpacity>
     );
