@@ -123,6 +123,16 @@ const ChefMenuScreen = ({ route, navigation }) => {
         getChefDishes();
         getOverallRating(chef.id);
     }, []);
+
+    const addDishToCart = (item) => {
+        for(let i=0; i<cart.length; i++){
+            if(cart[i].id == item.id)
+                alert("Dish already in cart");
+                return;
+        }
+        dispatch(addToCart({...item, quantity:1}));
+        alert("Dish added to cart");
+    }
     const filteredDishes = chefMenu.filter(menu => menu.available_on === selectedDay)
     if (!fontsLoaded) {
         return <Text>Loading...</Text>;
@@ -169,7 +179,7 @@ const ChefMenuScreen = ({ route, navigation }) => {
                                 <Text style={styles.dishPrice}>{item.price + "$"}</Text>
                             </View>
                             <Ionicons style={styles.cart} name='cart' color={'black'} size={20}
-                            onPress={() => dispatch(addToCart(item))}></Ionicons>
+                            onPress={() => addDishToCart(item)}></Ionicons>
                         </View> 
                     )) : <Text style={styles.none}>No dishes found</Text>}
             </View>
