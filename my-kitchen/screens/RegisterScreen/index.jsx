@@ -52,7 +52,10 @@ function RegisterScreen() {
         const { token, user } = data;
         await AsyncStorage.setItem('token', token);
         await AsyncStorage.setItem('user', JSON.stringify(user));
-        navigation.navigate('Boarding1');
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Boarding1' }],
+        });
       } else {
         setErrorMessage("An error occurred while logging in. Please try again.");
       }

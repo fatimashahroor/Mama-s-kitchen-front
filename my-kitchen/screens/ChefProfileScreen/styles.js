@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'white',
     },
     title: {
         fontSize: 28,

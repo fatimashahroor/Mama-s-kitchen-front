@@ -5,6 +5,11 @@ export default StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
     },
+    back: {
+        marginLeft: 30,
+        marginTop: 40,
+        marginBottom: -40,
+    },
     text: {
         fontSize: 28,
         textAlign: "center",

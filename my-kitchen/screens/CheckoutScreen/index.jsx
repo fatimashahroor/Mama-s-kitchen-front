@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { EXPO_PUBLIC_API_URL } from "@env";
 import { useDispatch } from "react-redux";
 import { emptyingCart } from "../../utils/redux/cartSlice";
+import { FontAwesome5 } from "@expo/vector-icons";
 const CheckoutScreen = ({route, navigation}) => {
     const { cart } = route.params;
     const dispatch = useDispatch();
@@ -194,6 +195,7 @@ const CheckoutScreen = ({route, navigation}) => {
     };
     return (
         <View style={styles.container}>
+            <FontAwesome5 name="chevron-left" size={24} style={styles.back} onPress={() => navigation.goBack()}/>
             <Text style={styles.text}>Checkout</Text>
             <Text style={styles.text2}>Select Order Date and Location</Text>
             <FlatList data={locations} keyExtractor={item => item.id.toString()}

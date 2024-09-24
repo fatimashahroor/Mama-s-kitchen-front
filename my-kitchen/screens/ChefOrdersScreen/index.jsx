@@ -5,7 +5,7 @@ import { EXPO_PUBLIC_API_URL } from "@env";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const ChefTabs = () => {
+const ChefOrdersScreen = () => {
     const [orders, setOrders] = useState([]);
     const [parsedUser, setParsedUser] = useState(null);
     const [filter, setFilter] = useState('pending');
@@ -166,4 +166,4 @@ const ChefTabs = () => {
     );
 }
 
-export default ChefTabs;
+export default ChefOrdersScreen;

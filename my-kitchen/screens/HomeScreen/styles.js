@@ -155,4 +155,19 @@ export default StyleSheet.create({
         textAlign: 'left',    
         fontFamily: 'Inter_400Regular',             
     },
+    log: {
+        marginLeft: 325,
+        marginTop: 40,
+        marginBottom: -40,
+    },
+    button : {
+       display: 'flex',
+       flexDirection: 'row',
+       justifyContent: 'space-between',
+       width: 120,
+    },
+    buttonText: {
+        fontSize: 14,
+        fontFamily: 'Inter_400Regular',
+    },
 })

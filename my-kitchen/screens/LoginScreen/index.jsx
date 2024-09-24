@@ -52,9 +52,15 @@ function LoginScreen() {
           await AsyncStorage.setItem('token', access_token);
           await AsyncStorage.setItem('user', JSON.stringify(user));
           if (user.roles == 2) {
-            navigation.navigate('ChefTabs');
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'ChefTabs' }],
+            });
           } else if (user.roles == 3) {
-            navigation.navigate('CustomerTabs');
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'CustomerTabs' }],
+            });
           }
         } else {
           setErrorMessage("An error occurred while logging in. Please try again.");

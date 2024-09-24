@@ -138,7 +138,7 @@ const ChefMenuScreen = ({ route, navigation }) => {
         return <Text>Loading...</Text>;
     }
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, {backgroundColor: 'white'}]}>
             <FontAwesome5 name="chevron-left" size={20} style={styles.icon} onPress={() => navigation.goBack()} />
         <ScrollView showsVerticalScrollIndicator={false}>
         <View>

@@ -11,10 +11,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { EXPO_PUBLIC_API_URL, OPENAI_URL } from '@env';
 import { useSelector, useDispatch } from "react-redux";
 import { addToCart } from "../../utils/redux/cartSlice";
+import { CommonActions } from '@react-navigation/native';
 const HomeScreen = () => {
     const dispatch = useDispatch();
     const [cookId, setCookId] = useState(null);
     const navigation = useNavigation();
+    const [logoutModalVisible, setLogoutModalVisible] = useState(false);
     const [error, setError] = useState(null);
     const [role, setRole] = useState(null);
     const [dishes, setDishes] = useState([]);
@@ -45,7 +47,6 @@ const HomeScreen = () => {
         setRole(user_info);
         setCookId(JSON.parse(user).id);
     };
-
     const getDishes = async () => {
         try {
             const response = await fetch(`${EXPO_PUBLIC_API_URL}`+'/api/dish', {
@@ -132,6 +133,23 @@ const HomeScreen = () => {
             getRole();
         }, []);
 
+    const logout = async () => {
+        try {
+            await AsyncStorage.removeItem('token');
+            await AsyncStorage.removeItem('user');
+            navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [
+                    { name: 'Login' }, 
+                  ],
+                })
+              );
+            } catch (error) {
+              console.error('Logout failed', error);
+            }
+    }
+
     const renderDish = ({ item }) => (
         <TouchableOpacity key={item.id} onPress={() => {
             navigation.navigate('Dish', {'dishId': item.id, 'cook': item.user_full_name});
@@ -156,6 +174,7 @@ const HomeScreen = () => {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.container}>
+                <Ionicons name="power" size={24} color="#f5c502" style={styles.log} onPress={() => setLogoutModalVisible(true)} />
                 <View style={styles.flexedByRow}>
                     <Image source={require('../../assets/logo.png')} style={styles.logo}></Image>
                     <Text style={styles.appName}>Mama's Kitchen</Text>
@@ -201,6 +220,23 @@ const HomeScreen = () => {
                                 setCurrentDishName(''); }}>
                                 <Text style={styles.closeText}>Close</Text>
                             </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+                <Modal
+                    visible={logoutModalVisible} transparent={true} animationType="slide"
+                    onRequestClose={() => setLogoutModalVisible(false)}>
+                    <View style={styles.modalOverlay}>
+                        <View style={styles.modalView}>
+                            <Text style={styles.modalText}>Do you want to log out?</Text>
+                            <View style={styles.button}>
+                            <TouchableOpacity onPress={logout}>
+                                <Text style={styles.buttonText}>Yes</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => setLogoutModalVisible(false)}>
+                                <Text style={styles.buttonText}>No</Text>
+                            </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </Modal>
